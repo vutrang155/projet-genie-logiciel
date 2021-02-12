@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
-
+const connectDB = require('./config/database');
 const app = express();
 var corsOptions = {
     origin: "http://localhost:8081"
 };
 
+connectDB();
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json

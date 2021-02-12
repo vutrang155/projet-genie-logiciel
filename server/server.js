@@ -7,7 +7,8 @@ const app = express();
 var corsOptions = {
     origin: "http://localhost:8081"
 };
-
+const { User } = require('./models/User.js');
+const { Task } = require('./models/Task.js');
 connectDB();
 app.use(cors(corsOptions));
 

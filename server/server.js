@@ -1,30 +1,35 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
-const connectDB = require('./config/database');
+
+const errorHandler = require('./middleware/errorHandler')
 const app = express();
 var corsOptions = {
     origin: "http://localhost:8081"
 };
-const { User } = require('./models/User.js');
-const { Task } = require('./models/Task.js');
+
+//db
+const connectDB = require('./config/database');
 connectDB();
+
+const routes = require('./routes/routes.js');
+
+
 app.use(cors(corsOptions));
+app.use('/api',routes)
+app.use(errorHandler);
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// simple route
-app.get("/", (req, res) => {
-    res.json({ message: "Bienvenue Sur NODEJS" });
-});
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
+});
+app.get("/", (req, res) => {
+    res.json({ message: "Bienvenue Sur NODEJS" });
 });

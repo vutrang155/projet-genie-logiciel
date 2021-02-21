@@ -6,7 +6,7 @@ const client = mongoose.Schema({
         unique: 1,
         trim: true
     },
-    field_of_activity:{
+    fieldOfActivity:{
         type:String
     },
     address:{

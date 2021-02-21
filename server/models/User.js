@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 
 const user = mongoose.Schema({
-    lastname:{
+    lastName:{
         type: String,
         required: true,
         unique: 1,
     },
-    firstname:{
+    firstName:{
         type: String,
         required: true,
         unique: 1,
     },
-    entry_date:{
+    entryDate:{
         type:Date,
         required: true,
         default: Date.now
     },
-    exit_date:{
+    exitDate:{
         type:Date,
     },
     active:{

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+//const autoIncrement = require('mongoose-auto-increment');
 const task = mongoose.Schema({
     name:{
         type: String,
@@ -15,24 +16,24 @@ const task = mongoose.Schema({
     description:{
         type:String
     },
-    date_begin_prev:{
+    dateBeginPrev:{
         type:Date,
         required: true,
     },
-    date_end_prev:{
+    dateEndPrev:{
         type:Date,
         required: true,
     },
-    load_prev:{
+    loadPrev:{
         type:Number,
     },
-    date_begin_actual:{
+    dateBeginActual:{
         type:Date,
     },
-    date_end_actual:{
+    dateEndActual:{
         type:Date,
     },
-    load_actual:{
+    loadActual:{
         type:Number,
     },
     progress:{
@@ -41,4 +42,6 @@ const task = mongoose.Schema({
 
 
 });
+//task.plugin(autoIncrement.plugin, 'task');
+
 module.exports = Task = mongoose.model('task',task);

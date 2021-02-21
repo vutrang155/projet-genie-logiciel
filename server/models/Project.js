@@ -13,18 +13,18 @@ const project = mongoose.Schema({
         enum: ["TODO","FINISHED","WIP","ABANDONED"],
         default : 'TODO'
     },
-    date_begin_prev:{
+    dateBeginPrev:{
         type:Date,
         required: true,
     },
-    date_end_prev:{
+    dateEndPrev:{
         type:Date,
         required: true,
     },
-    date_begin_actual:{
+    dateBeginActual:{
         type:Date,
     },
-    date_end_actual:{
+    dateEndActual:{
         type:Date,
     },
 

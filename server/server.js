@@ -13,15 +13,17 @@ const connectDB = require('./config/database');
 connectDB();
 
 const routes = require('./routes/routes.js');
+const authRoutes = require("./routes/login");
 
-
-app.use(cors(corsOptions));
-app.use('/api',routes)
-app.use(errorHandler);
-
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors(corsOptions));
+app.use('/api',routes);
+app.use('/auth',authRoutes);
+
+app.use(errorHandler);
+
 
 
 

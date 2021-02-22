@@ -15,7 +15,7 @@ const task = mongoose.Schema({
     },
     description:{
         type:String
-    },
+    },/*
     dateBeginPrev:{
         type:Date,
         required: true,
@@ -40,7 +40,7 @@ const task = mongoose.Schema({
         type:Number,
     }
 
-
+*/
 });
 //task.plugin(autoIncrement.plugin, 'task');
 

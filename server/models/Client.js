@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const client = mongoose.Schema({
-    name:{
+    nom:{
         type: String,
         required: true,
         unique: 1,
         trim: true
     },
-    fieldOfActivity:{
+    domaine:{
         type:String
     },
-    address:{
+    adresse:{
         type:String
     }
 })

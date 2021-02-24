@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 const contact = mongoose.Schema({
-    lastName:{
+    nom:{
         type: String,
         required: true,
-        unique: 1,
     },
-    firstName:{
+    prenom:{
         type: String,
         required: true,
-        unique: 1,
     },
-    job:{
+    fonction:{
         type: String,
-        required: true,
-        unique: 1,
     },
-    address:{
+    adresse:{
         type:String
-    }
+    },
+    clientId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'client'
+    },
 });
 module.exports = Contact = mongoose.model('contact',contact)

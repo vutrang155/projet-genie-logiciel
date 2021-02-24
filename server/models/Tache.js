@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
 //const autoIncrement = require('mongoose-auto-increment');
-const task = mongoose.Schema({
-    name:{
+const tache = mongoose.Schema({
+    nom:{
         type: String,
         required: true,
         unique: 1,
         trim: true
     },
-    state:{
+    responsableId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'client'
+    },
+    projetId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'client'
+    },
+    etat:{
         type: String,
         required: true,
         enum: ["TODO","FINISHED","WIP","ABANDONED"],
@@ -15,33 +23,32 @@ const task = mongoose.Schema({
     },
     description:{
         type:String
-    },/*
-    dateBeginPrev:{
+    },
+    dateDebutPrevisionnelle:{
         type:Date,
         required: true,
     },
-    dateEndPrev:{
+    dateFinPrevisionnelle:{
         type:Date,
         required: true,
     },
-    loadPrev:{
+    chargeAssociee:{
         type:Number,
     },
-    dateBeginActual:{
+    dateDebutReelle:{
         type:Date,
     },
-    dateEndActual:{
+    dateFinReelle:{
         type:Date,
     },
-    loadActual:{
+    chargeConsommee:{
         type:Number,
     },
-    progress:{
+    avancement:{
         type:Number,
     }
 
-*/
 });
-//task.plugin(autoIncrement.plugin, 'task');
 
-module.exports = Task = mongoose.model('task',task);
+
+module.exports = Tache = mongoose.model('tache',tache);

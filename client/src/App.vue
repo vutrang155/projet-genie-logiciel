@@ -15,17 +15,25 @@
         <p class="userName">Jean PAUL</p>
 
     </div>
+  <div v-show="selectedTab ==='Tableau de bord'">
+
+    <TableauDeBord/>
+
+
+  </div>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import TableauDeBord from './components/TableauDeBord.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    TableauDeBord
   },
   data(){
     return{

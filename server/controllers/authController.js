@@ -7,7 +7,7 @@ exports.register = async (req, res, next) => {
     console.log(req.body);
 
     try {
-        const existingUser = await User.findOne({ name: req.body.name });
+        const existingUser = await User.findOne({ name: req.body.userId });
         if (existingUser) {
             const error = new Error("Name already used");
             error.statusCode = 403;
@@ -16,7 +16,10 @@ exports.register = async (req, res, next) => {
 
         let user = new User();
         user.password = await user.encryptPassword(req.body.password);
-        user.name = req.body.name;
+        user.userId = req.body.userId;
+        user.nom = req.body.nom;
+        user.prenom = req.body.prenom;
+
         user = await user.save();
 
         const token = jwt.sign({"name":User.name},config.jwtSecret,{expiresIn : "1h"});
@@ -30,7 +33,7 @@ exports.login = async (req, res, next) => {
     console.log("login");
 
     try {
-        const name = req.body.name;
+        const name = req.body.userId;
         const password = req.body.password;
 
         const user = await User.findOne({ name }).select("+password");
@@ -47,8 +50,26 @@ exports.login = async (req, res, next) => {
             throw error;
         }
 
-        const token = jwt.sign({"name":User.name},config.jwtSecret,{expiresIn : "1h"});
+        const token = jwt.sign({"name":User.userId},config.jwtSecret,{expiresIn : "1h"});
         return res.send({ user, token });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.task = async (req, res, next) => {
+    console.log("task");
+
+    try {
+        const userId = req.body.userId;
+
+        const user = await User.findOne({ userId });
+        if (!user) {
+            const error = new Error("Le joueur n'existe pas");
+            error.statusCode = 401;
+            throw error;
+        }
+        return res.send({ user });
     } catch (err) {
         next(err);
     }

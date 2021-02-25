@@ -1,14 +1,14 @@
 
-const task = require("../models/Task");
+const Tache = require("../models/Tache");
 //post
 exports.store = async (req, res, next) => {
     try {
-        let task = new task();
-        task.name = req.body.name;
-        task.description = req.body.description;
-        task = await task.save();
+        let tache = new Tache();
+        tache.nom = req.body.nom;
+        tache.description = req.body.description;
+        tache = await tache.save();
 
-        res.send(task);
+        res.send(tache);
     } catch (err) {
         next(err);
     }
@@ -16,11 +16,11 @@ exports.store = async (req, res, next) => {
 //get
 exports.show = async (req, res, next) => {
     try {
-        const task = await task.findOne({
+        const tache = await tache.findOne({
             _id: req.params.id
         }).populate("user");
 
-        res.send(task);
+        res.send(tache);
     } catch (err) {
         next(err);
     }

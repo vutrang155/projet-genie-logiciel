@@ -76,14 +76,14 @@ body {
  }
  .OnGoing{
    background-color: #eeff00;
-   width: 800px;
+   width: 80%;
    padding: 20px;
    margin: 40px;
    border: 1px solid #d8d8d8;
  }
  .Done{
    background-color: #00ff04;
-   width: 800px;
+   width: 80%;
    padding: 20px;
    margin: 40px;
    border: 1px solid #d8d8d8;

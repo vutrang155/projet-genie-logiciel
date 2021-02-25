@@ -20,4 +20,4 @@ const contact = mongoose.Schema({
         ref: 'client'
     },
 });
-module.exports = Contact = mongoose.model('contact',contact)
+module.exports = Contact = mongoose.model('Contact',contact)

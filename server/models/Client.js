@@ -13,4 +13,4 @@ const client = mongoose.Schema({
         type:String
     }
 })
-module.exports = Client = mongoose.model('client',client)
+module.exports = Client = mongoose.model('Client',client)

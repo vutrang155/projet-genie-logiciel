@@ -135,8 +135,8 @@ body {
 
 .column {
 
-  width: 30%;
-  text-align: center;
+  width: auto;
+  text-align: left;
   padding: 10px;
   height: 300px;
 }

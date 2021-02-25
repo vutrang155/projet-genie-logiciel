@@ -25,32 +25,7 @@ Vue.component("product-tabs",{
 
     <div v-show="selectedTab ==='Tableau de bord'">
 
-
-      <list-tasks :tasks="tasks"></list-tasks>
-      <add-Task></add-Task>
-
-      <b-container class="bv-example-row">
-        <b-row no-gutters style="height:750px;">
-
-
-
-
-
-      <div class="row">
-      <div class="color-box" cols="12" :style="{ backgroundColor:'#00aaff'}"></div>
-        <div class="column" >
-
-          <p>test 1</p>
-        </div>
-        <div class="column">
-          <p> test2</p>
-        </div>
-      </div>
-
-
-
-
-
+      <Tableau-de-bord></Tableau-de-bord>
 
     </div>
 
@@ -62,34 +37,70 @@ Vue.component("product-tabs",{
     data(){
       return {
         tabs: ["Tableau de bord","Projets","Clients","Collaborateurs","Notifications"],
-        selectedTab: "Tableau de bord",
-        tasks:[],
-        legends:[
-          {
-            color: "#00aaff",
-            text: "To Do"
-          },
-          {
-            color: "#eeff00",
-            text: "On Going"
-          },
-          {
-            color: "#00ff04",
-            text: "Done"
-          }
-        ]
-
+        selectedTab: "Tableau de bord"
 
       }
     }
-    ,
-    mounted(){
-      eventBus.$on('task-added', task =>{
-        this.tasks.push(task)
-      })
+
+})
+//##################################################################
+Vue.component("Tableau-de-bord",{
+  template:`
+  <div>
+
+  <list-tasks :tasks="tasks"></list-tasks>
+  <add-Task></add-Task>
+
+
+
+  <div class="row">
+    <div class="color-box" cols="12" :style="{ backgroundColor:'#00aaff'}"></div>
+    <div class="column" >
+
+      <p>:To Do</p>
+    </div>
+    <div class="color-box" cols="12" :style="{ backgroundColor:'#eeff00'}"></div>
+    <div class="column" >
+
+      <p>:On Going</p>
+    </div>
+    <div class="color-box" cols="12" :style="{ backgroundColor:'#00ff04'}"></div>
+    <div class="column" >
+
+      <p>:Done</p>
+    </div>
+
+  </div>
+
+  </div>`,
+  data(){
+    return{
+      tasks:[],
+      legends:[
+        {
+          color: "#00aaff",
+          text: "To Do"
+        },
+        {
+          color: "#eeff00",
+          text: "On Going"
+        },
+        {
+          color: "#00ff04",
+          text: "Done"
+        }
+      ]
     }
+
+  },
+  mounted(){
+    eventBus.$on('task-added', task =>{
+      this.tasks.push(task)
+    })
+  }
 })
 
+//##################################################################
 Vue.component("list-tasks",{
   props: {
     tasks:{
@@ -127,7 +138,7 @@ Vue.component("list-tasks",{
 
 })
 
-
+//##################################################################
 
 /*
 Vue.component("task",{
@@ -156,7 +167,7 @@ Vue.component("task",{
   }
 
 })*/
-
+//##################################################################
 Vue.component("add-Task",{
   template: `
   <form class="review-form" @submit.prevent="addTask">
@@ -256,7 +267,7 @@ Vue.component("add-Task",{
 })
 
 
-
+//##################################################################
 
 
 Vue.component("Calendar",{
@@ -290,7 +301,7 @@ Vue.component("Calendar",{
 
 
 
-
+//##################################################################
 
 
 

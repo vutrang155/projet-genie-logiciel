@@ -8,21 +8,19 @@ const tache = mongoose.Schema({
         trim: true
     },
     responsableId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'client'
+        type: String, 
+        ref: 'User'
     },
     projetId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'client'
+        ref: 'Projet'
     },
     etat:{
-        type: String,
-        required: true,
-        enum: ["TODO","FINISHED","WIP","ABANDONED"],
-        default : 'TODO'
+        type: Number,
+        required: true, // enum: ["TODO","FINISHED","WIP","ABANDONED"], default : 'TODO'
     },
-    description:{
-        type:String
+    description: {
+        type: String
     },
     dateDebutPrevisionnelle:{
         type:Date,
@@ -51,4 +49,4 @@ const tache = mongoose.Schema({
 });
 
 
-module.exports = Tache = mongoose.model('tache',tache);
+module.exports = Tache = mongoose.model('Tache',tache);

@@ -1,0 +1,14 @@
+const express = require("express");
+const router = express.Router();
+const projetController = require("../controllers/projetController");
+
+router.post("/create", projetController.create);
+
+router.delete("/delete", projetController.delete);
+router.post("/update", projetController.update);
+router.get("/getAll", projetController.getAll);
+router.post("/getById", projetController.getById);
+//router.post("/getByUser", projetController.getByResponsable);
+
+
+module.exports = router;

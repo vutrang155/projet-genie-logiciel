@@ -6,6 +6,18 @@ const projet = mongoose.Schema({
         required: true,
         unique: 1,
     },
+    responsableId:{
+        type: String,
+        ref: 'User'
+    },
+    clientId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'client'
+    },
+    contactId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'contact'
+    },
     etat:{
         type: Number,
         enum: [0,1,2,3],
@@ -25,5 +37,13 @@ const projet = mongoose.Schema({
     },
 
 });
-
+projet.pre('save', function(next) {
+    const self = this;
+    Object.keys(this.schema.paths).forEach(function(key) {
+        if(self.schema.paths[key].options.default && self[key] === null) {
+            self[key] = self.schema.paths[key].options.default;
+        }
+    });
+    next();
+});
 module.exports = Project = mongoose.model('Project',projet)

@@ -12,9 +12,7 @@ exports.create = async (req, res, next) => {
     }
     const nom = req.body.nom;
     const responsableId = req.body.responsableId;
-    // TODO 
     const projetId = mongoose.Types.ObjectId(req.body.projetId);
-    //const projetId = req.body.projetId;
     const etat = req.body.etat;
     const description = req.body.description;
     const dateDebutPrevisionnelle = convertDate(req.body.dateDebutPrevisionnelle) ;
@@ -28,14 +26,18 @@ exports.create = async (req, res, next) => {
     // if responableId not found
     const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
     if (!foundResponsable) {
+        const response = {
+            message: "User not found"
+        };
+        return res.status(500).send(response);
+        /*
         const error = new Error("ResponsableID not found");
         error.statusCode = 401;
         throw error;
+        */
     }
     // if projectId not found
-    // TODO : error if projectId not found
     console.log("Create Tache");
-    console.log(req.body);
 
     let tache = new Tache();
     tache.nom = nom;
@@ -55,57 +57,59 @@ exports.create = async (req, res, next) => {
 
     return res.send({tache});
 };
+exports.delete = async (req, res, next) => {
+    console.log("Delete Task by id");
+
+    const tacheId = req.body.tacheId;
+
+    var foundId = await Tache.find({ _id:tacheId }); 
+    if (foundId.length == 0) {
+        const response = {
+            message: "tacheId not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.findByIdAndRemove(tacheId, (err, tache) => {
+        // Error if detected :
+        if (err) return res.status(500).send(err);
+
+        // if not :
+        // if tache found
+        const response = {
+            message: "Suppression Tache avec succès",
+            id: tache._id
+        };
+
+        return res.status(200).send(response);
+    });
+};
+exports.update = async (req, res, next) => {
+    console.log("Update Task by id");
+
+    const tacheId = req.body.tacheId;
+    const modif = req.body.modif;
+
+    var foundId = await Tache.find({ _id:tacheId }); 
+    console.log(tacheId);
+    if (foundId.length == 0) {
+        const response = {
+            message: "tacheId not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.findByIdAndUpdate(tacheId, modif, 
+        // Ask mongoose to return the updated version of doc instead of pre-updated one
+        {new:true},
+        (err, tache) => {
+            // If error
+            if (err) return res.status(500).send(err);
+            return res.send(tache);
+        })
+};
 
 exports.getAll = async (req, res, next) => {
-    console.log("getAll");
-
     const ret = await Tache.find({});
-    console.log(ret);
-    return res.send({ret});
-};
-
-exports.login = async (req, res, next) => {
-    console.log("login");
-
-    try {
-        const name = req.body.userId;
-        const password = req.body.password;
-
-        const user = await User.findOne({ name }).select("+password");
-        if (!user) {
-            const error = new Error("Wrong Name");
-            error.statusCode = 401;
-            throw error;
-        }
-
-        const validPassword = await user.validPassword(password);
-        if (!validPassword) {
-            const error = new Error("Wrong Password");
-            error.statusCode = 401;
-            throw error;
-        }
-
-        const token = jwt.sign({"name":User.userId},config.jwtSecret,{expiresIn : "1h"});
-        return res.send({ user, token });
-    } catch (err) {
-        next(err);
-    }
-};
-
-exports.task = async (req, res, next) => {
-    console.log("task");
-
-    try {
-        const userId = req.body.userId;
-
-        const user = await User.findOne({ userId });
-        if (!user) {
-            const error = new Error("Le joueur n'existe pas");
-            error.statusCode = 401;
-            throw error;
-        }
-        return res.send({ user });
-    } catch (err) {
-        next(err);
-    }
+    return res.send(ret);
 };

@@ -4,6 +4,8 @@ const tacheController = require("../controllers/tacheController");
 
 
 router.post("/create", tacheController.create);
+router.delete("/delete", tacheController.delete);
+router.post("/update", tacheController.update);
 router.post("/getAll", tacheController.getAll);
 
 

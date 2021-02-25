@@ -39,6 +39,7 @@ exports.create = async (req, res, next) => {
     // if projectId not found
     console.log("Create Tache");
 
+    try {
     let tache = new Tache();
     tache.nom = nom;
     tache.responsableId = responsableId;
@@ -54,8 +55,15 @@ exports.create = async (req, res, next) => {
     tache.avancement = avancement;
     
     tache = await tache.save();
-
     return res.send({tache});
+    }
+    catch(err) {
+        const response = {
+            message: "Impossible de créer la tache"
+        };
+        return res.status(500).send(response);
+    }
+
 };
 exports.delete = async (req, res, next) => {
     console.log("Delete Task by id");
@@ -63,7 +71,7 @@ exports.delete = async (req, res, next) => {
     const tacheId = req.body.tacheId;
 
     var foundId = await Tache.find({ _id:tacheId }); 
-    if (foundId.length == 0) {
+    if (tacheId == undefined || foundId.length == 0) {
         const response = {
             message: "tacheId not found"
         };
@@ -91,8 +99,7 @@ exports.update = async (req, res, next) => {
     const modif = req.body.modif;
 
     var foundId = await Tache.find({ _id:tacheId }); 
-    console.log(tacheId);
-    if (foundId.length == 0) {
+    if (tacheId == undefined || foundId.length == 0) {
         const response = {
             message: "tacheId not found"
         };
@@ -112,4 +119,40 @@ exports.update = async (req, res, next) => {
 exports.getAll = async (req, res, next) => {
     const ret = await Tache.find({});
     return res.send(ret);
+};
+
+exports.getById = async (req, res, next) => {
+    console.log("Get Task by ID");
+
+    const tacheId = req.body.tacheId;
+    var foundId = await Tache.find({ _id:tacheId }); 
+    if (tacheId == undefined || foundId.length == 0) {
+        const response = {
+            message: "tacheId not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.findById(tacheId, (err, tache) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(tache);
+    });
+};
+
+exports.getByUser = async (req, res, next) => {
+    console.log("Get Task by User");
+
+    const _userId = req.body.userId;
+    var foundId = await User.find({ userId: _userId }); 
+    if (_userId == undefined || foundId.length == 0) {
+        const response = {
+            message: "userId not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.find({responsableId : _userId}, (err, tache) => {
+        if (err) return res.status(500).send(err)
+        return res.status(200).send(tache);
+    });
 };

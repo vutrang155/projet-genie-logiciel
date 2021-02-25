@@ -3,6 +3,7 @@ const config = require("../config/jwt");
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Tache = require("../models/Tache");
+const Projet = require("../models/Projet");
 
 exports.create = async (req, res, next) => {
     let convertDate = function(strDate) {
@@ -30,11 +31,13 @@ exports.create = async (req, res, next) => {
             message: "User not found"
         };
         return res.status(500).send(response);
-        /*
-        const error = new Error("ResponsableID not found");
-        error.statusCode = 401;
-        throw error;
-        */
+    }
+    const foundProjet = await Projet.findOne({ _id:projetId});
+    if (!foundProjet) {
+        const response = {
+            message: "Projet not found"
+        };
+        return res.status(500).send(response);
     }
     // if projectId not found
     console.log("Create Tache");
@@ -152,6 +155,23 @@ exports.getByUser = async (req, res, next) => {
     }
 
     Tache.find({responsableId : _userId}, (err, tache) => {
+        if (err) return res.status(500).send(err)
+        return res.status(200).send(tache);
+    });
+};
+exports.getByProjet = async (req, res, next) => {
+    console.log("Get Task by Projet");
+
+    const _projetId = req.body.projetId;
+    var foundId = await Projet.find({ _id: _projetId}); 
+    if (_projetId == undefined || foundId.length == 0) {
+        const response = {
+            message: "Projet not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.find({projetId : _projetId}, (err, tache) => {
         if (err) return res.status(500).send(err)
         return res.status(200).send(tache);
     });

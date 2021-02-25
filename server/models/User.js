@@ -3,19 +3,28 @@ const bcrypt = require("bcryptjs");
 
 const user = mongoose.Schema({
     userId: { type: String,
-        required: true },
+            required: true },
     password: { type: String,
                 required: true,
                 select: false },
     nom:{
         type: String,
         required: true,
-        unique: 1,
+
     },
     prenom:{
         type: String,
         required: true,
-        unique: 1,
+
+    },
+    adresse:{
+        type: String,
+    },
+    numeroDeTelephone:{
+        type: String,
+    },
+    adresseMail:{
+        type: String,
     },
     dateEntree:{
         type:Date,
@@ -25,7 +34,7 @@ const user = mongoose.Schema({
         type:Date,
     },
     compteActive:{
-        type:Boolean
+        type:Boolean,
     },
     role:{
         type: Number,
@@ -43,5 +52,21 @@ user.methods.encryptPassword = async password => {
 user.methods.validPassword = async function(candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
+
+user.pre('save', function(next) {
+    const self = this;
+    Object.keys(this.schema.paths).forEach(function(key) {
+        if(self.schema.paths[key].options.default && self[key] === null) {
+            self[key] = self.schema.paths[key].options.default;
+        }
+    });
+    next();
+});
+
+user.methods.toJSON = function() {
+    let obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
 
 module.exports = User = mongoose.model('user',user)

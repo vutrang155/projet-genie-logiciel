@@ -10,6 +10,7 @@ router.post("/getAll", tacheController.getAll);
 router.post("/getById", tacheController.getById);
 router.post("/getByUser", tacheController.getByUser);
 router.post("/getByProjet", tacheController.getByProjet);
+router.post("/getByResponsableProjet", tacheController.getByResponsableProjet);
 
 
 module.exports = router;

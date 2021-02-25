@@ -132,7 +132,7 @@ exports.getById = async (req, res, next) => {
     if (tacheId == undefined || foundId.length == 0) {
         const response = {
             message: "tacheId not found"
-        };
+        };  
         return res.status(500).send(response);
     }
 
@@ -159,6 +159,7 @@ exports.getByUser = async (req, res, next) => {
         return res.status(200).send(tache);
     });
 };
+
 exports.getByProjet = async (req, res, next) => {
     console.log("Get Task by Projet");
 
@@ -175,4 +176,49 @@ exports.getByProjet = async (req, res, next) => {
         if (err) return res.status(500).send(err)
         return res.status(200).send(tache);
     });
+};
+
+exports.getByResponsableProjet = async (req, res, next) => {
+    console.log("Get Task by Responsable de Projet");
+
+    const responsableId = req.body.responsableId;
+    // if responableId not found
+    const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
+    if (!foundResponsable) {
+        const response = {
+            message: "User not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    Tache.aggregate([
+        {
+            $lookup: {
+                from: "projects",
+                localField: "projetId",
+                foreignField: "_id",
+                as: "p"
+            }
+        },
+        {
+            $unwind: "$p"
+        },
+        {
+            $match: { "p.responsableId": responsableId }
+        },
+        {
+            $project: {
+                "p": 0
+            }
+        }
+    ]).exec((err, taches) => {
+        // Error if detected :
+        if (err) return res.status(500).send(err);
+
+        // if not :
+        // if tache found
+        return res.status(200).send(taches);
+
+    });
+
 };

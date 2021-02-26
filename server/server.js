@@ -17,7 +17,9 @@ const authRoutes = require("./routes/login");
 
 const tacheRoutes = require("./routes/tache");
 
+const clientRoutes = require('./routes/ClientRoutes');
 
+const contactRoutes = require('./routes/ContactRoutes');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,7 +30,9 @@ app.use('/auth',authRoutes);
 
 app.use('/tache',tacheRoutes);
 
+app.use('/client',clientRoutes);
 
+app.use('/contact',contactRoutes);
 
 app.use(errorHandler);
 

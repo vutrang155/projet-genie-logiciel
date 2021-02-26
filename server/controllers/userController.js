@@ -72,7 +72,7 @@ exports.getall = async (req,res,next) =>{
 exports.delete = async  (req,res,next ) => {
     console.log("Delete User by id");
 
-    const userId = req.body.userId;
+    const userId = req.params.userId;
 
     var foundId = await User.find({ userId:userId });
     if (userId === undefined || foundId.length === 0) {
@@ -122,10 +122,10 @@ exports.update = async (req, res, next) => {
         })
 };
 
-exports.getById = async (req, res, next) => {
+exports.getByUserId = async (req, res, next) => {
     console.log("Get User by ID");
 
-    const userId = req.body.userId;
+    const userId = req.params.userId;
     var foundId = await User.find({ userId:userId });
     if (userId === undefined || foundId.length === 0) {
         const response = {
@@ -141,7 +141,24 @@ exports.getById = async (req, res, next) => {
 };
 
 exports.getByType = async (req,res,next) =>{
-    const ret = await User.find({role:req.body.role});
+    const ret = await User.find({role:req.params.role});
     return res.send(ret);
 };
 
+exports.getById = async (req, res, next) => {
+    console.log("Get User by ID");
+
+    const userId = req.params.id;
+    var foundId = await User.find({ _id:userId });
+    if (userId === undefined || foundId.length === 0) {
+        const response = {
+            message: "id not found"
+        };
+        return res.status(500).send(response);
+    }
+
+    User.findById(foundId, (err, user) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(user);
+    });
+};

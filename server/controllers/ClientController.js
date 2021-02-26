@@ -36,8 +36,6 @@ exports.create = async (req,res,next) => {
 	}
 
 }
-
-
 exports.getbyId = async (req,res,next) => {
 
 	console.log('getById');
@@ -63,8 +61,6 @@ exports.getbyId = async (req,res,next) => {
 		return res.send(err);
 	} 
 }
-
-
 exports.getAll =  async (req,res,next) => {
 
 	console.log("getAll");
@@ -74,8 +70,6 @@ exports.getAll =  async (req,res,next) => {
 	return res.send({liste});
 
 }
-
-
 exports.delete = async (req,res,next) => {
 
 	console.log('Delete');
@@ -105,8 +99,6 @@ exports.delete = async (req,res,next) => {
 	} 
 
 }
-
-
 exports.update = async (req,res,next) => {
 
 	console.log('Update');

@@ -4,13 +4,11 @@ const tacheController = require("../controllers/tacheController");
 
 
 router.post("/create", tacheController.create);
-router.delete("/delete", tacheController.delete);
+router.delete("/delete/:tacheId", tacheController.delete);
 router.put("/update", tacheController.update);
 router.get("/getAll", tacheController.getAll);
-router.post("/getById", tacheController.getById);
-router.post("/getByUser", tacheController.getByUser);
-router.post("/getByProjet", tacheController.getByProjet);
-router.post("/getByResponsableProjet", tacheController.getByResponsableProjet);
-
-
+router.get("/getById/:tacheId", tacheController.getById);
+router.get("/getByUser/:userId", tacheController.getByUser);
+router.get("/getByProjet/:projetId", tacheController.getByProjet);
+router.get("/getByResponsableProjet/:responsableId", tacheController.getByResponsableProjet);
 module.exports = router;

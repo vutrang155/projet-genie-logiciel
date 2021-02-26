@@ -61,6 +61,7 @@ exports.create = async (req, res, next) => {
     return res.send({tache});
     }
     catch(err) {
+        console.log(err)
         const response = {
             message: "Impossible de créer la tache"
         };
@@ -71,7 +72,7 @@ exports.create = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
     console.log("Delete Task by id");
 
-    const tacheId = req.body.tacheId;
+    const tacheId = req.params.tacheId;
 
     var foundId = await Tache.find({ _id:tacheId }); 
     if (tacheId == undefined || foundId.length == 0) {
@@ -101,7 +102,8 @@ exports.update = async (req, res, next) => {
     const tacheId = req.body.tacheId;
     const modif = req.body.modif;
 
-    var foundId = await Tache.find({ _id:tacheId }); 
+    var foundId = await Tache.find({ _id:tacheId });
+    console.log(tacheId)
     if (tacheId == undefined || foundId.length == 0) {
         const response = {
             message: "tacheId not found"
@@ -118,16 +120,14 @@ exports.update = async (req, res, next) => {
             return res.send(tache);
         })
 };
-
 exports.getAll = async (req, res, next) => {
     const ret = await Tache.find({});
     return res.send(ret);
 };
-
 exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
 
-    const tacheId = req.body.tacheId;
+    const tacheId = req.params.tacheId;
     var foundId = await Tache.find({ _id:tacheId }); 
     if (tacheId == undefined || foundId.length == 0) {
         const response = {
@@ -141,11 +141,10 @@ exports.getById = async (req, res, next) => {
         return res.status(200).send(tache);
     });
 };
-
 exports.getByUser = async (req, res, next) => {
     console.log("Get Task by User");
 
-    const _userId = req.body.userId;
+    const _userId = req.params.userId;
     var foundId = await User.find({ userId: _userId }); 
     if (_userId == undefined || foundId.length == 0) {
         const response = {
@@ -159,11 +158,10 @@ exports.getByUser = async (req, res, next) => {
         return res.status(200).send(tache);
     });
 };
-
 exports.getByProjet = async (req, res, next) => {
     console.log("Get Task by Projet");
 
-    const _projetId = req.body.projetId;
+    const _projetId = req.params.projetId;
     var foundId = await Projet.find({ _id: _projetId}); 
     if (_projetId == undefined || foundId.length == 0) {
         const response = {
@@ -177,11 +175,10 @@ exports.getByProjet = async (req, res, next) => {
         return res.status(200).send(tache);
     });
 };
-
 exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
 
-    const responsableId = req.body.responsableId;
+    const responsableId = req.params.responsableId;
     // if responableId not found
     const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
     if (!foundResponsable) {

@@ -1,8 +1,7 @@
 <template>
-	<!--
-	<list-tasks :tasks="tasks"></list-tasks>
-  <add-Task></add-Task>
-	-->
+	
+	<listTasks @task-added="addTask"   />
+
 
 
 
@@ -27,27 +26,34 @@
 </template>
 
 <script>
+import listTasks from './TableauDeBord/listTasks.vue'
 
 
 export default {
 	name: 'TableauDeBord',
+  components:{
+    listTasks
+  },
 	data(){
     return{
       tasks:[]
     }
 
-  }/*,
-  mounted(){
-    eventBus.$on('task-added', task =>{
+  },
+  methods:{
+    addTask(task){
       this.tasks.push(task)
-    })
-  }*/
+    }
+  }
 
     
 }
 </script>
 
 <style>
+#TableauDeBord{
+  text-align: left;
+}
 
 .row {
   display: flex;

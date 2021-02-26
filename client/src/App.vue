@@ -18,22 +18,29 @@
   <div v-show="selectedTab ==='Tableau de bord'">
 
     <TableauDeBord/>
-
-
   </div>
+  <div v-show="selectedTab ==='Projets'">
+    <p>test projets</p>
+
+    <Projets/>
+  </div >
+  <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+  </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import TableauDeBord from './components/TableauDeBord.vue'
+import Projets from './components/Projets.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    TableauDeBord
+    TableauDeBord,
+    Projets
   },
   data(){
     return{
@@ -50,9 +57,11 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   
+}
+.center{
+  text-align: center;
 }
  .nav-bar {
    background: linear-gradient(-90deg, #84CF6A, #16C0B0);

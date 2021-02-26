@@ -112,7 +112,7 @@ Vue.component("list-tasks",{
   template: `
     <div>
       <ul>
-        <li v-for="task in tasks" >
+        <li v-for="task in tasks" :key="task.ID">
           <div v-bind:class="task.state" >
             <b-container>
               <b-row>

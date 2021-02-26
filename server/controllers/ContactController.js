@@ -17,7 +17,7 @@ exports.create = async (req,res,next) => {
 	let existe = await Client.findOne({_id:client}).exec();	
 
 	console.log(contact.nom);
-	//let existe = await Client.findOne({nom:req.body.nom}).exec();
+
 
 	if (existe){
 		contact.clientId = existe;
@@ -45,8 +45,8 @@ exports.getbyId = async (req,res,next) => {
 
 	let contact = await Contact.findOne({_id:id}).exec();
 
-	if (!contact){ // Si le client n'est pas dans la BDD
-		const error = new Error("Client introuvable");
+	if (!contact){ // Si le contact n'est pas dans la BDD
+		const error = new Error("Contact introuvable");
 		error.statusCode = 400;
 		throw error;
 	} 
@@ -126,10 +126,6 @@ exports.update = async (req,res,next) => {
 
 
 	let id = req.body.id;
-/*	let name = req.body.nom;
-	let dom = req.body.domaine;
-	let adr = req.body.adresse; */
-
 	let nom = req.body.nom;
 	let prenom = req.body.prenom;	
 	let fonction = req.body.fonction;
@@ -144,8 +140,8 @@ exports.update = async (req,res,next) => {
 
 	let contact = await Contact.findByIdAndUpdate(id,req.body,{ useFindAndModify: false }).exec();
 
-	if (!contact){ // Si le client n'est pas dans la BDD
-		const error = new Error("Client introuvable");
+	if (!contact){ // Si le contact n'est pas dans la BDD
+		const error = new Error("Contact introuvable");
 		error.statusCode = 400;
 		throw error;
 	}

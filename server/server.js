@@ -29,8 +29,8 @@ app.use('/api',routes);
 app.use('/api/user',userRoutes);
 app.use('/api/projet',projetRoutes);
 app.use('/api/tache',tacheRoutes);
-app.use('/client',clientRoutes);
-app.use('/contact',contactRoutes);
+app.use('/api/client',clientRoutes);
+app.use('/api/contact',contactRoutes);
 
 app.use(errorHandler);
 

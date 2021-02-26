@@ -8,7 +8,7 @@ router.delete("/delete", projetController.delete);
 router.post("/update", projetController.update);
 router.get("/getAll", projetController.getAll);
 router.post("/getById", projetController.getById);
-//router.post("/getByUser", projetController.getByResponsable);
-
+router.post("/getByUser", projetController.getByUser);
+router.post("/getByResponsable",projetController.getByResponsable);
 
 module.exports = router;

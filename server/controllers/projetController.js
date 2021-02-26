@@ -105,21 +105,65 @@ exports.getById = async (req, res, next) => {
         return res.status(200).send(projet);
     });
 };
-/*
 exports.getByUser = async (req, res, next) => {
-    console.log("Get Projet by User");
-
+    console.log("Get Project by User");
     const _userId = req.body.userId;
-    var foundId = await User.find({ userId: _userId }).select();
+    var foundId = await User.find({ userId: _userId });
+    console.log(_userId);
     if (_userId === undefined || foundId.length === 0) {
         const response = {
             message: "userId not found"
         };
         return res.status(500).send(response);
     }
+    console.log("user found");
 
-    Tache.find({responsableId : _userId}, (err, tache) => {
-        if (err) return res.status(500).send(err)
-        return res.status(200).send(tache);
+    Projet.aggregate([
+        {
+            '$lookup': {
+                'from': 'taches',
+                'localField': '_id',
+                'foreignField': 'projetId',
+                'as': 't'
+            }
+        }, {
+            '$unwind': {
+                'path': '$t'
+            }
+        }, {
+            '$match': {
+                't.responsableId': req.body.userId
+            }
+        }, {
+            '$project': {
+                't': 0
+            }
+        }
+    ]).exec((err, taches) => {
+        // Error if detected :
+        if (err) return res.status(500).send(err);
+
+        // if not :
+        // if tache found
+        return res.status(200).send(taches);
+
     });
-*/
+    };
+
+
+exports.getByResponsable = async (req,res,next) =>{
+    console.log("Get Project by Responsable");
+    const responsableId = req.body.responsableId;
+    var foundId = await User.find({ userId: responsableId });
+    console.log(responsableId);
+    if (responsableId === undefined || foundId.length === 0) {
+        const response = {
+            message: "userId not found"
+        };
+        return res.status(500).send(response);
+    }
+    Projet.find({responsableId :responsableId }, (err, projet) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(projet);
+    });
+}

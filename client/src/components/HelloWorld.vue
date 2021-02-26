@@ -1,4 +1,46 @@
 <template>
+  <form class="review-form" @submit.prevent="onSubmit">
+
+    <p v-if="errors.length">
+      <b>Please correct the following error(s):</b> 
+      <ul>
+        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+      </ul>
+    </p>
+    <p>
+      <label for="name">Name:</label>
+      <input id="name" v-model="name" placeholder="name">
+    </p>
+
+    <p>
+      <label for="review">Review:</label>      
+      <textarea id="review" v-model="review"></textarea>
+    </p>
+
+    <p>
+      <label for="rating">Rating:</label>
+      <select id="rating" v-model.number="rating">
+        <option>5</option>
+        <option>4</option>
+        <option>3</option>
+        <option>2</option>
+        <option>1</option>
+      </select>
+    </p>
+
+    <p>Would you recommend this product?</p>
+    <label> Yes
+        <input type="radio" value="Yes" v-model="recommend"/>
+    </label>
+    <label>
+        No
+        <input type="radio" value="No" v-model="recommend"/>
+    </label>
+
+    <p>
+      <input type="submit" value="Submit">  
+    </p>    
+  </form>
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
@@ -31,10 +73,66 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      name: null,
+      review: null,
+      rating: null,
+      recommend: null,
+      errors: [],
+      todos: []
+    }
+  }, 
+  methods: {
+    onSubmit() {
+      /*let user = {
+        userId: "Test5466",
+        password: "1234",
+        nom : "Test5466",
+        prenom : "Test5466",
+        adresse :"12 Rue DU RUE ",
+        numeroDeTelephone:"415161",
+        adresseMail:"imrzer@ezvrzp.gt",
+        dateEntree:"2021-02-25T00:00:00.000+00:00",
+        dateSortie:"2021-12-25T00:00:00.000+00:00",
+        compteActive:true,
+        role:"2"
+      }*/
+      /*axios.post('http://localhost:8080/api/user/new', user)
+        .then(res => console.log(res))
+        .catch(error => console.log(error))*/
+        //axios.post('http://jsonplaceholder.typicode.com/', productReview); 
+      let userId = "Test1";
+      axios.get('http://localhost:8080/api/user/getById', userId)
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
+      if(this.name && this.review && this.rating && this.recommend) {
+        /*let productReview = {
+            name: this.name,
+            review: this.review, 
+            rating: this.rating,
+            recommend: this.recommend
+        }*/
+        /*axios.get('http://jsonplaceholder.typicode.com/posts')
+        .then(res => { 
+          this.todos = res.data
+        })
+        .catch(error => console.log(error))*/
+        //axios.post('http://jsonplaceholder.typicode.com/', productReview); 
+      }
+      
+    }/*,
+    created() { //called when the page is loaded (lifecycle hook of vuejs)
+      axios.get('http://jsonplaceholder.typicode.com/posts')
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
+    }*/
   }
 }
 </script>

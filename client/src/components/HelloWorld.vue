@@ -1,5 +1,5 @@
 <template>
-  <form class="review-form" @submit.prevent="onSubmit">
+  <form class="review-form" @submit.prevent="onSubmitUserGetAll">
 
     <p v-if="errors.length">
       <b>Please correct the following error(s):</b> 
@@ -43,6 +43,7 @@
   </form>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <p>L'utilisateur {{ prenom }} {{ nom }} a été log avec succès (id : {{ userId }})</p>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -86,32 +87,58 @@ export default {
       rating: null,
       recommend: null,
       errors: [],
-      todos: []
+      todos: [],
+
+      userId: "superman",
+      password: "123456",
+      nom: "man",
+      prenom: "super",
+      adresse: null,
+      numeroDeTelephone: null,
+      adresseMail: null,
+      dateEntree: null,
+      dateSortie: null,
+      compteActive: null,
+      role: null,
+
+
+      users: []
+      
     }
   }, 
   methods: {
-    onSubmit() {
-      /*let user = {
-        userId: "Test5466",
-        password: "1234",
-        nom : "Test5466",
-        prenom : "Test5466",
-        adresse :"12 Rue DU RUE ",
-        numeroDeTelephone:"415161",
-        adresseMail:"imrzer@ezvrzp.gt",
-        dateEntree:"2021-02-25T00:00:00.000+00:00",
-        dateSortie:"2021-12-25T00:00:00.000+00:00",
-        compteActive:true,
-        role:"2"
-      }*/
-      /*axios.post('http://localhost:8080/api/user/new', user)
+    onSubmitUserCreate() {
+      if(this.userId && this.password && this.nom && this.prenom) { //champs requis
+        //création de l'utilisateur
+        let userToCreate = {
+          userId: this.userId,
+          password: this.password,
+          nom : this.nom,
+          prenom : this.prenom,
+          adresse : (this.adresse != null) ? this.adresse : null,
+          numeroDeTelephone : (this.numeroDeTelephone != null) ? this.numeroDeTelephone : null,
+          adresseMail : (this.adresseMail != null) ? this.adresseMail : null,
+          dateEntree : (this.dateEntree != null) ? this.dateEntree : null,
+          dateSortie : (this.dateSortie != null) ? this.dateSortie : null,
+          compteActive : (this.compteActive != null) ? this.compteActive : null,
+          role : (this.role != null) ? this.role : null
+        }
+        //envoie à l'API
+        axios.post('/user/new', userToCreate)
+        .then(res => {
+          console.log(res)
+          const user = res.data
+          this.userId = user.userId
+          this.nom = user.nom
+          this.prenom = user.prenom
+        })
+        .catch(error => console.log(error))
+      }
+        //axios.post('http://jsonplaceholder.typicode.com/', productReview); 
+      //let userId = "Test1";
+      /*axios.get('http://localhost:8080/api/user/getAll')
         .then(res => console.log(res))
         .catch(error => console.log(error))*/
-        //axios.post('http://jsonplaceholder.typicode.com/', productReview); 
-      let userId = "Test1";
-      axios.get('http://localhost:8080/api/user/getById', userId)
-        .then(res => console.log(res))
-        .catch(error => console.log(error))
       if(this.name && this.review && this.rating && this.recommend) {
         /*let productReview = {
             name: this.name,
@@ -127,7 +154,43 @@ export default {
         //axios.post('http://jsonplaceholder.typicode.com/', productReview); 
       }
       
-    }/*,
+    },
+    onSubmitUserLogin() {
+      if(this.userId && this.password) { //champs requis
+        let userToLog = {
+          userId: this.userId,
+          password: this.password
+        }
+        //envoie à l'API
+        axios.post('/user/login', userToLog)
+        .then(res => {
+          console.log(res)
+          const user = res.data
+          this.userId = user.userId
+          this.nom = user.nom
+          this.prenom = user.prenom
+        })
+        .catch(error => console.log(error))
+      }
+    },
+    onSubmitUserGetAll() {
+      //envoie à l'API
+      axios.get('/user/getAll')
+      .then(res => {
+        console.log(res)
+        this.users = res.data
+        let i = 0
+        i += 4
+        console.log(i)
+        /*const user = res.data
+        this.userId = user.userId
+        this.nom = user.nom
+        this.prenom = user.prenom*/
+      })
+      .catch(error => console.log(error))
+      
+    }
+    /*,
     created() { //called when the page is loaded (lifecycle hook of vuejs)
       axios.get('http://jsonplaceholder.typicode.com/posts')
         .then(res => console.log(res))

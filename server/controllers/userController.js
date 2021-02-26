@@ -75,7 +75,7 @@ exports.delete = async  (req,res,next ) => {
     const userId = req.body.userId;
 
     var foundId = await User.find({ userId:userId });
-    if (UserId === undefined || foundId.length === 0) {
+    if (userId === undefined || foundId.length === 0) {
         const response = {
             message: "UserId not found"
         };

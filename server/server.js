@@ -16,6 +16,9 @@ const routes = require('./routes/routes.js');
 const userRoutes = require("./routes/user");
 const tacheRoutes = require("./routes/tache");
 const projetRoutes = require("./routes/projet");
+const clientRoutes = require('./routes/ClientRoutes');
+const contactRoutes = require('./routes/ContactRoutes');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +29,9 @@ app.use('/api',routes);
 app.use('/api/user',userRoutes);
 app.use('/api/projet',projetRoutes);
 app.use('/api/tache',tacheRoutes);
+app.use('/client',clientRoutes);
+app.use('/contact',contactRoutes);
+
 app.use(errorHandler);
 
 

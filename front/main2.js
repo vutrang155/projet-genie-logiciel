@@ -29,7 +29,7 @@ Vue.component("product-tabs",{
 
     </div>
 
-    <Calendar> </Calendar>
+
 
 
   </div>
@@ -112,8 +112,8 @@ Vue.component("list-tasks",{
   template: `
     <div>
       <ul>
-        <li v-for="task in tasks">
-          <div v-bind:class="task.state">
+        <li v-for="task in tasks" >
+          <div v-bind:class="task.state" >
             <b-container>
               <b-row>
                 <b-col> Projet: {{task.project}} </b-col>
@@ -301,7 +301,7 @@ Vue.component("Calendar",{
 
 
 
-//##################################################################
+
 
 
 

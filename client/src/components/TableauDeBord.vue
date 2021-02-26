@@ -23,16 +23,21 @@
     </div>
 
   </div>
+
+  <SaisieAvancement/>
 </template>
 
 <script>
 import listTasks from './TableauDeBord/listTasks.vue'
+import SaisieAvancement from './TableauDeBord/SaisieAvancement.vue'
+
 
 
 export default {
 	name: 'TableauDeBord',
   components:{
-    listTasks
+    listTasks,
+    SaisieAvancement
   },
 	data(){
     return{
@@ -64,7 +69,7 @@ export default {
   width: auto;
   text-align: left;
   padding: 10px;
-  height: 300px;
+  height: auto;
 }
 
 .color-box {

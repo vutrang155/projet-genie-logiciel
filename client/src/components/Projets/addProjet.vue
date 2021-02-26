@@ -4,7 +4,7 @@
   <p v-if="errors.length">
     <b> Please correct the following error(s):</b>
     <ul>
-      <li v-for="error in errors" :key="error">{{ error }}</li>
+      <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
     </ul>
   </p>
     <p>
@@ -102,4 +102,10 @@ export default {
     margin: 40px;
     border: 1px solid #d8d8d8;
  }
+  input {
+    width: 100%;
+    height: 25px;
+    margin-bottom: 20px;
+ }
+
 </style>

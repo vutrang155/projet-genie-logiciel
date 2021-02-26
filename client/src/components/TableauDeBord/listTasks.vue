@@ -4,13 +4,13 @@
 	<ul>
     <li v-for="task in tasks" :key="task.ID" >
       <div v-bind:class="task.state" >
-        <b-container>
-          <b-row>
-            <b-col> Projet: {{task.project}} </b-col>
-            <b-col> Responsable: {{task.responsable}} </b-col>
-            <b-col> Avancement: {{task.avancement}} </b-col>
-          </b-row>
-        </b-container>
+        <div class="rowlT">
+
+          <div class="collT"> Projet: {{task.project}} </div>
+          <div class="collT"> Responsable: {{task.responsable}} </div>
+          <div class="collT"> Avancement: {{task.avancement}} </div>
+
+        </div>
 
       </div>
     </li>
@@ -52,5 +52,12 @@ export default {
    margin: 40px;
    border: 1px solid #d8d8d8;
  }
+.rowlT{
+  display: flex;
+}
+.collT{
+  width:auto;
+  margin-right: 30px;
+}
 
 </style>

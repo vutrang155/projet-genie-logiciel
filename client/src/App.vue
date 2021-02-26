@@ -20,13 +20,17 @@
     <TableauDeBord/>
   </div>
   <div v-show="selectedTab ==='Projets'">
-    <p>test projets</p>
 
     <Projets/>
+  </div >
+  <div v-show="selectedTab ==='Collaborateurs'">
+    <p>Collabo</p>
+    <Collaborateurs/>
   </div >
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
   <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
+  
   </div>
 </template>
 
@@ -34,13 +38,15 @@
 //import HelloWorld from './components/HelloWorld.vue'
 import TableauDeBord from './components/TableauDeBord.vue'
 import Projets from './components/Projets.vue'
+import Collaborateurs from './components/Collaborateurs.vue'
 
 export default {
   name: 'App',
   components: {
     //HelloWorld,
     TableauDeBord,
-    Projets
+    Projets,
+    Collaborateurs
   },
   data(){
     return{

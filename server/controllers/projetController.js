@@ -51,7 +51,7 @@ exports.delete = async (req, res, next) => {
         // if not :
         // if tache found
         const response = {
-            message: "Suppression Tache avec succès",
+            message: "Suppression Projet avec succès",
             id: projet._id
         };
 

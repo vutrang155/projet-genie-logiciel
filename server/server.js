@@ -25,7 +25,7 @@ app.use('/api',routes);
 
 app.use('/api/user',userRoutes);
 app.use('/api/projet',projetRoutes);
-app.use('/tache',tacheRoutes); // TODO 
+app.use('/api/tache',tacheRoutes);
 app.use(errorHandler);
 
 

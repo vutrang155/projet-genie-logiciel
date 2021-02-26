@@ -14,7 +14,6 @@ connectDB();
 
 const routes = require('./routes/routes.js');
 const userRoutes = require("./routes/user");
-
 const tacheRoutes = require("./routes/tache");
 const projetRoutes = require("./routes/projet");
 
@@ -26,7 +25,7 @@ app.use('/api',routes);
 
 app.use('/api/user',userRoutes);
 app.use('/api/projet',projetRoutes);
-app.use('/api/tache',tacheRoutes); // TODO 
+app.use('/tache',tacheRoutes); // TODO 
 app.use(errorHandler);
 
 

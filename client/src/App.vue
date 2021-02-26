@@ -26,19 +26,19 @@
   </div >
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
 import TableauDeBord from './components/TableauDeBord.vue'
 import Projets from './components/Projets.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    //HelloWorld,
     TableauDeBord,
     Projets
   },

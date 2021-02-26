@@ -1,14 +1,24 @@
 <template>
-  <ul>
-		<li>
-			<p>test Projets</p>
-		</li>
-	</ul>
+  
+	<p>test Projets</p>
+	<addProjet/>
+	<listProjets/>
+	<addTask/>
+
 </template>
 
 <script>
+import addProjet from './Projets/addProjet.vue'
+import addTask from './Projets/addTask.vue'
+import listProjets from './Projets/listProjets.vue'
+
 export default {
-  name:'Projets'
+  name:'Projets',
+	components:{
+		addProjet,
+		addTask,
+		listProjets
+	}
 }
 </script>
 

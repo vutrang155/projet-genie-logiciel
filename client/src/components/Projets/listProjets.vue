@@ -1,4 +1,5 @@
 <template>
+<p> listProjets </p>
 	<ul>
 		<li>
 

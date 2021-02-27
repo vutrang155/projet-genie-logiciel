@@ -1,5 +1,5 @@
 <template>
-  <form class="review-form" @submit.prevent="onSubmitUserGetAll">
+  <form class="review-form" @submit.prevent="onSubmitUserUpdate">
 
     <p v-if="errors.length">
       <b>Please correct the following error(s):</b> 
@@ -177,18 +177,61 @@ export default {
       //envoie à l'API
       axios.get('/user/getAll')
       .then(res => {
-        console.log(res)
+        //console.log(res)
         this.users = res.data
-        let i = 0
-        i += 4
-        console.log(i)
-        /*const user = res.data
-        this.userId = user.userId
-        this.nom = user.nom
-        this.prenom = user.prenom*/
+        for(let key in this.users) {
+          console.log(this.users[key])
+        }
       })
       .catch(error => console.log(error))
-      
+    },
+    onSubmitUserGetByUserId() {
+      axios.get('/user/getByUserId/' + this.userId)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => console.log(error))
+    },
+    onSubmitUserGetByType() {
+      let type = 2
+      axios.get('/user/getByType/' + type)
+      .then(res => {
+        this.users = res.data
+        for(let key in this.users) {
+          console.log(this.users[key])
+        }
+      })
+      .catch(error => console.log(error))
+    },
+    onSubmitUserDelete() {
+      let userId = "Allezlefoot91"
+      axios.delete('/user/delete/' + userId)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => console.log(error))
+    },
+    onSubmitUserUpdate() {
+      //les deux manières de faire fonctionnent
+      /*let modif = {
+        adresse : "14 rue du test d'API"
+      }
+      let userToModify = {
+          userId: this.userId,
+          modif
+      }*/
+      let userToModify = {
+          userId: this.userId,
+          modif : {
+            adresse : "158 Avenue du test d'API"
+          }
+      }
+      //envoie à l'API
+      axios.put('user/update', userToModify)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(error => console.log(error))
     }
     /*,
     created() { //called when the page is loaded (lifecycle hook of vuejs)

@@ -32,8 +32,25 @@
       <textarea id="auto" v-model="Prenom"></textarea>
     </p>
 
-	</form>
-	<p>coucou</p>
+    <p>
+      <label for="start">Date d'entrée':</label>
+
+      <input type="date" id="start" name="task-start" :style="{width:'auto'}"
+       value="2021-02-22"
+       min="2021-01-01" max="2022-12-31">
+    </p>
+
+    <p>
+			<label for="ID">Numéro d'identifiant:</label>
+			<input type="number" id="ID" name="ID" :style="{width:'auto'}"
+       min="1" max="3" >
+		</p>
+
+	
+  
+  
+  </form>
+
 </template>
 
 <script>

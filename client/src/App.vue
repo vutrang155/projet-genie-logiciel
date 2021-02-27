@@ -30,6 +30,11 @@
     <p>Collabo</p>
     <Collaborateurs/>
   </div >
+
+  <div v-show="selectedTab ==='Notifications'">
+    <p>Collabo</p>
+    <Collaborateurs/>
+  </div >
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
   <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->

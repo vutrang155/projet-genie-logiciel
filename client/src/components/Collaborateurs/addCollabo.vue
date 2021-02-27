@@ -33,7 +33,7 @@
     </p>
 
     <p>
-      <label for="start">Date d'entrée':</label>
+      <label for="start">Date d'entrée:</label>
 
       <input type="date" id="start" name="task-start" :style="{width:'auto'}"
        value="2021-02-22"

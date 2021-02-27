@@ -23,6 +23,9 @@
 
     <Projets/>
   </div >
+  <div v-show="selectedTab ==='Clients'">
+    <Client/>
+  </div >
   <div v-show="selectedTab ==='Collaborateurs'">
     <p>Collabo</p>
     <Collaborateurs/>
@@ -39,6 +42,7 @@
 import TableauDeBord from './components/TableauDeBord.vue'
 import Projets from './components/Projets.vue'
 import Collaborateurs from './components/Collaborateurs.vue'
+import Client from './components/Client.vue'
 
 export default {
   name: 'App',
@@ -46,7 +50,8 @@ export default {
     //HelloWorld,
     TableauDeBord,
     Projets,
-    Collaborateurs
+    Collaborateurs,
+    Client
   },
   data(){
     return{

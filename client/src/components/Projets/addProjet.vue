@@ -8,12 +8,12 @@
     </ul>
   </p>
     <p>
-      Create new Project
+      Creation d'un nouveau Projet
     </p>
 
     <p>
-      <label for="name">Name:</label>
-      <input id="name" v-model="name" placeholder="name">
+      <label for="name" >Nom du Projet:</label>
+      <input id="name" v-model="name" placeholder="nom" :style="{width:'auto'}">
     </p>
 
     <p>
@@ -30,16 +30,31 @@
     <p>
       <label for="state">Etat:</label>
       <select v-model="state">
-        <option>ToDo</option>
-        <option>OnGoing</option>
-        <option>Done</option>
+        <option>A faire</option>
+        <option>En cours</option>
+        <option>Terminé</option>
       </select>
     </p>
 
+    <p>
+      <label for="start">Date de début:</label>
+
+      <input type="date" id="start" name="task-start" :style="{width:'auto'}"
+       value="2021-02-22"
+       min="2021-01-01" max="2022-12-31">
+    </p>
+
+    <p>
+      <label for="end">Date de fin:</label>
+
+      <input type="date" id="end" name="task-end" :style="{width:'auto'}"
+       value="2021-02-22"
+       min="2021-01-01" max="2022-12-31">
+    </p>
 
 
     <p>
-      <input type="submit" value="Submit">
+      <input type="submit" value="Submit" :style="{width:'auto'}">
     </p>
 
   </form>  
@@ -83,6 +98,7 @@ export default {
 
       }
       else{
+        this.errors=[]
         if(!this.nom) this.errors.push("Name required")
         if(!this.responsable) this.errors.push("Responsable required")
         if(!this.state) this.errors.push("State required")

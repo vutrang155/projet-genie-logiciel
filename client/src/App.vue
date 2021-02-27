@@ -49,6 +49,9 @@ import Projets from './components/Projets.vue'
 import Collaborateurs from './components/Collaborateurs.vue'
 import Client from './components/Client.vue'
 
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:8080/api/'
+
 export default {
   name: 'App',
   components: {

@@ -8,19 +8,19 @@ const Contact= require("../models/Contact");
 exports.create = async (req, res, next) => {
     console.log("Create project");
     try {
-        let p = new Projet();
-        p.nom = req.body.nom;
-        p.responsableId = req.body.responsableId;
-        p.clientId = req.body.clientId;
-        p.contactId = req.body.contactId;
-        p.etat = req.body.etat;
-        p.dateDebutPrevisionnelle = req.body.dateDebutPrevisionnelle;
-        p.dateFinPrevisionnelle = req.body.dateFinPrevisionnelle;
-        p.dateDebutReelle = req.body.dateDebutReelle;
-        p.dateFinReelle = req.body.dateFinReelle;
-        p = await p.save();
+        let projet = new Projet();
+        projet.nom = req.body.nom;
+        projet.responsableId = req.body.responsableId;
+        projet.clientId = req.body.clientId;
+        projet.contactId = req.body.contactId;
+        projet.etat = req.body.etat;
+        projet.dateDebutPrevisionnelle = req.body.dateDebutPrevisionnelle;
+        projet.dateFinPrevisionnelle = req.body.dateFinPrevisionnelle;
+        projet.dateDebutReelle = req.body.dateDebutReelle;
+        projet.dateFinReelle = req.body.dateFinReelle;
+        projet = await projet.save();
 
-        return res.send({p});
+        return res.send({projet});
 
     }catch(err) {
         console.log(err)

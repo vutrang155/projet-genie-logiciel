@@ -16,8 +16,8 @@ const routes = require('./routes/routes.js');
 const userRoutes = require("./routes/user");
 const tacheRoutes = require("./routes/tache");
 const projetRoutes = require("./routes/projet");
-const clientRoutes = require('./routes/ClientRoutes');
-const contactRoutes = require('./routes/ContactRoutes');
+const clientRoutes = require('./routes/client');
+const contactRoutes = require('./routes/contact');
 
 
 app.use(bodyParser.json());

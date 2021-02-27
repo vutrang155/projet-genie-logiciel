@@ -15,17 +15,56 @@
         <p class="userName">Jean PAUL</p>
 
     </div>
+
+  <div v-show="selectedTab ==='Tableau de bord'">
+
+    <TableauDeBord/>
+  </div>
+
+  <div v-show="selectedTab ==='Projets'">
+
+    <Projets/>
+  </div >
+
+  <div v-show="selectedTab ==='Clients'">
+    <Client/>
+  </div >
+
+  <div v-show="selectedTab ==='Collaborateurs'">
+    <p>Collabo</p>
+    <Collaborateurs/>
+  </div >
+
+  <div v-show="selectedTab ==='Notifications'">
+    <p>Collabo</p>
+    <Contact/>
+  </div >
+  
+  <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
+  
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
+import TableauDeBord from './components/TableauDeBord.vue'
+import Projets from './components/Projets.vue'
+import Collaborateurs from './components/Collaborateurs.vue'
+import Client from './components/Client.vue'
+
+import Contact from './components/Contact.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    //HelloWorld,
+    TableauDeBord,
+    Projets,
+    Collaborateurs,
+    Client,
+    Contact
   },
   data(){
     return{
@@ -42,9 +81,11 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   
+}
+.center{
+  text-align: center;
 }
  .nav-bar {
    background: linear-gradient(-90deg, #84CF6A, #16C0B0);

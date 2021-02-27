@@ -29,7 +29,7 @@ Vue.component("product-tabs",{
 
     </div>
 
-
+    <Calendar> </Calendar>
 
 
   </div>

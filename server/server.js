@@ -13,9 +13,12 @@ const connectDB = require('./config/database');
 connectDB();
 
 const routes = require('./routes/routes.js');
-const authRoutes = require("./routes/login");
-
+const userRoutes = require("./routes/user");
 const tacheRoutes = require("./routes/tache");
+const projetRoutes = require("./routes/projet");
+const clientRoutes = require('./routes/client');
+const contactRoutes = require('./routes/contact');
+
 
 
 
@@ -24,14 +27,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors(corsOptions));
 app.use('/api',routes);
-app.use('/auth',authRoutes);
 
-app.use('/tache',tacheRoutes);
+app.use('/api/user',userRoutes);
+app.use('/api/projet',projetRoutes);
+app.use('/api/tache',tacheRoutes);
+app.use('/api/client',clientRoutes);
+app.use('/api/contact',contactRoutes);
 
 
 app.use(errorHandler);
-
-
 
 
 // set port, listen for requests

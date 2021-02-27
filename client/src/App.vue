@@ -38,7 +38,7 @@
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
   <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  
+
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
       tabs: ["Tableau de bord","Projets","Clients","Collaborateurs","Notifications"],
       selectedTab: "Tableau de bord"
     }
-  
+
   }
 }
 </script>
@@ -74,7 +74,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  
+
 }
 .center{
   text-align: center;

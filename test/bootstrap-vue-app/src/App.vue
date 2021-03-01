@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="nav-bar">
       <span class="tab"
           :class="{ activeTab: selectedTab ===tab}"
@@ -9,14 +10,9 @@
 
 
 
-          <div>
-            <b-container>
-    <p>Hello, Bootstrap-Vue</p>
-    <b-btn variant="primary">Click</b-btn>
-  </b-container>
-          </div>
+          
         <p class="userName">Jean PAUL</p>
-        <b-btn variant="primary">Click</b-btn>
+        
 
     </div>
   <div v-show="selectedTab ==='Tableau de bord'">
@@ -43,6 +39,13 @@
   <img alt="Vue logo" src="./assets/logo.png">
   <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
 
+  </div>
+  <div>
+    <b-container>
+    <p>Hello, Bootstrap-Vue</p>
+    <b-btn variant="primary">Click</b-btn>
+    </b-container>
+  </div>
   </div>
 </template>
 

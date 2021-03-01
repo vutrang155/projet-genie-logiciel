@@ -121,14 +121,14 @@ exports.update = async (req, res, next) => {
         })
 };
 exports.getAll = async (req, res, next) => {
-    const ret = await Tache.find({});
+    const ret = await Tache.find({}).populate(responsableId).populate(projetId);
     return res.send(ret);
 };
 exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
 
     const tacheId = req.params.tacheId;
-    var foundId = await Tache.find({ _id:tacheId }); 
+    var foundId = await Tache.find({ _id:tacheId });
     if (tacheId == undefined || foundId.length == 0) {
         const response = {
             message: "tacheId not found"
@@ -136,7 +136,7 @@ exports.getById = async (req, res, next) => {
         return res.status(500).send(response);
     }
 
-    Tache.findById(tacheId, (err, tache) => {
+    Tache.findById(tacheId).populate(responsableId).populate(projetId).exec( (err, tache) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(tache);
     });
@@ -153,7 +153,7 @@ exports.getByUser = async (req, res, next) => {
         return res.status(500).send(response);
     }
 
-    Tache.find({responsableId : _userId}, (err, tache) => {
+    Tache.find({responsableId : _userId}).populate(responsableId).populate(projetId).exec( (err, tache) => {
         if (err) return res.status(500).send(err)
         return res.status(200).send(tache);
     });
@@ -170,7 +170,7 @@ exports.getByProjet = async (req, res, next) => {
         return res.status(500).send(response);
     }
 
-    Tache.find({projetId : _projetId}, (err, tache) => {
+    Tache.find({projetId : _projetId}).populate(responsableId).populate(projetId).exec( (err, tache) => {
         if (err) return res.status(500).send(err)
         return res.status(200).send(tache);
     });

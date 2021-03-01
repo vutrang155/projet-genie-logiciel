@@ -8,15 +8,15 @@ const projet = mongoose.Schema({
     },
     responsableId:{
         type: String,
-        ref: 'User'
+        ref: 'user'
     },
     clientId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'client'
+        ref: 'Client'
     },
     contactId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'contact'
+        ref: 'Contact'
     },
     etat:{
         type: Number,

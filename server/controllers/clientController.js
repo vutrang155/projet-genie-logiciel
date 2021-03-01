@@ -1,34 +1,18 @@
 
 const Client = require("../models/Client");
-
+const Error = require("../controllers/errorController");
 const Contact = require("../models/Contact");
 exports.create = async (req, res, next) => {
 	console.log('Create');
 	try {
 		console.log(req.body);
-		try {
-			let client = new Client();
-			client.nom = req.body.nom;
-			client.domaine = req.body.domaine;
-			client.adresse = req.body.adresse;
-			console.log(client.nom);
-			let existe = await Client.findOne({ nom: req.body.nom }).exec();
-			client = await client.save();
-			if (!existe) { }
-			else {
-				const error = new Error("Client déjà existant");
-				error.statusCode = 400;
-				throw error;
-			}
-			return res.send({ client });
-		}
-		catch (err) {
-			console.log(err);
-			const response = {
-				message: "Client déjà existant"
-			};
-			return res.status(500).send(response);
-		}
+		let client = new Client();
+		client.nom = req.body.nom;
+		client.domaine = req.body.domaine;
+		client.adresse = req.body.adresse;
+		Error.checkClientNom(client.nom);
+		client = await client.save();
+		return res.send({ client });
 	} catch (err) { next(err); }
 }
 exports.getbyId = async (req, res, next) => {
@@ -36,20 +20,8 @@ exports.getbyId = async (req, res, next) => {
 	console.log('Get Client by ID');
 	try {
 		let id = req.params.id;
-
-		console.log("ID:");
-		console.log(id);
-
-		let clientId = await Client.findOne({ _id: id }).exec();
-		var foundId = await Client.find({ _id: clientId });
-		if (clientId === undefined || foundId.length === 0) {
-			const response = {
-				message: "clientId not found"
-			};
-			return res.status(500).send(response);
-		}
-
-		Client.findById(clientId, (err, client) => {
+		Error.checkClient(id);
+		Client.findById(id, (err, client) => {
 			if (err) return res.status(500).send(err);
 			return res.status(200).send(client);
 		});
@@ -68,6 +40,8 @@ exports.delete = async (req, res, next) => {
 	console.log("Delete Client by id");
 	try {
 		const clientId = req.params.clientId;
+		Error.checkClient(clientId);
+		/*
 		var foundId = await Client.find({ _id: clientId });
 		if (clientId === undefined || foundId.length === 0) {
 			const response = {
@@ -75,6 +49,7 @@ exports.delete = async (req, res, next) => {
 			};
 			return res.status(500).send(response);
 		}
+		*/
 		Client.findByIdAndRemove(clientId, (err, client) => {
 			// Error if detected :
 			if (err) return res.status(500).send(err);
@@ -96,13 +71,7 @@ exports.update = async (req, res, next) => {
 		const clientId = req.body.clientId;
 		const modif = req.body.modif;
 
-		var foundId = await Client.find({ _id: clientId });
-		if (clientId === undefined || foundId.length === 0) {
-			const response = {
-				message: "clientId not found"
-			};
-			return res.status(500).send(response);
-		}
+		Error.checkClient(clientId);
 
 		Client.findByIdAndUpdate(clientId, modif,
 			// Ask mongoose to return the updated version of doc instead of pre-updated one

@@ -55,6 +55,16 @@ exports.checkClient = async(id)=> {
     console.log("Client existe")
 }
 
+exports.checkClientNom = async(nom)=> {
+    var foundId =await Client.find({ nom:id  });
+    if (foundId === undefined || nom.length  === 0) {
+        const error = new Error("Client nom not found");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+    console.log("Client existe")
+}
+
 exports.checkContact = async(id)=> {
     var foundId =await Contact.find({ _id:id  });
     if (foundId === undefined || id.length  === 0) {

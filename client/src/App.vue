@@ -37,7 +37,7 @@
 
   <div v-show="selectedTab ==='Notifications'">
     <p>Collabo</p>
-    <Contact/>
+    <Collaborateurs/>
   </div >
   
   <div class="center" >
@@ -54,7 +54,8 @@ import Projets from './components/Projets.vue'
 import Collaborateurs from './components/Collaborateurs.vue'
 import Client from './components/Client.vue'
 
-import Contact from './components/Contact.vue'
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:8080/api/'
 
 export default {
   name: 'App',
@@ -63,8 +64,7 @@ export default {
     TableauDeBord,
     Projets,
     Collaborateurs,
-    Client,
-    Contact
+    Client
   },
   data(){
     return{

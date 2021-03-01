@@ -6,7 +6,7 @@
 			<div class="col1Projet">
 
 
-					{{projet.nom}}
+					{{projet.nom}} {{index}}
 
 
 			</div>
@@ -20,20 +20,23 @@
 				<p class="col2Projet">
 					Contact Id: {{projet.contactId}}
 				</p>
+				<!--
 				<p>
 					<input type="submit" value="Modifier" :style="{width:'auto'}">
-				</p>
-			</div>
+				</p>-->
+				<button v-on:click="Modify">Modifier</button>
 
-			<!--<ModifyProjet :id={{projet.id}};>-->
+				
+			</div>
+			<div id="myDIV">
+				This is my DIV element.
+			
+			
+			<ModifyProjet :id="projet.id" />
+			</div>
 
 		</div>
 	</div>
-
-
-
-
-	
 
 	<div class="row">
     <div class="color-box" :style="{ backgroundColor:'#00aaff'}"></div>
@@ -74,9 +77,18 @@ export default {
 	},
 	created(){
 		this.getAllProjets()
+
 	},
 	methods:{
-		
+		Modify(){
+			var x = document.getElementById("myDIV");
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			} 
+			else {
+				x.style.display = "none";
+			}
+		},
 		getAllProjets() {
       //envoie à l'API
       axios.get('/projet/getAll')
@@ -97,6 +109,9 @@ export default {
 
 		}*/
 	}
+
+		
+
 	
 	
 }
@@ -104,6 +119,13 @@ export default {
 	
 
 <style>
+#myDIV {
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+  background-color: lightblue;
+  margin-top: 20px;
+}
 .afaire{
 	border: 1px solid #000000;
 	margin: 10px;

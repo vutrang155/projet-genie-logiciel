@@ -125,7 +125,13 @@ Vue.component("list-tasks",{
           </div>
         </li>
       </ul>
+      <button v-on:click="Modify">Modifier</button>
 
+      <div id="myDIV">
+				This is my DIV element.
+			</div>
+
+      <p> pourquoi</p>
 
     </div>
   `,
@@ -134,6 +140,17 @@ Vue.component("list-tasks",{
       test:0
 
     }
+  },
+  methods:{
+    Modify(){
+			var x = document.getElementById("myDIV");
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			}
+			else {
+				x.style.display = "none";
+			}
+		}
   }
 
 })

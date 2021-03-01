@@ -1,4 +1,6 @@
 <template>
+	<p>does it ? </p>
+	<!--
 	<form class="review-form" @submit.prevent="addProjet">
 
   <p v-if="errors.length">
@@ -68,7 +70,7 @@
       <input type="submit" value="Enregistrer" :style="{width:'auto'}">
     </p>
 
-  </form>  
+  </form>  -->
 </template>
 
 <script>

@@ -81,6 +81,10 @@ export default {
       responsable:null,
       client:null,
       Etat:null,
+      dateFinReelle:null,
+			dateDebutReelle:null,
+			dateDebutPrevisionnelle:null,
+			dateFinPrevisionnelle:null,
 
       responsables:[],
       clients:[],

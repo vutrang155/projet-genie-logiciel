@@ -7,16 +7,16 @@ const projet = mongoose.Schema({
         unique: 1,
     },
     responsableId:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     clientId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'client'
+        ref: 'Client'
     },
     contactId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'contact'
+        ref: 'Contact'
     },
     etat:{
         type: Number,
@@ -35,7 +35,6 @@ const projet = mongoose.Schema({
     dateFinReelle:{
         type:Date,
     },
-
 });
 projet.pre('save', function(next) {
     const self = this;
@@ -46,4 +45,6 @@ projet.pre('save', function(next) {
     });
     next();
 });
-module.exports = Project = mongoose.model('Project',projet)
+
+
+module.exports = Project = mongoose.model('Projet',projet)

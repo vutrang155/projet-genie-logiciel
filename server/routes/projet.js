@@ -4,11 +4,11 @@ const projetController = require("../controllers/projetController");
 
 router.post("/create", projetController.create);
 
-router.delete("/delete", projetController.delete);
-router.post("/update", projetController.update);
+router.delete("/delete/:projetId", projetController.delete);
+router.put("/update", projetController.update);
 router.get("/getAll", projetController.getAll);
-router.post("/getById", projetController.getById);
-//router.post("/getByUser", projetController.getByResponsable);
-
+router.get("/getById/:projetId", projetController.getById);
+router.get("/getByUser/:userId", projetController.getByUser);
+router.get("/getByResponsable/:responsableId",projetController.getByResponsable);
 
 module.exports = router;

@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs");
 
 const user = mongoose.Schema({
-    userId: { type: String,
-            required: true },
+    nomUtilisateur: {
+        type: String,
+        unique:true,
+        required: true },
     password: { type: String,
-                required: true,
-                select: false },
+        required: true,
+        select: false },
     nom:{
         type: String,
         required: true,
-
     },
     prenom:{
         type: String,
         required: true,
-
     },
     adresse:{
         type: String,
@@ -69,4 +69,4 @@ user.methods.toJSON = function() {
     return obj;
 }
 
-module.exports = User = mongoose.model('user',user)
+module.exports = User = mongoose.model('User',user)

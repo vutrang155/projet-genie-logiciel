@@ -80,14 +80,14 @@ exports.update = async (req, res, next) => {
         })
 };
 exports.getAll = async (req, res, next) => {
-    const ret = await Projet.find({});
+    const ret = await Projet.find({}).populate('clientId').populate('contactId').populate('responsableId');
     return res.send(ret);
 };
 exports.getById = async (req, res, next) => {
     console.log("Get projet by ID");
 
     const projetId = req.params.projetId;
-    var foundId = await Projet.find({ _id:projetId });
+    var foundId = await Projet.find({ _id:projetId }).populate('clientId').populate('contactId').populate('responsableId');
     if (projetId === undefined || foundId.length === 0) {
         const response = {
             message: "projetId not found"
@@ -95,7 +95,7 @@ exports.getById = async (req, res, next) => {
         return res.status(500).send(response);
     }
 
-    Projet.findById(projetId, (err, projet) => {
+    Projet.findById(projetId).populate('clientId').populate('contactId').populate('responsableId').exec( (err, projet) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(projet);
     });
@@ -103,7 +103,7 @@ exports.getById = async (req, res, next) => {
 exports.getByUser = async (req, res, next) => {
     console.log("Get Project by User");
     const _userId = req.params.userId;
-    var foundId = await User.find({ userId: _userId });
+    var foundId = await User.find({ userId: _userId }).populate('clientId').populate('contactId').populate('responsableId');
     console.log(_userId);
     if (_userId === undefined || foundId.length === 0) {
         const response = {
@@ -155,7 +155,7 @@ exports.getByResponsable = async (req,res,next) =>{
         };
         return res.status(500).send(response);
     }
-    Projet.find({responsableId :responsableId }, (err, projet) => {
+    Projet.find({responsableId :responsableId }).populate('clientId').populate('contactId').populate('responsableId').exec( (err, projet) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(projet);
     });

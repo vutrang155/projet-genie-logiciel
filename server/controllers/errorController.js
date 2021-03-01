@@ -44,3 +44,23 @@ exports.checkProjet = async(id)=> {
     }
     console.log("Projet existe")
 }
+
+exports.checkClient = async(id)=> {
+    var foundId =await Client.find({ _id:id  });
+    if (foundId === undefined || id.length  === 0) {
+        const error = new Error("Client id not found");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+    console.log("Client existe")
+}
+
+exports.checkContact = async(id)=> {
+    var foundId =await Contact.find({ _id:id  });
+    if (foundId === undefined || id.length  === 0) {
+        const error = new Error("Client id not found");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+    console.log("Client existe")
+}

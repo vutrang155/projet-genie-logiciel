@@ -2,12 +2,18 @@
 
 	<form class = "modifClient-form" @submit.prevent = "modifClient" >
 
+		<p v-if="errors.length">
+			<b> Please correct the following error(s):</b>
+			<ul>
+				<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+			</ul>
+		</p>
 
 		<p> Modification client </p>
 
 		<p>
 			<label for="name" >Nom Client:</label> 
-			<input id="nom" v-model="name" placeholder="nom" :style="{width:'auto'}">
+			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
 		</p>
 
 
@@ -34,44 +40,84 @@
 
 
 <script>
-	
+
+import axios from 'axios';
+
 	export default {
-		name: "modifClient",
+		name: 'modifClient',
+		props:['idd'],
 		data(){
 			return{
-				id: null,
+
+				id: "603b711fdc9e9367e08e3b97",
 
 				nom: null,
 				domaine: null,
 				adresse: null,
+				cpt: 0,
 
-				errors: []
+				errors: [],
+				clients: []
 			}
 		},
+		created(){
+			this.getClients()
+		},
 		methods:{
-			modifClient(){
+			getClients(){
+				axios.get('client/getAll')
+				.then(res => {
+				this.clients = res.data
+				for (let key in this.clients){
+					console.log(this.clients[key])
+				}
+				})
 
-				if(this.nom){
+			},
+
+			modifClient(){
+				if (this.nom){
 					let client = {
-						id: null,
+						clientId: this.idd._id,
+						modif:{
 						nom: this.nom,
 						domaine: this.domaine,
 						adresse: this.adresse
+						}
 					}
 
-					this.$emit("Client-updated",client)
-					this.id = null,
-					this.nom = null,
-					this.domaine = null,
-					this.adresse = null
-				}
-				else{
 					this.errors = []
-					if(!this.nom) this.errors.push("Nom requis")
+					for (let key in this.clients){
+						if(this.idd._id == this.clients[key]._id){
+							console.log(this.id)
+							console.log(this.clients[key]._id)
+							break;
+						}
+						this.cpt = this.cpt + 1
+					}
+					console.log(this.cpt)
+					console.log(this.clients.length)
+					if (this.cpt == this.clients.length){
+						this.errors.push("Client introuvable")
+						}
+						else if(this.errors.length ==0){					
+						axios.put('/client/update',client)
+						.then(res => {
+						console.log(res)
+						console.log(this.idd)
+						})
+						.catch (error => console.log(error))
 
+						this.id = null,
+						this.nom = null,
+						this.domaine = null,
+						this.adresse = null
+					}
+
+				}else{
+					this.errors = []
+					if(!this.nom)this.errors.push("Nom requis")
 				}
-
-
 
 			}
 

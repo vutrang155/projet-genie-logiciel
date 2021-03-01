@@ -7,7 +7,7 @@
 
 		<p>
 			<label for="name" >Nom Client:</label> 
-			<input id="nom" v-model="name" placeholder="nom" :style="{width:'auto'}">
+			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
 		</p>
 
 		<p>
@@ -26,14 +26,6 @@
 		</p>
 
 		<p>
-			<label for="clientId">Client associé:</label>
-			<select v-model="clientId">
-				<option>Rold</option>
-			</select>
-
-		</p>
-
-		<p>
 			<input type="submit" value="Enregister" :style="{width:'auto'}">
 		</p>
 
@@ -43,24 +35,41 @@
 
 
 <script>
-
+import axios from 'axios';
 export default{
+	name: 'addContact',
+	props:['idclient'],
 	
 	data(){
 		return{
+				
 				id: null,
 				idc: 0,
 				nom: null,
 				prenom: null,
 				fonction: null,
 				adresse: null,
-				clientId:null,
-
+				
 				errors: []
 		}
 	},
+	created(){
+		this.getContact()
+	},
 	methods:{
-		addContact(){
+		// GET CONTACT BY CLIENT ID
+		getContact(){
+			axios.get('/contact/getbyClient/'+this.idclient)
+			.then(res => {
+			this.contacts = res.data
+			for (let key in this.contacts){
+				console.log(this.contacts[key])
+				console.log(this.idclient)
+			}
+			})		
+		},
+		// POST CREATE CONTACT
+		addContact(){ 
 			if(this.nom && this.prenom){
 				let contact = {
 					id: this.idc,
@@ -69,17 +78,30 @@ export default{
 					prenom: this.prenom,
 					fonction: this.fonction,
 					adresse: this.adresse,
-					clientId: this.clientId
+					clientId: this.idclient
 				}
+				axios.post('/contact/create',contact)
+				.then(res => {
+				console.log(res)
+				const contact = res.data
+				this.nom = contact.nom
+				this.prenom = contact.prenom
+				this.fonction = contact.fonction
+				this.adresse = contact.adresse
+
+				})
+				.catch(error => console.log(error))
+
 				this.$emit("Contact-added",contact)
-				this.id = null
-				this.idc+=1
-				this.nom = null
+				this.id = null,
+				this.idc+=1,
+				this.nom = null,
 				this.prenom = null,
 				this.fonction = null,
-				this.adresse = null,
-				this.clientId = null
-			}else{
+				this.adresse = null
+
+				}
+				else{
 				this.errors = []
 				if(!this.nom) this.errors.push("Name required")
 				if(!this.prenom) this.errors.push("Firstname required")

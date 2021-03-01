@@ -133,6 +133,18 @@ exports.getByUser = async (req, res, next) => {
             '$project': {
                 't': 0
             }
+        },
+        {
+            '$lookup': {
+                'from': 'clients',
+                'localField': '_id',
+                'foreignField': 'clientId',
+                'as': 'client'
+            }
+        }, {
+            '$unwind': {
+                'path': '$client'
+            }
         }
     ]).exec((err, taches) => {
         // Error if detected :

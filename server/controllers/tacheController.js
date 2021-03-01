@@ -6,24 +6,23 @@ const Tache = require("../models/Tache");
 const Projet = require("../models/Projet");
 
 exports.create = async (req, res, next) => {
-    let convertDate = function(strDate) {
+    /**let convertDate = function(strDate) {
         var dateParts = strDate.split("/");
-        var date = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+        var date = new Date(+dateParts[0], dateParts[1] - 1, +dateParts[2]);
         return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
-    }
+    }**/
     const nom = req.body.nom;
     const responsableId = req.body.responsableId;
     const projetId = mongoose.Types.ObjectId(req.body.projetId);
     const etat = req.body.etat;
     const description = req.body.description;
-    const dateDebutPrevisionnelle = convertDate(req.body.dateDebutPrevisionnelle) ;
-    const dateFinPrevisionnelle = convertDate(req.body.dateFinPrevisionnelle);
+    const dateDebutPrevisionnelle = req.body.dateDebutPrevisionnelle;
+    const dateFinPrevisionnelle = req.body.dateFinPrevisionnelle;
     const chargeAssociee = req.body.chargeAssociee;
-    const dateDebutReelle = convertDate(req.body.dateDebutReelle);
-    const dateFinReelle = convertDate(req.body.dateFinReelle);
+    const dateDebutReelle = req.body.dateDebutReelle;
+    const dateFinReelle = req.body.dateFinReelle;
     const chargeConsommee = req.body.chargeConsommee;
     const avancement = req.body.avancement;
-
     // if responableId not found
     const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
     if (!foundResponsable) {

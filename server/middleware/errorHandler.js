@@ -3,6 +3,7 @@ module.exports = (error, req, res, next) => {
     const message = error.message;
     const data = error.data;
     const validation = error.validation;
+    console.log(error)
     res.status(status).json({
         message,
         data,

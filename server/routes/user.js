@@ -8,7 +8,7 @@ router.post("/new",  userController.register);
 router.get("/getAll",userController.getall);
 router.delete("/delete/:userId", userController.delete);
 router.put("/update", userController.update);
-router.get("/getByUserId/:userId", userController.getByUserId);
+router.get("/getByNomUtilisateur/:nomUtilisateur", userController.getByNomUtilisateur);
 router.get("/getById/:id", userController.getById);
 router.get("/getByType/:role", userController.getByType);
 module.exports = router;

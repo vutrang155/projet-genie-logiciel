@@ -1,14 +1,14 @@
 const jwt =require('jsonwebtoken');
 const config = require("../config/jwt");
 const User = require("../models/User");
-
+const Error = require('../controllers/errorController')
 
 exports.register = async (req, res, next) => {
     console.log("Register");
     console.log(req.body);
 
     try {
-        const existingUser = await User.findOne({ userId: req.body.userId });
+        const existingUser = await User.findOne({ nomUtilisateur: req.body.nomUtilisateur });
         if (existingUser) {
             const error = new Error("Name already used");
             error.statusCode = 403;
@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
         }
 
         let user = new User();
-        user.userId = req.body.userId;
+        user.nomUtilisateur = req.body.nomUtilisateur;
         user.password = await user.encryptPassword(req.body.password);
         user.nom = req.body.nom;
         user.prenom = req.body.prenom;
@@ -40,12 +40,12 @@ exports.login = async (req, res, next) => {
     console.log("login");
 
     try {
-        const userId = req.body.userId;
+        const nomUtilisateur = req.body.nomUtilisateur;
         const password = req.body.password;
 
-        const user = await User.findOne({ userId : userId }).select("+password");
+        const user = await User.findOne({ nomUtilisateur : nomUtilisateur }).select("+password");
         if (!user) {
-                const error = new Error("Wrong UserId");
+                const error = new Error("Wrong nomUtilisateur");
             error.statusCode = 401;
             throw error;
         }
@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
             throw error;
         }
 
-        const token = jwt.sign({"name":User.userId},config.jwtSecret,{expiresIn : "1h"});
+        const token = jwt.sign({"name":User.nomUtilisateur},config.jwtSecret,{expiresIn : "1h"});
         return res.send({ user, token });
     } catch (err) {
         next(err);
@@ -72,12 +72,12 @@ exports.getall = async (req,res,next) =>{
 exports.delete = async  (req,res,next ) => {
     console.log("Delete User by id");
 
-    const userId = req.params.userId;
+    const nomUtilisateur = req.params.nomUtilisateur;
 
-    var foundId = await User.find({ userId:userId });
-    if (userId === undefined || foundId.length === 0) {
+    var foundId = await User.find({ nomUtilisateur:nomUtilisateur });
+    if (nomUtilisateur === undefined || foundId.length === 0) {
         const response = {
-            message: "UserId not found"
+            message: "nomUtilisateur not found"
         };
         return res.status(500).send(response);
     }
@@ -99,37 +99,32 @@ exports.delete = async  (req,res,next ) => {
 }
 
 exports.update = async (req, res, next) => {
-    console.log("Update User by id");
-
-    const userId = req.body.userId;
-    const modif = req.body.modif;
-
-    var foundId = await User.find({ userId:userId  });
-    if (userId === undefined || foundId.length === 0) {
-        const response = {
-            message: "userId not found"
-        };
-        return res.status(500).send(response);
+    try{
+        console.log("Update User by id");
+        const userId = req.body.userId;
+        const modif = req.body.modif;
+        Error.checkUser(req.body.userId)
+        User.findByIdAndUpdate(userId, modif,
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            {new:true},
+            (err, user) => {
+                // If error
+                if (err) throw err;
+                return res.send(user);
+            })
+    }catch (err){
+        next(err)
     }
-
-    User.findByIdAndUpdate(foundId, modif,
-        // Ask mongoose to return the updated version of doc instead of pre-updated one
-        {new:true},
-        (err, user) => {
-            // If error
-            if (err) return res.status(500).send(err);
-            return res.send(user);
-        })
 };
 
-exports.getByUserId = async (req, res, next) => {
+exports.getByNomUtilisateur = async (req, res, next) => {
     console.log("Get User by ID");
 
-    const userId = req.params.userId;
-    var foundId = await User.find({ userId:userId });
-    if (userId === undefined || foundId.length === 0) {
+    const nomUtilisateur = req.params.nomUtilisateur;
+    var foundId = await User.find({ nomUtilisateur:nomUtilisateur });
+    if (nomUtilisateur === undefined || foundId.length === 0) {
         const response = {
-            message: "userId not found"
+            message: "nomUtilisateur not found"
         };
         return res.status(500).send(response);
     }

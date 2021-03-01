@@ -13,7 +13,7 @@ exports.create = async (req, res, next) => {
     }
     const nom = req.body.nom;
     const responsableId = req.body.responsableId;
-    const projetId = mongoose.Types.ObjectId(req.body.projetId);
+    const projetId = req.body.projetId;
     const etat = req.body.etat;
     const description = req.body.description;
     const dateDebutPrevisionnelle = convertDate(req.body.dateDebutPrevisionnelle) ;
@@ -25,7 +25,8 @@ exports.create = async (req, res, next) => {
     const avancement = req.body.avancement;
 
     // if responableId not found
-    const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
+    //const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
+    const foundResponsable = await User.findOne({ _id:responsableId }).select("+password");
     if (!foundResponsable) {
         const response = {
             message: "User not found"
@@ -120,8 +121,9 @@ exports.update = async (req, res, next) => {
             return res.send(tache);
         })
 };
+
 exports.getAll = async (req, res, next) => {
-    const ret = await Tache.find({}).populate(responsableId).populate(projetId);
+    const ret = await Tache.find({}).populate('responsableId').populate('projetId');
     return res.send(ret);
 };
 exports.getById = async (req, res, next) => {
@@ -136,31 +138,53 @@ exports.getById = async (req, res, next) => {
         return res.status(500).send(response);
     }
 
-    Tache.findById(tacheId).populate(responsableId).populate(projetId).exec( (err, tache) => {
+    Tache.findById(tacheId).populate('responsableId').populate('projetId').exec( (err, tache) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(tache);
     });
 };
-exports.getByUser = async (req, res, next) => {
+exports.getByUserId = async (req, res, next) => {
     console.log("Get Task by User");
-
     const _userId = req.params.userId;
-    var foundId = await User.find({ userId: _userId }); 
+    var user_; // _id of user
+    var foundId = await User.find({ userId: _userId }, (err, user) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        else user_ = user[0]._id;
+        console.log(user[0]._id);
+    }); 
     if (_userId == undefined || foundId.length == 0) {
         const response = {
             message: "userId not found"
         };
         return res.status(500).send(response);
     }
-
-    Tache.find({responsableId : _userId}).populate(responsableId).populate(projetId).exec( (err, tache) => {
+    Tache.find({responsableId : user_}).populate('responsableId').populate('projetId').exec( (err, tache) => {
         if (err) return res.status(500).send(err)
         return res.status(200).send(tache);
     });
 };
+
+exports.getByUser = async (req, res, next) => {
+    console.log("Get Task by User");
+
+    const _userId = req.params.userId;
+    var foundId = await User.find({ _id : _userId }); 
+    if (_userId == undefined || foundId.length == 0) {
+        const response = {
+            message: "userId not found"
+        };
+        return res.status(500).send(response);
+    }
+    Tache.find({responsableId : _userId}).populate('responsableId').populate('projetId').exec( (err, tache) => {
+        if (err) return res.status(500).send(err)
+        return res.status(200).send(tache);
+    });
+};
+
 exports.getByProjet = async (req, res, next) => {
     console.log("Get Task by Projet");
-
     const _projetId = req.params.projetId;
     var foundId = await Projet.find({ _id: _projetId}); 
     if (_projetId == undefined || foundId.length == 0) {
@@ -169,18 +193,17 @@ exports.getByProjet = async (req, res, next) => {
         };
         return res.status(500).send(response);
     }
-
-    Tache.find({projetId : _projetId}).populate(responsableId).populate(projetId).exec( (err, tache) => {
-        if (err) return res.status(500).send(err)
+    Tache.find({projetId : _projetId}).populate('responsableId').populate('projetId').exec( (err, tache) => {
+        if (err) return res.status(500).send(err);
         return res.status(200).send(tache);
     });
 };
+
 exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
-
     const responsableId = req.params.responsableId;
     // if responableId not found
-    const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
+    const foundResponsable = await User.findOne({ _id:responsableId}).select("+password");
     if (!foundResponsable) {
         const response = {
             message: "User not found"
@@ -190,22 +213,38 @@ exports.getByResponsableProjet = async (req, res, next) => {
 
     Tache.aggregate([
         {
-            $lookup: {
-                from: "projects",
-                localField: "projetId",
-                foreignField: "_id",
-                as: "p"
+            '$lookup': {
+                'from': "projects",
+                'localField': "projetId",
+                'foreignField': "_id",
+                'as': "p"
             }
         },
         {
-            $unwind: "$p"
+            '$unwind': "$p"
         },
         {
-            $match: { "p.responsableId": responsableId }
+            '$match': { "p.responsableId": responsableId }
         },
         {
-            $project: {
+            '$project': {
                 "p": 0
+            }
+        },
+        {
+            '$lookup': {
+                'from': "users",
+                'localField': "responsableId",
+                'foreignField': "_id",
+                'as': "responsableId"
+            }
+        },
+        {
+            '$lookup': {
+                'from': "projets",
+                'localField': "projetId",
+                'foreignField': "_id",
+                'as': "projetId"
             }
         }
     ]).exec((err, taches) => {

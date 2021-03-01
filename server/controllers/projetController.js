@@ -103,15 +103,14 @@ exports.getById = async (req, res, next) => {
 exports.getByUser = async (req, res, next) => {
     console.log("Get Project by User");
     const _userId = req.params.userId;
-    var foundId = await User.find({ userId: _userId }).populate('clientId').populate('contactId').populate('responsableId');
-    console.log(_userId);
+    var foundId = await User.find({ _id: _userId }).populate('clientId').populate('contactId').populate('responsableId');
     if (_userId === undefined || foundId.length === 0) {
         const response = {
             message: "userId not found"
         };
         return res.status(500).send(response);
     }
-    console.log("user found");
+    console.log(_userId);
 
     Projet.aggregate([
         {
@@ -127,24 +126,38 @@ exports.getByUser = async (req, res, next) => {
             }
         }, {
             '$match': {
-                't.responsableId': req.params.userId
+                't.responsableId': mongoose.Types.ObjectId(_userId)
             }
-        }, {
+        },{
             '$project': {
                 't': 0
             }
         },
         {
             '$lookup': {
+                'from': 'users',
+                'localField': 'responsableId',
+                'foreignField': '_id',
+                'as': 'responsableId'
+            }
+        },
+        {
+            '$lookup': {
                 'from': 'clients',
-                'localField': '_id',
-                'foreignField': 'clientId',
-                'as': 'client'
+                'localField': 'clientId',
+                'foreignField': '_id',
+                'as': 'clientId'
             }
-        }, {
-            '$unwind': {
-                'path': '$client'
+
+        },
+        {
+            '$lookup': {
+                'from': 'contacts',
+                'localField': 'contactId',
+                'foreignField': '_id',
+                'as': 'contactId'
             }
+
         }
     ]).exec((err, taches) => {
         // Error if detected :
@@ -159,7 +172,7 @@ exports.getByUser = async (req, res, next) => {
 exports.getByResponsable = async (req,res,next) =>{
     console.log("Get Project by Responsable");
     const responsableId = req.params.responsableId;
-    var foundId = await User.find({ userId: responsableId });
+    var foundId = await User.find({ _id: responsableId });
     console.log(responsableId);
     if (responsableId === undefined || foundId.length === 0) {
         const response = {
@@ -167,7 +180,7 @@ exports.getByResponsable = async (req,res,next) =>{
         };
         return res.status(500).send(response);
     }
-    Projet.find({responsableId :responsableId }).populate('clientId').populate('contactId').populate('responsableId').exec( (err, projet) => {
+    Projet.find({responsableId : responsableId }).populate('clientId').populate('contactId').populate('responsableId').exec( (err, projet) => {
         if (err) return res.status(500).send(err);
         return res.status(200).send(projet);
     });

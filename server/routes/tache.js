@@ -9,6 +9,7 @@ router.put("/update", tacheController.update);
 router.get("/getAll", tacheController.getAll);
 router.get("/getById/:tacheId", tacheController.getById);
 router.get("/getByUser/:userId", tacheController.getByUser);
+router.get("/getByUserId/:userId", tacheController.getByUserId);
 router.get("/getByProjet/:projetId", tacheController.getByProjet);
 router.get("/getByResponsableProjet/:responsableId", tacheController.getByResponsableProjet);
 module.exports = router;

@@ -1,4 +1,4 @@
-const jwt =require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const config = require("../config/jwt");
 const User = require("../models/User");
 const Error = require('../controllers/errorController')
@@ -43,9 +43,9 @@ exports.login = async (req, res, next) => {
         const nomUtilisateur = req.body.nomUtilisateur;
         const password = req.body.password;
 
-        const user = await User.findOne({ nomUtilisateur : nomUtilisateur }).select("+password");
+        const user = await User.findOne({ nomUtilisateur: nomUtilisateur }).select("+password");
         if (!user) {
-                const error = new Error("Wrong nomUtilisateur");
+            const error = new Error("Wrong nomUtilisateur");
             error.statusCode = 401;
             throw error;
         }
@@ -57,62 +57,66 @@ exports.login = async (req, res, next) => {
             throw error;
         }
 
-        const token = jwt.sign({"name":User.nomUtilisateur},config.jwtSecret,{expiresIn : "1h"});
+        const token = jwt.sign({ "name": User.nomUtilisateur }, config.jwtSecret, { expiresIn: "1h" });
         return res.send({ user, token });
     } catch (err) {
         next(err);
     }
 };
 
-exports.getall = async (req,res,next) =>{
-    const ret = await User.find({});
-    return res.send(ret);
+exports.getall = async (req, res, next) => {
+    try {
+        const ret = await User.find({});
+        return res.send(ret);
+    } catch (err) { next(err); }
 };
 
-exports.delete = async  (req,res,next ) => {
+exports.delete = async (req, res, next) => {
     console.log("Delete User by id");
 
-    const nomUtilisateur = req.params.nomUtilisateur;
+    try {
+        const nomUtilisateur = req.params.nomUtilisateur;
 
-    var foundId = await User.find({ nomUtilisateur:nomUtilisateur });
-    if (nomUtilisateur === undefined || foundId.length === 0) {
-        const response = {
-            message: "nomUtilisateur not found"
-        };
-        return res.status(500).send(response);
-    }
+        var foundId = await User.find({ nomUtilisateur: nomUtilisateur });
+        if (nomUtilisateur === undefined || foundId.length === 0) {
+            const response = {
+                message: "nomUtilisateur not found"
+            };
+            return res.status(500).send(response);
+        }
 
-    User.findByIdAndRemove(foundId, (err, user) => {
-        // Error if detected :
-        if (err) return res.status(500).send(err);
+        User.findByIdAndRemove(foundId, (err, user) => {
+            // Error if detected :
+            if (err) return res.status(500).send(err);
 
-        // if not :
-        // if User found
-        const response = {
-            message: "Suppression Tache avec succès",
-            id: user._id
-        };
+            // if not :
+            // if User found
+            const response = {
+                message: "Suppression Tache avec succès",
+                id: user._id
+            };
 
-        return res.status(200).send(response);
-    });
+            return res.status(200).send(response);
+        });
 
+    } catch (err) { next(err); }
 }
 
 exports.update = async (req, res, next) => {
-    try{
+    try {
         console.log("Update User by id");
         const userId = req.body.userId;
         const modif = req.body.modif;
         Error.checkUser(req.body.userId)
         User.findByIdAndUpdate(userId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
-            {new:true},
+            { new: true },
             (err, user) => {
                 // If error
                 if (err) throw err;
                 return res.send(user);
             })
-    }catch (err){
+    } catch (err) {
         next(err)
     }
 };
@@ -121,7 +125,7 @@ exports.getByNomUtilisateur = async (req, res, next) => {
     console.log("Get User by ID");
 
     const nomUtilisateur = req.params.nomUtilisateur;
-    var foundId = await User.find({ nomUtilisateur:nomUtilisateur });
+    var foundId = await User.find({ nomUtilisateur: nomUtilisateur });
     if (nomUtilisateur === undefined || foundId.length === 0) {
         const response = {
             message: "nomUtilisateur not found"
@@ -135,25 +139,27 @@ exports.getByNomUtilisateur = async (req, res, next) => {
     });
 };
 
-exports.getByType = async (req,res,next) =>{
-    const ret = await User.find({role:req.params.role});
+exports.getByType = async (req, res, next) => {
+    const ret = await User.find({ role: req.params.role });
     return res.send(ret);
 };
 
 exports.getById = async (req, res, next) => {
     console.log("Get User by ID");
+    try {
+        const userId = req.params.id;
+        var foundId = await User.find({ _id: userId });
+        if (userId === undefined || foundId.length === 0) {
+            const response = {
+                message: "id not found"
+            };
+            return res.status(500).send(response);
+        }
 
-    const userId = req.params.id;
-    var foundId = await User.find({ _id:userId });
-    if (userId === undefined || foundId.length === 0) {
-        const response = {
-            message: "id not found"
-        };
-        return res.status(500).send(response);
-    }
+        User.findById(foundId, (err, user) => {
+            if (err) return res.status(500).send(err);
+            return res.status(200).send(user);
+        });
 
-    User.findById(foundId, (err, user) => {
-        if (err) return res.status(500).send(err);
-        return res.status(200).send(user);
-    });
+    } catch (err) { next(err); }
 };

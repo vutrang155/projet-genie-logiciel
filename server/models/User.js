@@ -69,4 +69,4 @@ user.methods.toJSON = function() {
     return obj;
 }
 
-module.exports = User = mongoose.model('user',user)
+module.exports = User = mongoose.model('User',user)

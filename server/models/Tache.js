@@ -8,7 +8,7 @@ const tache = mongoose.Schema({
         trim: true
     },
     responsableId:{
-        type: String, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     projetId:{

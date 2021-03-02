@@ -72,8 +72,8 @@ exports.checkClient = async(id)=> {
         error.statusCode = ERROR_CODE;
         throw error;
     }
-    
     var foundId =await Client.find({ _id:id  });
+
     if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Client id not found");
         error.statusCode = ERROR_CODE;
@@ -106,5 +106,5 @@ exports.checkContact = async(id)=> {
         error.statusCode = ERROR_CODE;
         throw error;
     }
-    console.log("Client existe")
+    console.log("Contact existe")
 }

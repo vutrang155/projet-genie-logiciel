@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Tache = require("../models/Tache");
 const Projet = require("../models/Projet");
-const Error = require('../controllers/errorController')
+const errCon = require('../controllers/errorController')
 
 exports.create = async (req, res, next) => {
     /**let convertDate = function(strDate) {
@@ -26,8 +26,8 @@ exports.create = async (req, res, next) => {
         const chargeConsommee = req.body.chargeConsommee;
         const avancement = req.body.avancement;
 
-        await Error.checkUser(responsableId);
-        await Error.checkProjet(projetId);
+        await errCon.checkUser(responsableId);
+        await errCon.checkProjet(projetId);
 
         // if projectId not found
         console.log("Create Tache");
@@ -53,7 +53,7 @@ exports.create = async (req, res, next) => {
         catch (err) {
             console.log(err)
             const response = {
-                message: "Impossible de créer la tache"
+                message: err.message
             };
             return res.status(500).send(response);
         }
@@ -66,7 +66,7 @@ exports.delete = async (req, res, next) => {
     try {
         const tacheId = req.params.tacheId;
 
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
 
         Tache.findByIdAndRemove(tacheId, (err, tache) => {
             // Error if detected :
@@ -90,13 +90,13 @@ exports.update = async (req, res, next) => {
         const tacheId = req.body.tacheId;
         const modif = req.body.modif;
 
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
 
         // Check if responsableId found
         if (modif.responsableId) 
-            await Error.checkUser(modif.responsableId);
+            await errCon.checkUser(modif.responsableId);
         if (modif.projetId)
-            await Error.checkProjet(modif.projetId);
+            await errCon.checkProjet(modif.projetId);
 
         Tache.findByIdAndUpdate(tacheId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
@@ -128,7 +128,7 @@ exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
     try {
         const tacheId = req.params.tacheId;
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
 
         Tache.findById(tacheId).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
@@ -160,7 +160,7 @@ exports.getByUser = async (req, res, next) => {
 
     try {
         const _userId = req.params.userId;
-        await Error.checkUser(_userId);
+        await errCon.checkUser(_userId);
         Tache.find({ responsableId: _userId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err)
             return res.status(200).send(tache);
@@ -172,7 +172,7 @@ exports.getByProjet = async (req, res, next) => {
     try {
         console.log("Get Task by Projet");
         const _projetId = req.params.projetId;
-        await Error.checkProjet(_projetId)
+        await errCon.checkProjet(_projetId)
         Tache.find({ projetId: _projetId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);
@@ -184,7 +184,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
     try {
         const responsableId = req.params.responsableId;
-        await Error.checkUser(responsableId);
+        await errCon.checkUser(responsableId);
 
         Tache.aggregate([
             {

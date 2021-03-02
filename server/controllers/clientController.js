@@ -1,7 +1,6 @@
-
 const Client = require("../models/Client");
-const Error = require("../controllers/errorController");
 const Contact = require("../models/Contact");
+
 exports.create = async (req, res, next) => {
 	console.log('Create');
 	try {
@@ -10,7 +9,12 @@ exports.create = async (req, res, next) => {
 		client.nom = req.body.nom;
 		client.domaine = req.body.domaine;
 		client.adresse = req.body.adresse;
-		await Error.checkClientNom(client.nom);
+		let existe = await Client.findOne({ nom: req.body.nom }).exec();
+		if (existe) {
+			const error = new Error("Client existe déja")
+			error.statusCode = 400;
+			throw error;
+		}
 		client = await client.save();
 		return res.send({ client });
 	} catch (err) { next(err); }

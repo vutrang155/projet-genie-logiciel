@@ -133,9 +133,8 @@ exports.getById = async (req, res, next) => {
     console.log("Get User by ID");
     try {
         const userId = req.params.id;
-        Error.checkUser(userId);
+        await Error.checkUser(userId);
         var foundId = await User.find({ _id: userId });
-
         User.findById(foundId, (err, user) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(user);

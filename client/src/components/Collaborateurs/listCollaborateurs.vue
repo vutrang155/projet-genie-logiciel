@@ -1,5 +1,5 @@
 <template>
-    <div v-for="(collaborateur, index) in collaborateurs" :key="index">
+    <div v-for="collaborateur in collaborateurs" :key="collaborateur.nomUtilisateur">
 		<div class="row1Projet" :style="{backgroundColor:color}">
 			<div class="col1Projet">
 
@@ -10,6 +10,9 @@
 
 			</div>
 			<div class="row2Projet">
+                <p class="col2Projet">
+					Username : {{ collaborateur.nomUtilisateur }}
+				</p>
 				<p class="col2Projet">
 					Adresse e-mail : {{ collaborateur.adresseMail }}
 				</p>
@@ -17,7 +20,7 @@
 					Telephone : {{ collaborateur.numeroDeTelephone }}
 				</p>
 				<p class="col2Projet">
-					Compte activé : {{collaborateur.compteActive}}
+					Compte activé : {{ collaborateur.compteActive }}
 				</p>
                 <p class="col2Projet">
 					Adresse : {{collaborateur.adresse}}

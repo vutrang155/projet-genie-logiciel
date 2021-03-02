@@ -158,7 +158,8 @@ export default {
         .then(res => {
           console.log(res)
           if (res.status === 200) {
-            this.statusResOk = true 
+            this.statusResOk = true
+            console.log("statusResOk" + this.statusResOk)
           }
         })
         .catch(error => {

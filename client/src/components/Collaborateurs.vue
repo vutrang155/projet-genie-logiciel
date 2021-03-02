@@ -2,8 +2,10 @@
   <p>Page Collaborateurs</p>
   Je vais modifier le collaborateur avec l'id : {{ idCollaborateurToModify }}
   <div v-if="showModify == true">
-    <modifierCollaborateur :idCollaborateurToModify="idCollaborateurToModify"/>
+    <modifierCollaborateur v-on:modify-done="modifyDone" :idCollaborateurToModify="idCollaborateurToModify" />
   </div>
+  <p id="succes" v-if="showModificationSucces"> Collaborateur modifié avec succès ! </p>
+  
   
   <listCollaborateurs v-on:modify-clicked="modifyClicked"/>
   
@@ -29,7 +31,8 @@ export default {
   data() {
     return {
       idCollaborateurToModify: null,
-      showModify: false
+      showModify: false,
+      showModificationSucces: false
     }
   }, 
   /*updated() {
@@ -40,13 +43,16 @@ export default {
   }, */
   methods : {
     modifyClicked(idCollaborateur) {
-      /*EventBus.$on('modify-clicked', (data) => {
-      this.idCollaborateurModified = data
-      })*/
+      this.showModificationSucces = false //pour enlever "Collaborateur modifié avec succès !" si le bouton modifier à été re-cliqué pour un autre collaborateur
       this.idCollaborateurToModify = idCollaborateur
-      this.showModify = true
+      this.showModify = true //fais apparaître le formulaire de modification (component modifierCollaborateur)
       console.log("idCollaborateurToModify " + this.idCollaborateurToModify)
       console.log("showModify " + this.showModify)
+    }, 
+    modifyDone(statusResOk) {
+      if(statusResOk) this.showModificationSucces = true 
+      this.showModify = false
+      console.log("modify-done dans Collaborateurs, statusResOk : " + statusResOk)
     }
   }
 	
@@ -54,5 +60,8 @@ export default {
 </script>
 
 <style>
-
+#succes {
+  padding-left: 60px;
+  color: red;
+}
 </style>

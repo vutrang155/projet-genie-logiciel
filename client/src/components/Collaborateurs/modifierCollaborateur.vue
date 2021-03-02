@@ -1,6 +1,6 @@
 <template>
   <p>MODIFICATION COLLABORATEUR</p>
-  <form class="review-form" @submit.prevent="addCollaborateur">
+  <form class="review-form" @submit.prevent="updateCollaborateur">
 
     <p v-if="errors.length">
       <b> Veuillez corriger les erreurs ci-dessous:</b>
@@ -10,6 +10,11 @@
     </p>
     <p class="titre">
       Modification du collaborateur
+    </p>
+
+    <p>
+      <label for="nomUtilisateur" >UserName:</label>
+      <input id="nomUtilisateur" v-model="nomUtilisateur" placeholder="UserName" :style="{width:'auto'}">
     </p>
 
     <!--<p>
@@ -91,10 +96,12 @@
     </div> 
 
     <p>
-      <input type="submit" value="Créer" :style="{width:'auto'}">
+      <input type="submit" value="Modifier" :style="{width:'auto'}">
     </p>
   
   </form>
+
+  <p id="succes" v-if="statusResOk"> Collaborateur modifié avec succès ! </p>
 
 
 </template>
@@ -114,15 +121,14 @@ export default {
         return {
         user: null,
 
-
-        userId: null,
+        nomUtilisateur: null,
         password: null, 
         nom: null,
         prenom: null,
         adresse: null,
         numeroDeTelephone: null,
         adresseMail: null,
-        dateEntree: new Date(), //.toISOString().slice(0,10), //.toISOString().substr(0, 10),//moment().format('YYYY-MM-DD'),
+        dateEntree: new Date(),
         dateSortie: new Date(),
         compteActive: true,
         chefDeProjet: false,
@@ -145,6 +151,7 @@ export default {
                   this.user = res.data
                   console.log("nom " + res.data.nom)
                   //maj des champs avec les champs du collaborateur
+                  this.nomUtilisateur = this.user.nomUtilisateur
                   this.nom = this.user.nom
                   this.prenom = this.user.prenom
                   this.adresse = this.user.adresse
@@ -152,6 +159,10 @@ export default {
                   this.adresseMail = this.user.adresseMail
                   this.dateEntree = this.user.dateEntree
                   this.dateSortie = this.user.dateSortie
+                  this.compteActive = this.user.compteActive
+
+                  if (this.user.role == 3) this.administrateur = true
+                  else if (this.user.role == 2) this.chefDeProjet = true
               })
               .catch(error => console.log(error))
 
@@ -160,7 +171,52 @@ export default {
             /*this.nom = this.user.nom
             this.prenom = this.user.prenom
             this.adresse = this.user.adresse*/
+        },
+        async updateCollaborateur() {
+          this.errors = []
+          this.statusResOk = false
+
+          if (this.administrateur) this.role = 3
+          else if(this.chefDeProjet) this.role = 2
+
+          //On ne propose pas le changement de mot de passe
+          if(this.nomUtilisateur && this.nom && this.prenom) {
+            let userToModify = {
+              userId: this.idCollaborateurToModify,
+              modif : {
+                nomUtilisateur : this.nomUtilisateur,
+                nom : this.nom,
+                prenom : this.prenom,
+                adresse : this.adresse,
+                numeroDeTelephone : this.numeroDeTelephone,
+                adresseMail : this.adresseMail,
+                dateEntree : this.dateEntree,
+                dateSortie : this.dateSortie,
+                role : this.role,
+                compteActive : this.compteActive
+              }
+            }
+            //envoie à l'API
+            await axios.put('user/update', userToModify)
+            .then(res => {
+              console.log(res)
+              if (res.status === 200) {
+                this.statusResOk = true
+                console.log("statusResOk" + this.statusResOk)
+              }
+              
+            })
+            .catch(error => console.log(error))
+          }
+          else{
+            if(!this.nomUtilisateur) this.errors.push("User name requis ! ")
+            if(!this.nom) this.errors.push("Nom requis !")
+            if(!this.prenom) this.errors.push("Prenom requis !")
+          }
+          console.log("modify-done dans modifierCollaborateur, statusResOk : " + this.statusResOk)
+          this.$emit('modify-done', this.statusResOk)
         }
+      
 
 
     }
@@ -168,5 +224,8 @@ export default {
 </script>
 
 <style>
-
+#succes {
+  padding-left: 60px;
+  color: red;
+}
 </style>

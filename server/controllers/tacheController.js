@@ -6,6 +6,32 @@ const Tache = require("../models/Tache");
 const Projet = require("../models/Projet");
 const errCon = require('../controllers/errorController')
 
+var updateProjetDate = (pId) => {
+    // $ne to check null value
+    console.log("Here"+pId);
+    Tache.find({projetId:pId, dateDebutReelle: { $ne: null } }).sort({ dateDebutReelle: 0 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateDebutReelle : taches[0].dateDebutReelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+    Tache.find({projetId:pId, dateFinReelle: { $ne: null } }).sort({ dateFinReelle: -1 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateFinReelle : taches[0].dateFinReelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+};
 exports.create = async (req, res, next) => {
     /**let convertDate = function(strDate) {
         var dateParts = strDate.split("/");
@@ -111,15 +137,6 @@ exports.update = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
     try {
-        /* TODO
-        // $ne to check null value
-        Tache.find({dateDebutReelle:{$ne:null}}).sort({dateDebutReelle:0}).exec((err, taches) => {
-            // if all null : do nothing
-            if (taches.length != 0) {
-                // TODO : 
-            }
-        });	
-        */
         const ret = await Tache.find({}).populate('responsableId').populate('projetId');
         return res.send(ret);
     } catch (err) { next(err); }
@@ -134,6 +151,7 @@ exports.getById = async (req, res, next) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);
         });
+        
     } catch (err) { next(err); }
 };
 exports.getByUserId = async (req, res, next) => {
@@ -173,6 +191,16 @@ exports.getByProjet = async (req, res, next) => {
         console.log("Get Task by Projet");
         const _projetId = req.params.projetId;
         await errCon.checkProjet(_projetId)
+
+        //---------------------------------------------
+        // TEST
+        //---------------------------------------------
+        
+        updateProjetDate(_projetId); 
+
+        //---------------------------------------------
+        //---------------------------------------------
+        //---------------------------------------------
         Tache.find({ projetId: _projetId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);

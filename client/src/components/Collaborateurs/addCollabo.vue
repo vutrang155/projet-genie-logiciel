@@ -12,8 +12,8 @@
     </p>
 
     <p>
-      <label for="userId" >Id de l'utilisateur:</label>
-      <input id="userId" v-model="userId" placeholder="userId" :style="{width:'auto'}">
+      <label for="nomUtilisateur" >UserName:</label>
+      <input id="nomUtilisateur" v-model="nomUtilisateur" placeholder="UserName" :style="{width:'auto'}">
     </p>
 
     <p>
@@ -46,17 +46,27 @@
       <input id="adresseMail" v-model="adresseMail" placeholder="xxxx@xxxx.xxx" :style="{width:'auto'}">
     </p>
 
+    <!--
+    <div>
+      <datepicker></datepicker>
+    </div>
+    -->
+    
     <p>
       <label for="dateEntree">Date d'entrée:</label>
-      <input type="date" id="dateEntree" name="dateEntree" :style="{width:'auto'}"
-       value="2021-02-22"
-       min="2021-01-01" max="2022-12-31">
+      <input type="date" :style="{width:'auto'}"
+      vmodel="dateEntree" >
+      
        <!-- Mettre ici comme value de base la date d'aujourd'hui-->
+    </p>
+      {{ dateEntree }}
+    <p>
+
     </p>
 
     <p>
       <label for="dateSortie">Date de sortie:</label>
-      <input type="date" id="dateSortie" name="dateSortie" :style="{width:'auto'}">
+      <input type="date" id="dateSortie" name="dateSortie" :style="{width:'auto'}"  vmodel="dateSortie">
       
       <!--min="2021-01-01" max="2022-12-31" -->
     </p>
@@ -91,19 +101,23 @@
 
 <script>
 import axios from 'axios';
+//import Datepicker from 'vuejs-datepicker';
 export default {
 	name:'addCollabo',
+  /*components: {
+    Datepicker
+  }, */
 	data() {
     return {
-      userId: null,
+      nomUtilisateur: null,
       password: null, 
       nom: null,
       prenom: null,
       adresse: null,
       numeroDeTelephone: null,
       adresseMail: null,
-      dateEntree: null,
-      dateSortie: null,
+      dateEntree: new Date(), //.toISOString().slice(0,10), //.toISOString().substr(0, 10),//moment().format('YYYY-MM-DD'),
+      dateSortie: new Date(),
       compteActive: true,
       chefDeProjet: false,
       administrateur: false,
@@ -113,28 +127,32 @@ export default {
       errors: []
     }
   },
+  /*created() {
+    this.setDateToToday()
+  },*/
   methods:{
     addCollaborateur(){
       this.errors = []
       this.statusResOk = false
-      if(this.userId && this.password && this.nom && this.prenom) { //champs requis
+      if(this.nomUtilisateur && this.password && this.nom && this.prenom) { //champs requis
         //création de l'utilisateur
         if (this.administrateur) this.role = 3
         else if(this.chefDeProjet) this.role = 2
   
         let userToCreate = {
-          userId: this.userId,
+          nomUtilisateur: this.nomUtilisateur,
           password: this.password,
           nom : this.nom,
           prenom : this.prenom,
           adresse : (this.adresse != null) ? this.adresse : null,
           numeroDeTelephone : (this.numeroDeTelephone != null) ? this.numeroDeTelephone : null,
           adresseMail : (this.adresseMail != null) ? this.adresseMail : null,
-          dateEntree : (this.dateEntree != null) ? this.dateEntree : null,
+          dateEntree : this.dateEntree, /*(this.dateEntree != null) ? this.dateEntree : null,*/
           dateSortie : (this.dateSortie != null) ? this.dateSortie : null,
           compteActive : (this.compteActive) ? this.compteActive : null,
           role : this.role
         }
+        console.log(userToCreate)
         //envoie à l'API
         axios.post('/user/new', userToCreate)
         .then(res => {
@@ -149,13 +167,17 @@ export default {
         })
       }
       else{
-        if(!this.userId) this.errors.push("Id de l'utilisateur requis ! ")
+        if(!this.nomUtilisateur) this.errors.push("User name requis ! ")
         if(!this.password) this.errors.push("Mot de passe requis !")
         if(!this.nom) this.errors.push("Nom requis !")
         if(!this.prenom) this.errors.push("Prenom requis !")
       }
 
-    }
+    }/*,
+    setDateToToday() {
+      let today = new Date().toISOString().substr(0, 10);
+      document.querySelector("#dateEntree").value = today;
+    }*/
   }
 	
 }

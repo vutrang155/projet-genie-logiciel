@@ -1,29 +1,92 @@
 <template>
 <div>
-  <div> test list</div>
+  <div> test list 1</div>
   
-	<ul>
-    <li v-for="(task,index) in tasks" :key="index" >
-      <div v-bind:class="task.state" >
-        <div class="rowlT">
+	<div v-for="(task,index) in tasks" :key="index">
+		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	
+			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
+				<div class="row1Projet" :style="{backgroundColor:color}">
+					<div class="col1Projet">
 
-          <div class="collT"> Projet: {{task.project}} </div>
-          <div class="collT"> Responsable: {{task.responsable}} </div>
-          <div class="collT"> Avancement: {{task.avancement}} </div>
 
-        </div>
+						{{task.nom}} {{index}}
 
-      </div>
-    </li>
-  </ul> 
-  </div>
+
+					</div>
+          <div class="row2Projet">
+						<p class="col2Projet">
+							Responsable: {{task.responsableId.prenom}} {{task.responsableId.nom}}
+						</p>
+						<p class="col2Projet">
+							Avancement: {{task.avancement}}
+						</p>
+						<p class="col2Projet">
+							
+						</p>
+				<!--
+				<p>
+					<input type="submit" value="Modifier" :style="{width:'auto'}">
+				</p>
+				<button v-on:click="Modify">Modifier</button>-->
+
+				
+					</div>
+        <!--<div id="myDIV">
+				This is my DIV element.
+			
+			
+        <ModifyProjet :id="projet.id" />
+        </div>-->
+
+				</div>
+			</b-btn>
+		</b-card-header >
+		<b-collapse :id="'task-' + task._id" accordion="my-accordion" role="tabpanel">
+        <b-card-body>
+					
+          
+					<SaisieAvancement :taskId="task._id"  />
+					
+
+          <b-card-text>{{ task._id }}</b-card-text>
+        </b-card-body>
+      </b-collapse>
+	</div>
+</div>
 </template>
 
 <script>
+
+import SaisieAvancement from './SaisieAvancement.vue'
+import axios from 'axios';
 export default {
   name: 'listTasks',
-  props:{
-    tasks:[]
+  data(){
+    return{
+      tasks:[],
+      color:'#00aaff'
+    }
+    
+  },
+  components:{
+    SaisieAvancement
+  },
+  created(){
+    this.getAllTasks()
+  },
+  methods:{
+    getAllTasks() {
+      //envoie à l'API
+      axios.get('/tache/getAll')
+      .then(res => {
+        //console.log(res)
+        this.tasks = res.data
+        for(let key in this.tasks) {
+          console.log(this.tasks[key])
+        }
+      })
+      .catch(error => console.log(error))
+    }
   }
 	
 }

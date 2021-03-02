@@ -1,7 +1,7 @@
 <template>
 <div>
 	
-	<listTasks @task-added="addTask"/>
+	<listTasks/> <!-- @task-added="addTask"/>-->
 
 
 
@@ -25,21 +25,20 @@
 
   </div>
 
-  <SaisieAvancement/>
+  
   </div>
 </template>
 
 <script>
 import listTasks from './TableauDeBord/listTasks.vue'
-import SaisieAvancement from './TableauDeBord/SaisieAvancement.vue'
+
 
 
 
 export default {
 	name: 'TableauDeBord',
   components:{
-    listTasks,
-    SaisieAvancement
+    listTasks
   },
 	data(){
     return{

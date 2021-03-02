@@ -1,9 +1,15 @@
 <template>
 <div>
 <p> listProjets </p>
-	<div v-for="(projet, index) in projets" :key="index">
-		<!--  <div class={{projet.etat}}>   -->
-		<div class="row1Projet" :style="{backgroundColor:color}">
+
+
+	
+
+
+	<div v-for="(projet,index) in projets" :key="index">
+		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	
+			<b-btn block v-b-toggle="'projet-' + projet._id" variant="info">
+				<div class="row1Projet" :style="{backgroundColor:color}">
 			<div class="col1Projet">
 
 
@@ -19,7 +25,7 @@
 					Client: 
 				</p>
 				<p class="col2Projet">
-					Contact Id: {{projet.contactId}}
+					Contact Id: 
 				</p>
 				<!--
 				<p>
@@ -29,50 +35,72 @@
 
 				
 			</div>
-			<div id="myDIV">
+			<!--<div id="myDIV">
 				This is my DIV element.
 			
 			
 			<ModifyProjet :id="projet.id" />
-			</div>
+			</div>-->
 
 		</div>
+			</b-btn>
+		</b-card-header >
+		<b-collapse :id="'projet-' + projet._id" accordion="my-accordion" role="tabpanel">
+        <b-card-body>
+					
+
+					<listTaskByProjet :ProjetId="projet._id"  />
+					
+
+          <b-card-text>{{ projet._id }}</b-card-text>
+        </b-card-body>
+      </b-collapse>
 	</div>
+
+
+
 
 	<div class="row">
     <div class="color-box" :style="{ backgroundColor:'#00aaff'}"></div>
     <div class="column" >
 
-      <p>:To Do</p>
+      <p>: A faire</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#eeff00'}"></div>
     <div class="column" >
 
-      <p>:On Going</p>
+      <p>: En cours</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#00ff04'}"></div>
     <div class="column" >
 
-      <p>:Done</p>
+      <p>: Terminé</p>
     </div>
 
   </div>
+
+
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import listTaskByProjet from './listTaskByProjet.vue'
+
 //import ModifyProjet from './ModifierProjet.vue';
 export default {
 	name:'listProjets',
-	/*components:{
-		ModifyProjet
-	},*/
+	components:{
+		listTaskByProjet
+	},
 	data(){
 		return{
 			projets:[],
 			client:null,
-			color:'#00aaff'
+			color:'#00aaff',
+			text:'test',
+			tasks:[]
 		}
 		
 	},
@@ -81,6 +109,10 @@ export default {
 
 	},
 	methods:{
+		methodThatForcesUpdate() {
+      // ...
+      this.$forceUpdate();
+		},
 		Modify(){
 			var x = document.getElementById("myDIV");
 			if (x.style.display === "none") {
@@ -139,7 +171,7 @@ export default {
 	border: 1px solid #000000;
 	margin: 10px;
 	padding: 10px;
-	width: 80%;
+	width: 95%;
 	height:80px;
 }
 

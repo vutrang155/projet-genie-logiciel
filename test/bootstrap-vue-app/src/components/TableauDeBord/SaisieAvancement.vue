@@ -1,18 +1,19 @@
 <template>
-<div>
+<div @submit.prevent="onSubmit">
+	<p>avancement test</p>
 	<div class="row1">
 		<div class ="column1">
 			<div class="row2">
 				<label for="Avancement">Avancement:</label>
 
-				<input type="number" id="Avancement" name="Avancement"
+				<input type="number" id="Avancement" name="Avancement" v-model="Avancement"
        min="0" max="100">
 
 			</div>
 			<div class="row2">
 				<label for="Charge">Charge Consomée:</label>
 
-				<input type="number" id="Charge" name="Charge"
+				<input type="number" id="Charge" name="Charge" v-model="Charge"
        min="0" >
 
 			</div>
@@ -31,17 +32,54 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+	
 	name:'SaisieAvancement',
+	props:{
+		taskId:{
+			type:String,
+			required:true
+		}
+	},
 	data(){
 		return{
-			Commentaire:null
+			Commentaire:null,
+			Avancement:null,
+			Charge:null,
+			task:null
 		}
 		
 	},
+	created(){
+		this.getTasksById()
+	},
   methods:{
+		getTasksById() {
+      //envoie à l'API
+      axios.get('/tache/getById/'+this.taskId)
+      .then(res => {
+        //console.log(res)
+        this.tasks = res.data
+				this.Avancement =res.data.avancement
+				this.Charge=res.data.chargeConsommee
+        for(let key in this.tasks) {
+          console.log(this.tasks[key])
+        }
+      })
+      .catch(error => console.log(error))
+    },
     onSubmit(){
 			if(this.Commentaire){
+				let taskToModify = {
+              tacheId: this.taskId,
+              modif : {
+                avancement : this.Avancement,
+                chargeConsommee : this.charge,
+                
+              }
+            }
+				axios.put("tache/update",taskToModify)
 				/*let Avancement = {
 					Commentaire:this.Commentaire
 				}*/

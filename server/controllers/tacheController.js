@@ -176,11 +176,11 @@ exports.getByResponsableProjet = async (req, res, next) => {
     try {
         const responsableId = req.params.responsableId;
         await errCon.checkUser(responsableId);
-
+        console.log(responsableId)
         Tache.aggregate([
             {
                 '$lookup': {
-                    'from': "projects",
+                    'from': "projets",
                     'localField': "projetId",
                     'foreignField': "_id",
                     'as': "p"
@@ -190,7 +190,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
                 '$unwind': "$p"
             },
             {
-                '$match': { "p.responsableId": responsableId }
+                '$match': { "p.responsableId": mongoose.Types.ObjectId(responsableId) }
             },
             {
                 '$project': {
@@ -215,6 +215,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
             }
         ]).exec((err, taches) => {
             // Error if detected :
+            console.log(taches)
             if (err) return res.status(500).send(err);
 
             // if not :

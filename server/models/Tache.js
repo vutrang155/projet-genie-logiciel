@@ -37,6 +37,10 @@ const tache = mongoose.Schema({
     dateFinReelle:{
         type:Date,
     },
+    predecesseur:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tache'
+    }],
     chargeConsommee:{
         type:Number,
     },

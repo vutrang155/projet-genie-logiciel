@@ -1,6 +1,6 @@
 const Contact = require("../models/Contact");
 const Client = require("../models/Client");
-const Error = require("../controllers/errorController");
+const errCon = require("../controllers/errorController");
 
 exports.create = async (req, res, next) => {
 
@@ -31,7 +31,7 @@ exports.getbyId = async (req, res, next) => {
 	console.log("Get Contact by ID");
 	try {
 		const contactId = req.params.contactId;
-		await Error.checkContact(contactId);
+		await errCon.checkContact(contactId);
 		Contact.findById(contactId, (err, contact) => {
 			if (err) return res.status(500).send(err);
 			return res.status(200).send(contact);
@@ -50,7 +50,7 @@ exports.getbyClient = async (req, res, next) => {
 	console.log("Contact getbyClient");
 	try {
 		let id = req.params.clientId;
-		await Error.checkClient(id)
+		await errCon.checkClient(id)
 		Contact.find({ clientId: id }, (err, contact) => {
 			if (err) return res.status(500).send(err)
 			return res.status(200).send(contact);
@@ -61,7 +61,7 @@ exports.delete = async (req, res, next) => {
 	console.log("Delete Contact by id");
 	try {
 		const contactId = req.params.contactId;
-		await Error.checkContact(contactId);
+		await errCon.checkContact(contactId);
 		Contact.findByIdAndRemove(contactId, (err, contact) => {
 			// Error if detected :
 			if (err) return res.status(500).send(err);
@@ -95,7 +95,7 @@ exports.update = async (req, res, next) => {
 
 		// Check modif clientId
 		if (modif.clientId)
-			await Error.checkClient(modif.clientId);
+			await errCon.checkClient(modif.clientId);
 
 
 		Contact.findByIdAndUpdate(contactId, modif,

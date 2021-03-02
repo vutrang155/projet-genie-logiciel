@@ -4,7 +4,7 @@
 
 		<p> Modifier Contact </p>
 
-		<p> Infos Contact initial: <br> <br> Nom: {{this.contactcible.nom}} <br> Prenom: {{this.contactcible.prenom}} <br> Fonction: {{this.contactcible.fonction}} <br> Adresse: {{this.contactcible.adresse}}    </p>
+
 
 		<p>
 			<label for="name" >Nom Contact:</label>
@@ -46,10 +46,10 @@ export default{
 
 		return{
 
-			nom : null,
-			prenom : null,
-			fonction : null,
-			adresse : null,
+			nom : this.contactcible.nom,
+			prenom : this.contactcible.prenom,
+			fonction : this.contactcible.fonction,
+			adresse : this.contactcible.adresse,
 			
 			errors: []
 		}	

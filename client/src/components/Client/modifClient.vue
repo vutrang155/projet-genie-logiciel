@@ -12,7 +12,7 @@
 
 		<p> Modification client </p>
 
-		<p> Infos Client initial: <br> Nom: {{this.idd.nom}} <br> Domaine: {{this.idd.domaine}} <br> Adresse: {{this.idd.adresse}}  </p>
+		
 
 		<p>
 			<label for="name" >Nom Client:</label> 
@@ -54,9 +54,9 @@ import axios from 'axios';
 
 				id: "603b711fdc9e9367e08e3b97",
 
-				nom: null,
-				domaine: null,
-				adresse: null,
+				nom: this.idd.nom,
+				domaine: this.idd.domaine,
+				adresse: this.idd.adresse,
 				cpt: 0,
 
 				errors: [],

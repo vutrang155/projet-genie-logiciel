@@ -1,12 +1,11 @@
 const Contact = require("../models/Contact");
 const Client = require("../models/Client");
+const Error = require("../controllers/errorController");
 
 exports.create = async (req, res, next) => {
 
 	console.log('Create contact');
 	try {
-		console.log(req.body);
-
 		let contact = new Contact();
 		contact.nom = req.body.nom;
 		contact.prenom = req.body.prenom;
@@ -115,6 +114,7 @@ exports.update = async (req, res, next) => {
 
 		const contactId = req.body.contactId;
 		const modif = req.body.modif;
+
 		var foundId = await Contact.find({ _id: contactId });
 		console.log(contactId)
 		if (contactId === undefined || foundId.length === 0) {
@@ -123,6 +123,12 @@ exports.update = async (req, res, next) => {
 			};
 			return res.status(500).send(response);
 		}
+
+		// Check modif clientId
+		if (modif.clientId)
+			await Error.checkClient(modif.clientId);
+
+
 		Contact.findByIdAndUpdate(contactId, modif,
 			// Ask mongoose to return the updated version of doc instead of pre-updated one
 			{ new: true },

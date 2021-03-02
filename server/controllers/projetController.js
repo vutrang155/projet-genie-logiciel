@@ -60,12 +60,21 @@ exports.update = async (req, res, next) => {
         const modif = req.body.modif;
         await Error.checkProjet(projetId);
 
+        // Check responsableId, clientId, contactId
+        if (modif.responsableId)
+            await Error.checkUser(modif.responsableId);
+        if (modif.clientId)
+            await Error.checkClient(modif.clientId);
+        if (modif.contactId)
+            await Error.checkContact(modif.contactId);
+
         Projet.findByIdAndUpdate(projetId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
             { new: true },
             (err, projet) => {
                 // If error
                 if (err) return res.status(500).send(err);
+
                 return res.send(projet);
             })
     } catch (err) { next(err); }

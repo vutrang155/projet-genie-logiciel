@@ -41,7 +41,7 @@ exports.checkTache = async(id)=> {
         throw error;
     }
     var foundId =await Tache.find({ _id:id  });
-    if (foundId === undefined || found.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Tache id not found");
         error.statusCode = ERROR_CODE;
         throw error;

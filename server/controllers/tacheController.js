@@ -92,6 +92,12 @@ exports.update = async (req, res, next) => {
 
         await Error.checkTache(tacheId);
 
+        // Check if responsableId found
+        if (modif.responsableId) 
+            await Error.checkUser(modif.responsableId);
+        if (modif.projetId)
+            await Error.checkProjet(modif.projetId);
+
         Tache.findByIdAndUpdate(tacheId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
             { new: true },

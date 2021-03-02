@@ -1,5 +1,6 @@
 <template>
 
+
 	<form class = "modifClient-form" @submit.prevent = "modifClient" >
 
 		<p v-if="errors.length">
@@ -10,6 +11,8 @@
 		</p>
 
 		<p> Modification client </p>
+
+		<p> Infos Client initial: <br> Nom: {{this.idd.nom}} <br> Domaine: {{this.idd.domaine}} <br> Adresse: {{this.idd.adresse}}  </p>
 
 		<p>
 			<label for="name" >Nom Client:</label> 

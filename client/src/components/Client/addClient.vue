@@ -1,6 +1,13 @@
 <template>
 
-	<form class = "addClient-form" @submit.prevent = "addClient" >
+
+
+
+<div v-if="showform">
+
+ 
+
+	<form class = "addClient-form" @submit = "addClient" >
 
 		<p v-if="errors.length">
 			<b> Please correct the following error(s):</b>
@@ -24,7 +31,7 @@
 
 		<p>
 			<label for="adresse" >Adresse:</label>
-			<textarea id="adresse" v-model="adresse"></textarea>
+			<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
 		</p>
 
 		<p>
@@ -36,18 +43,41 @@
 
 	</form>
 
-		<Client/>
+</div>
+
+
+<div v-if="tab">
+    
+        <table class ="table">
+            <thead>
+                <tr>
+                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
+                </tr>
+            </thead>
+            <tbody>
+                <br>
+                <tr v-for="(row,index) in clients" :key="index">
+                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
+                    
+                    
+                </tr> 
+            </tbody>
+        </table>
+    
+    </div>
+
+
+		
 </template>
 
 <script>
 import axios from 'axios';
-import Client from './../Client.vue';	
+
+
 
 	export default {
 		name: 'addClient',
-		components:{
-			Client
-		},
+
 		data(){
 			return{
 				id: null,
@@ -55,6 +85,9 @@ import Client from './../Client.vue';
 				nom: null,
 				domaine: null,
 				adresse: null,
+				showform: true,
+				tab: false,
+				columns: ['nom','domaine','adresse'],
 
 				errors: [],
 				clients: []
@@ -64,6 +97,11 @@ import Client from './../Client.vue';
 		created(){
 			this.getClients()
 		},
+
+		computed(){
+			this.updateClients()
+		},
+
 		methods:{
 
 			// GET Client getAll
@@ -77,6 +115,16 @@ import Client from './../Client.vue';
 
 				})
 			},
+			updateClients(){
+				axios.get('/client/getAll')
+				.then(res => {
+				this.clients = res.data
+				for (let key in this.clients){
+					console.log(this.clients[key])
+				}
+				})
+			},
+
 			// POST Client create
 			addClient(){
 	
@@ -114,7 +162,9 @@ import Client from './../Client.vue';
 						this.idc+=1,
 						this.nom = null,
 						this.domaine = null,
-						this.adresse = null
+						this.adresse = null,
+						this.showform = false,
+						this.tab = true
 					}				
 				}
 				else{

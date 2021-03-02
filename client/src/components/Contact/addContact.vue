@@ -2,16 +2,18 @@
 
 	<form class = "addContact-form" @submit.prevent = "addContact" >
 
+<p> Infos Client <br> </p>
+
 
 		<p> Ajouter Contact </p>
 
 		<p>
-			<label for="name" >Nom Client:</label> 
+			<label for="name" >Nom Contact:</label> 
 			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
 		</p>
 
 		<p>
-			<label for="prenom" >Prénom Client:</label> 
+			<label for="prenom" >Prénom Contact:</label> 
 			<input id="prenom" v-model="prenom" placeholder="prenom" :style="{width:'auto'}">
 		</p>
 
@@ -22,7 +24,7 @@
 
 		<p>
 			<label for="adresse" >Adresse:</label>
-			<textarea id="adresse" v-model="adresse"></textarea>
+			<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
 		</p>
 
 		<p>
@@ -59,7 +61,7 @@ export default{
 	methods:{
 		// GET CONTACT BY CLIENT ID
 		getContact(){
-			axios.get('/contact/getbyClient/'+this.idclient)
+			axios.get('/contact/getbyClient/'+this.idclient._id)
 			.then(res => {
 			this.contacts = res.data
 			for (let key in this.contacts){
@@ -78,7 +80,7 @@ export default{
 					prenom: this.prenom,
 					fonction: this.fonction,
 					adresse: this.adresse,
-					clientId: this.idclient
+					clientId: this.idclient._id
 				}
 				axios.post('/contact/create',contact)
 				.then(res => {

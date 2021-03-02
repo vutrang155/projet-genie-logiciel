@@ -1,5 +1,7 @@
 <template>
-    
+  
+
+
     <p> Clients </p>
 
     <div v-if="showButton">
@@ -63,10 +65,10 @@ export default {
 
 	data(){
 		return {
+			
 			creation: false,
 			modif: false,
 			showButton: true,
-			num: "603b711fdc9e9367e08e3b97",
 			clients: [],
 			columns: ['nom','domaine','adresse'],
 			clientcible :null,

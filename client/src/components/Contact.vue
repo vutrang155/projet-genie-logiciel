@@ -1,6 +1,7 @@
 <template>
     <p> Contacts </p>
 
+<p> Infos Client: <br> <br> Nom: {{this.idclient.nom}} <br> Domaine: {{this.idclient.domaine}} <br> Adresse: {{this.idclient.adresse}}    </p>
     <div v-if="tab">
     
         <table class ="table">
@@ -19,7 +20,7 @@
     
     </div>
 
-    <div v-if="creation"> <addContact v-bind:idclient=this.idclient._id> </addContact>  </div>
+    <div v-if="creation"> <addContact v-bind:idclient=this.idclient> </addContact>  </div>
 
     <div v-if="showButton">
         <button v-on:click="clickModif">Modifier </button> <br> <br>

@@ -4,13 +4,15 @@
 
 		<p> Modifier Contact </p>
 
+		<p> Infos Contact initial: <br> <br> Nom: {{this.contactcible.nom}} <br> Prenom: {{this.contactcible.prenom}} <br> Fonction: {{this.contactcible.fonction}} <br> Adresse: {{this.contactcible.adresse}}    </p>
+
 		<p>
-			<label for="name" >Nom Client:</label>
+			<label for="name" >Nom Contact:</label>
 			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
 		</p>
 
 		<p>
-			<label for="prenom" >Prénom Client:</label>
+			<label for="prenom" >Prénom Contact:</label>
 			<input id="prenom" v-model="prenom" placeholder="prenom" :style="{width:'auto'}">
 		</p>
 
@@ -21,7 +23,7 @@
 
 		<p>
 			<label for="adresse" >Adresse:</label>
-			<textarea id="adresse" v-model="adresse"></textarea>
+			<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
 		</p>
 
 		<p>

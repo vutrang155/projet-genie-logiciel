@@ -57,7 +57,7 @@ exports.getAll = async (req, res, next) => {
 
 		const liste = await Contact.find({});
 
-		return res.send({ liste });
+		return res.send(liste);
 	} catch (err) { next(err); }
 
 }

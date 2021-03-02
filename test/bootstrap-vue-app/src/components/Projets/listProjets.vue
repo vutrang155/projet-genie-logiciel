@@ -1,4 +1,5 @@
 <template>
+<div>
 <p> listProjets </p>
 	<div v-for="(projet, index) in projets" :key="index">
 		<!--  <div class={{projet.etat}}>   -->
@@ -56,7 +57,7 @@
     </div>
 
   </div>
-  
+  </div>
 </template>
 
 <script>

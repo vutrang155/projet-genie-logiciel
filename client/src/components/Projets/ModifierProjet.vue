@@ -1,4 +1,6 @@
 <template>
+	<p>does it ? </p>
+	<!--
 	<form class="review-form" @submit.prevent="addProjet">
 
   <p v-if="errors.length">
@@ -8,12 +10,12 @@
     </ul>
   </p>
     <p>
-      Creation d'un nouveau Projet
+      Modification 
     </p>
 
     <p>
       <label for="name" >Nom du Projet:</label>
-      <input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+      <input id="name" v-model="nom" value={{nom}} :style="{width:'auto'}">
     </p>
 
     <p>
@@ -40,10 +42,10 @@
 
     <p>
       <label for="state">Etat:</label>
-      <select v-model="Etat">
-        <option>A faire</option>
-        <option>En cours</option>
-        <option>Terminé</option>
+      <select v-model="etat">
+        <option value="afaire">A faire</option>
+        <option value="encours">En cours</option>
+        <option value="terminé">Terminé</option>
       </select>
     </p>
 
@@ -65,23 +67,29 @@
 
 
     <p>
-      <input type="submit" value="Créer" :style="{width:'auto'}">
+      <input type="submit" value="Enregistrer" :style="{width:'auto'}">
     </p>
 
-  </form>  
+  </form>  -->
 </template>
 
 <script>
 import axios from 'axios';
 export default {
-	name:'addProjet',
+	name:'ModifyProjet',
+	props: {
+    id:{
+      type: String,
+      required:true
+    }
+  },
 	data() {
     return {
       nom:null,
       responsable:null,
       client:null,
-      Etat:null,
-      dateFinReelle:null,
+      etat:null,
+			dateFinReelle:null,
 			dateDebutReelle:null,
 			dateDebutPrevisionnelle:null,
 			dateFinPrevisionnelle:null,
@@ -94,7 +102,8 @@ export default {
   },
   created(){
     this.getResponsables(),
-    this.getClients()
+    this.getClients(),
+		this.getProjet()
   },
   methods:{
     getResponsables() {
@@ -120,6 +129,28 @@ export default {
       })
       .catch(error => console.log(error))
     },
+		getProjet(){
+			axios.get('/projet/getById')
+			.then(res => {
+				if(res.data.etat==1){
+					this.etat="afaire"
+				}
+				else if(res.data.etat==2){
+					this.etat="encours"
+				}
+				else if(res.data.etat==3){
+					this.etat="terminé"
+				}
+				this.responsable=res.data.responsableId,
+				this.contact=res.data.contactId,
+				this.dateDebutPrevisionnelle=res.data.dateDebutPrevisionnelle,
+				this.dateFinPrevisionnelle=res.data.dateFinPrevisionnelle,
+				this.dateDebutReelle=res.data.dateDebutReelle,
+				this.dateFinReelle=res.data.dateFinReelle
+			}
+			
+			)
+		},
     addProjet(){
       let projet = {
           nom:this.nom,

@@ -112,11 +112,11 @@ Vue.component("list-tasks",{
   template: `
     <div>
       <ul>
-        <li v-for="task in tasks" >
+        <li v-for="task in tasks" :key="task.ID">
           <div v-bind:class="task.state" >
             <b-container>
               <b-row>
-                <b-col> Projet: {{task.project}} </b-col>
+                <b-col> Projet: {{ task.project }} </b-col>
                 <b-col> Responsable: {{task.responsable}} </b-col>
                 <b-col> Avancement: {{task.avancement}} </b-col>
               </b-row>
@@ -125,7 +125,13 @@ Vue.component("list-tasks",{
           </div>
         </li>
       </ul>
+      <button v-on:click="Modify">Modifier</button>
 
+      <div id="myDIV">
+				This is my DIV element.
+			</div>
+
+      <p> pourquoi</p>
 
     </div>
   `,
@@ -134,6 +140,17 @@ Vue.component("list-tasks",{
       test:0
 
     }
+  },
+  methods:{
+    Modify(){
+			var x = document.getElementById("myDIV");
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			}
+			else {
+				x.style.display = "none";
+			}
+		}
   }
 
 })

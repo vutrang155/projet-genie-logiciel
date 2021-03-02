@@ -20,6 +20,8 @@ const clientRoutes = require('./routes/client');
 const contactRoutes = require('./routes/contact');
 
 
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -31,6 +33,7 @@ app.use('/api/projet',projetRoutes);
 app.use('/api/tache',tacheRoutes);
 app.use('/api/client',clientRoutes);
 app.use('/api/contact',contactRoutes);
+
 
 app.use(errorHandler);
 

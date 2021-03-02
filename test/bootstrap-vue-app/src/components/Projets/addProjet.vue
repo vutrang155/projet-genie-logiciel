@@ -1,4 +1,5 @@
 <template>
+<div>
 	<form class="review-form" @submit.prevent="addProjet">
 
   <p v-if="errors.length">
@@ -69,6 +70,7 @@
     </p>
 
   </form>  
+  </div>
 </template>
 
 <script>

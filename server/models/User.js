@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs");
 
 const user = mongoose.Schema({
-    userId: {
+    nomUtilisateur: {
         type: String,
         unique:true,
         required: true },
@@ -69,4 +69,4 @@ user.methods.toJSON = function() {
     return obj;
 }
 
-module.exports = User = mongoose.model('user',user)
+module.exports = User = mongoose.model('User',user)

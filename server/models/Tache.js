@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-//const autoIncrement = require('mongoose-auto-increment');
 const tache = mongoose.Schema({
     nom:{
         type: String,
         required: true,
-        unique: 1,
         trim: true
     },
     responsableId:{
-        type: String, 
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
     projetId:{
@@ -47,6 +45,7 @@ const tache = mongoose.Schema({
     }
 
 });
+tache.index({nom:1, projetId:1}, { unique: true });
 
 
 module.exports = Tache = mongoose.model('Tache',tache);

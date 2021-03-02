@@ -1,5 +1,5 @@
 <template>
-	<form class="review-form" @submit.prevent="addProjet">
+	<form class="review-form" @submit.prevent="addTask">
 
   <p v-if="errors.length">
     <b> Please correct the following error(s):</b>
@@ -13,34 +13,23 @@
 
     <p>
       <label for="name" >Nom du Projet:</label>
-      <input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+      <input id="name" v-model="name" placeholder="nom" :style="{width:'auto'}">
     </p>
 
     <p>
       <label for="responsable">Responsable:</label>
       <select v-model="responsable">
-        <option v-for="(responsable,index) in responsables" :key="index">
-          {{ responsable.prenom }}  {{ responsable.nom}}
-        </option>
-
+        <option>Jean-Claude</option>
+        <option>Jean-Marc</option>
+        <option>Jean-Paul</option>
+        <option>Jean-François</option>
+        <option>Jean-Jean</option>
       </select>
     </p>
-
-    <p>
-      <label for="client">Client:</label>
-      <select v-model="client">
-        <option v-for="(client,index) in clients" :key="index">
-            {{ client.nom}}
-        </option>
-
-      </select>
-    </p>
-
-    
 
     <p>
       <label for="state">Etat:</label>
-      <select v-model="Etat">
+      <select v-model="state">
         <option>A faire</option>
         <option>En cours</option>
         <option>Terminé</option>
@@ -65,83 +54,56 @@
 
 
     <p>
-      <input type="submit" value="Créer" :style="{width:'auto'}">
+      <input type="submit" value="Submit" :style="{width:'auto'}">
     </p>
 
   </form>  
 </template>
 
 <script>
-import axios from 'axios';
 export default {
 	name:'addProjet',
 	data() {
     return {
+      id: null,
+      idc:0,
       nom:null,
       responsable:null,
-      client:null,
-      Etat:null,
-      dateFinReelle:null,
-			dateDebutReelle:null,
-			dateDebutPrevisionnelle:null,
-			dateFinPrevisionnelle:null,
-
-      responsables:[],
-      clients:[],
+      state:null,
+      startingDate:null,
+      avancement:0,
 
       errors: []
     }
   },
-  created(){
-    this.getResponsables(),
-    this.getClients()
-  },
   methods:{
-    getResponsables() {
-      let type = 2
-      axios.get('/user/getByType/' + type)
-      .then(res => {
-        this.responsables = res.data
-        for(let key in this.responsables) {
-          console.log(this.responsables[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
-    getClients() {
-      //envoie à l'API
-      axios.get('/client/getAll')
-      .then(res => {
-        //console.log(res)
-        this.clients = res.data
-        for(let key in this.clients) {
-          console.log(this.clients[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
     addProjet(){
-      let projet = {
-          nom:this.nom,
-          responsableId:this.responsable.userId,
-          clientId:this.client.id,
-          contactId:"6034be5b226d51307ef0be57",
-          etat: "1",
-          dateDebutPrevisionnelle:null,
-          dateFinPrevisionnelle:null,
-          dateDebutReelle:null,
-          dateFinReelle:null
+      if(this.nom && this.responsable && this.state ){
+        let task = {
+          id:this.idc,
+          idc:this.idc+1,
+          nom: this.nom,
+          responsable: this.responsable,
+          state:this.state,
+          avancement:this.avancement
+          //startingDate:this.startingDate
         }
-      axios.post('/projet/create', projet)
-			.then(res => {
-        console.log(res)
-        const projet = res.data
-        this.responsable = projet.responsable
-        this.nom = projet.nom
-        this.etat = projet.etat
-			})
-			.catch(error => console.log(error))
+        this.$emit("task-added", task)
+        this.id=null,
+        this.idc+=1,
+        this.nom=null,
+        this.responsable=null,
+        this.state=null,
+        this.startingDate=null
 
+      }
+      else{
+        this.errors=[]
+        if(!this.nom) this.errors.push("Name required")
+        if(!this.responsable) this.errors.push("Responsable required")
+        if(!this.state) this.errors.push("State required")
+        //if(!this.startingDate) this.errors.push("Starting Date required")
+      }
 
     }
   }

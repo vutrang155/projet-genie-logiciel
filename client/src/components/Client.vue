@@ -83,23 +83,23 @@ export default {
 	},
 	methods: {
 		setaccess(row){
-			this.clientcible = row
-			console.log(this.clientcible)
+			this.clientcible = row,
+			console.log(this.clientcible),
 			this.accescontact = true,
 			this.tab = false,
 			this.creation = false,
 			this.showButton = false,
-			this.modif = false,
+			this.modif = false
 			
 		},
 
 		select(row){
-			this.clientcible = row
-			console.log(this.clientcible)
+			this.clientcible = row,
+			console.log(this.clientcible),
 			this.modif = true,
 			this.showButton = false,
 			this.creation = false,
-			this.tab = false,
+			this.tab = false
 			
 
 		},

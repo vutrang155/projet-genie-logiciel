@@ -59,12 +59,12 @@ import Client from './components/Client.vue'
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080/api/'
 
-//Pour afficher les dates sous la forme MM/DD/YYYY
+//Pour afficher les dates sous la forme DD/MM/YYYY
 import Vue from 'vue'
 import moment from 'moment'
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('MM/DD/YYYY')
+    return moment(String(value)).format('DD/MM/YYYY')
   }
 });
 

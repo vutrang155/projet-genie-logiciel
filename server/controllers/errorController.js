@@ -8,8 +8,16 @@ const Tache = require("../models/Tache");
 const ERROR_CODE = 500;
 
 exports.checkUser = async(id)=>{
+    var cond = mongoose.isValidObjectId(id);
+    if (!cond) {
+        const error = new Error("Invalid format");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+
     var foundId =await User.find({ _id:id  });
-    if (foundId === undefined || id.length  === 0) {
+    console.log(foundId);
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("User Unknown");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -18,7 +26,7 @@ exports.checkUser = async(id)=>{
 }
 exports.checkUserByNomUtilisateur = async(id)=>{
     var foundId =await User.find({ nomUtilisateur:id  });
-    if (foundId === undefined || id.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("User Unknown");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -26,8 +34,14 @@ exports.checkUserByNomUtilisateur = async(id)=>{
     console.log("User existe")
 }
 exports.checkTache = async(id)=> {
+    var cond = mongoose.isValidObjectId(id);
+    if (!cond) {
+        const error = new Error("Invalid format");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
     var foundId =await Tache.find({ _id:id  });
-    if (foundId === undefined || id.length  === 0) {
+    if (foundId === undefined || found.length  === 0) {
         const error = new Error("Tache id not found");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -36,8 +50,14 @@ exports.checkTache = async(id)=> {
 }
 
 exports.checkProjet = async(id)=> {
+    var cond = mongoose.isValidObjectId(id);
+    if (!cond) {
+        const error = new Error("Invalid format");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
     var foundId =await Projet.find({ _id:id  });
-    if (foundId === undefined || id.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Projet id not found");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -46,8 +66,15 @@ exports.checkProjet = async(id)=> {
 }
 
 exports.checkClient = async(id)=> {
+    var cond = mongoose.isValidObjectId(id);
+    if (!cond) {
+        const error = new Error("Invalid format");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+    
     var foundId =await Client.find({ _id:id  });
-    if (foundId === undefined || id.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Client id not found");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -57,7 +84,7 @@ exports.checkClient = async(id)=> {
 
 exports.checkClientNom = async(nom)=> {
     var foundId =await Client.find({ nom:id  });
-    if (foundId === undefined || nom.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Client nom not found");
         error.statusCode = ERROR_CODE;
         throw error;
@@ -66,8 +93,15 @@ exports.checkClientNom = async(nom)=> {
 }
 
 exports.checkContact = async(id)=> {
+    var cond = mongoose.isValidObjectId(id);
+    if (!cond) {
+        const error = new Error("Invalid format");
+        error.statusCode = ERROR_CODE;
+        throw error;
+    }
+
     var foundId =await Contact.find({ _id:id  });
-    if (foundId === undefined || id.length  === 0) {
+    if (foundId === undefined || foundId.length  === 0) {
         const error = new Error("Client id not found");
         error.statusCode = ERROR_CODE;
         throw error;

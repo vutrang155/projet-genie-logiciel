@@ -111,6 +111,15 @@ exports.update = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
     try {
+        /* TODO
+        // $ne to check null value
+        Tache.find({dateDebutReelle:{$ne:null}}).sort({dateDebutReelle:0}).exec((err, taches) => {
+            // if all null : do nothing
+            if (taches.length != 0) {
+                // TODO : 
+            }
+        });	
+        */
         const ret = await Tache.find({}).populate('responsableId').populate('projetId');
         return res.send(ret);
     } catch (err) { next(err); }

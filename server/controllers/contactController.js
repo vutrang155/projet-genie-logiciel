@@ -1,12 +1,11 @@
 const Contact = require("../models/Contact");
 const Client = require("../models/Client");
+const errCon = require("../controllers/errorController");
 
 exports.create = async (req, res, next) => {
 
 	console.log('Create contact');
 	try {
-		console.log(req.body);
-
 		let contact = new Contact();
 		contact.nom = req.body.nom;
 		contact.prenom = req.body.prenom;
@@ -29,34 +28,20 @@ exports.create = async (req, res, next) => {
 	} catch (err) { next(err); }
 }
 exports.getbyId = async (req, res, next) => {
-
-
 	console.log("Get Contact by ID");
 	try {
-
 		const contactId = req.params.contactId;
-		var foundId = await Contact.find({ _id: contactId });
-		if (contactId == undefined || foundId.length == 0) {
-			const response = {
-				message: "contactId not found"
-			};
-			return res.status(500).send(response);
-		}
-
+		await errCon.checkContact(contactId);
 		Contact.findById(contactId, (err, contact) => {
 			if (err) return res.status(500).send(err);
 			return res.status(200).send(contact);
 		});
-
 	} catch (err) { next(err); }
 }
 exports.getAll = async (req, res, next) => {
-
 	console.log("getAll");
 	try {
-
 		const liste = await Contact.find({});
-
 		return res.send(liste);
 	} catch (err) { next(err); }
 
@@ -65,13 +50,7 @@ exports.getbyClient = async (req, res, next) => {
 	console.log("Contact getbyClient");
 	try {
 		let id = req.params.clientId;
-		var foundId = await Client.find({ _id: id });
-		if (id === undefined || foundId.length === 0) {
-			const response = {
-				message: "clientId not found"
-			};
-			return res.status(500).send(response);
-		}
+		await errCon.checkClient(id)
 		Contact.find({ clientId: id }, (err, contact) => {
 			if (err) return res.status(500).send(err)
 			return res.status(200).send(contact);
@@ -79,30 +58,19 @@ exports.getbyClient = async (req, res, next) => {
 	} catch (err) { next(err); }
 }
 exports.delete = async (req, res, next) => {
-
 	console.log("Delete Contact by id");
 	try {
 		const contactId = req.params.contactId;
-
-		var foundId = await Contact.find({ _id: contactId });
-		if (contactId === undefined || foundId.length === 0) {
-			const response = {
-				message: "contactId not found"
-			};
-			return res.status(500).send(response);
-		}
-
+		await errCon.checkContact(contactId);
 		Contact.findByIdAndRemove(contactId, (err, contact) => {
 			// Error if detected :
 			if (err) return res.status(500).send(err);
-
 			// if not :
 			// if tache found
 			const response = {
 				message: "Suppression contact avec succès",
 				id: contact._id
 			};
-
 			return res.status(200).send(response);
 		});
 	} catch (err) { next(err); }
@@ -115,6 +83,7 @@ exports.update = async (req, res, next) => {
 
 		const contactId = req.body.contactId;
 		const modif = req.body.modif;
+
 		var foundId = await Contact.find({ _id: contactId });
 		console.log(contactId)
 		if (contactId === undefined || foundId.length === 0) {
@@ -123,6 +92,12 @@ exports.update = async (req, res, next) => {
 			};
 			return res.status(500).send(response);
 		}
+
+		// Check modif clientId
+		if (modif.clientId)
+			await errCon.checkClient(modif.clientId);
+
+
 		Contact.findByIdAndUpdate(contactId, modif,
 			// Ask mongoose to return the updated version of doc instead of pre-updated one
 			{ new: true },

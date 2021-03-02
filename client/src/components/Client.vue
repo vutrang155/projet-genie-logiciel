@@ -89,7 +89,8 @@ export default {
 			this.tab = false,
 			this.creation = false,
 			this.showButton = false,
-			this.modif = false
+			this.modif = false,
+			
 		},
 
 		select(row){
@@ -98,7 +99,8 @@ export default {
 			this.modif = true,
 			this.showButton = false,
 			this.creation = false,
-			this.tab = false
+			this.tab = false,
+			
 
 		},
 
@@ -122,6 +124,7 @@ export default {
 			this.showButton = false,
 			this.creation = false,
 			this.tab = false
+			
 
 		}
 	}

@@ -25,26 +25,9 @@ exports.create = async (req, res, next) => {
         const dateFinReelle = req.body.dateFinReelle;
         const chargeConsommee = req.body.chargeConsommee;
         const avancement = req.body.avancement;
-        // if responableId not found
-        //const foundResponsable = await User.findOne({ userId:responsableId }).select("+password");
-        /*
-        const foundResponsable = await User.findOne({ _id: responsableId }).select("+password");
-        if (!foundResponsable) {
-            const response = {
-                message: "User not found"
-            };
-            return res.status(500).send(response);
-        }
-        const foundProjet = await Projet.findOne({ _id: projetId });
-        if (!foundProjet) {
-            const response = {
-                message: "Projet not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
-        Error.checkUser(responsableId);
-        Error.checkProjet(projetId);
+
+        await Error.checkUser(responsableId);
+        await Error.checkProjet(projetId);
 
         // if projectId not found
         console.log("Create Tache");
@@ -83,7 +66,7 @@ exports.delete = async (req, res, next) => {
     try {
         const tacheId = req.params.tacheId;
 
-        Error.checkTache(tacheId);
+        await Error.checkTache(tacheId);
 
         Tache.findByIdAndRemove(tacheId, (err, tache) => {
             // Error if detected :
@@ -107,17 +90,7 @@ exports.update = async (req, res, next) => {
         const tacheId = req.body.tacheId;
         const modif = req.body.modif;
 
-        Error.checkTache(tacheId);
-        /*
-        var foundId = await Tache.find({ _id: tacheId });
-        console.log(tacheId)
-        if (tacheId == undefined || foundId.length == 0) {
-            const response = {
-                message: "tacheId not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
+        await Error.checkTache(tacheId);
 
         Tache.findByIdAndUpdate(tacheId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
@@ -140,16 +113,7 @@ exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
     try {
         const tacheId = req.params.tacheId;
-        Error.checkTache(tacheId);
-        /*
-        var foundId = await Tache.find({ _id: tacheId });
-        if (tacheId == undefined || foundId.length == 0) {
-            const response = {
-                message: "tacheId not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
+        await Error.checkTache(tacheId);
 
         Tache.findById(tacheId).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
@@ -160,26 +124,7 @@ exports.getById = async (req, res, next) => {
 exports.getByUserId = async (req, res, next) => {
     console.log("Get Task by User");
     try {
-        /*
-        const _userId = req.params.userId;
-        var user_; // _id of user
-        var foundId = await User.find({ userId: _userId }, (err, user) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            else user_ = user[0]._id;
-            console.log(user[0]._id);
-        });
-        if (_userId == undefined || foundId.length == 0) {
-            const response = {
-                message: "userId not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
-        // TODO ? nomUtilisateur ou userId
-        //Error.checkUserByNomUtilisateur(req.params.nomUtilisateur);
-        Error.checkUserByNomUtilisateur(req.params.userId);
+        Error.checkUserByNomUtilisateur(req.params.nomUtilisateur);
         var user_; // _id of user
         var foundId = await User.find({ userId: _userId }, (err, user) => {
             if (err) {
@@ -200,16 +145,7 @@ exports.getByUser = async (req, res, next) => {
 
     try {
         const _userId = req.params.userId;
-        /*
-        var foundId = await User.find({ _id: _userId });
-        if (_userId == undefined || foundId.length == 0) {
-            const response = {
-                message: "userId not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
-        Error.checkUser(_userId);
+        await Error.checkUser(_userId);
         Tache.find({ responsableId: _userId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err)
             return res.status(200).send(tache);
@@ -221,16 +157,7 @@ exports.getByProjet = async (req, res, next) => {
     try {
         console.log("Get Task by Projet");
         const _projetId = req.params.projetId;
-        /*
-        var foundId = await Projet.find({ _id: _projetId });
-        if (_projetId == undefined || foundId.length == 0) {
-            const response = {
-                message: "Projet not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
-        Error.checkProjet(_projetId)
+        await Error.checkProjet(_projetId)
         Tache.find({ projetId: _projetId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);
@@ -242,17 +169,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
     try {
         const responsableId = req.params.responsableId;
-        // if responableId not found
-        /*
-        const foundResponsable = await User.findOne({ _id: responsableId }).select("+password");
-        if (!foundResponsable) {
-            const response = {
-                message: "User not found"
-            };
-            return res.status(500).send(response);
-        }
-        */
-        Error.checkUser(responsableId);
+        await Error.checkUser(responsableId);
 
         Tache.aggregate([
             {

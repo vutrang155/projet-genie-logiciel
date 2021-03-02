@@ -10,7 +10,7 @@ exports.create = async (req, res, next) => {
 		client.nom = req.body.nom;
 		client.domaine = req.body.domaine;
 		client.adresse = req.body.adresse;
-		Error.checkClientNom(client.nom);
+		await Error.checkClientNom(client.nom);
 		client = await client.save();
 		return res.send({ client });
 	} catch (err) { next(err); }
@@ -20,7 +20,7 @@ exports.getbyId = async (req, res, next) => {
 	console.log('Get Client by ID');
 	try {
 		let id = req.params.id;
-		Error.checkClient(id);
+		await Error.checkClient(id);
 		Client.findById(id, (err, client) => {
 			if (err) return res.status(500).send(err);
 			return res.status(200).send(client);
@@ -40,7 +40,7 @@ exports.delete = async (req, res, next) => {
 	console.log("Delete Client by id");
 	try {
 		const clientId = req.params.clientId;
-		Error.checkClient(clientId);
+		await Error.checkClient(clientId);
 		/*
 		var foundId = await Client.find({ _id: clientId });
 		if (clientId === undefined || foundId.length === 0) {
@@ -71,7 +71,7 @@ exports.update = async (req, res, next) => {
 		const clientId = req.body.clientId;
 		const modif = req.body.modif;
 
-		Error.checkClient(clientId);
+		await Error.checkClient(clientId);
 
 		Client.findByIdAndUpdate(clientId, modif,
 			// Ask mongoose to return the updated version of doc instead of pre-updated one

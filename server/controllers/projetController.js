@@ -13,6 +13,7 @@ exports.create = async (req, res, next) => {
         projet.nom = req.body.nom;
         await Error.checkUser(req.body.responsableId);
         projet.responsableId = req.body.responsableId;
+        console.log(req.body.clientId)
         await Error.checkClient(req.body.clientId);
         projet.clientId = req.body.clientId;
         await Error.checkContact(req.body.contactId);
@@ -29,7 +30,7 @@ exports.create = async (req, res, next) => {
     } catch (err) {
         console.log(err)
         const response = {
-            message: "Impossible de créer la projet"
+            message: err.message
         };
         return res.status(500).send(response);
     }

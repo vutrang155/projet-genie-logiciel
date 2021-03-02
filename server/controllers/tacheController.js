@@ -53,7 +53,7 @@ exports.create = async (req, res, next) => {
         catch (err) {
             console.log(err)
             const response = {
-                message: "Impossible de créer la tache"
+                message: err.message
             };
             return res.status(500).send(response);
         }

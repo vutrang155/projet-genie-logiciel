@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(collaborateur, index) in collaborateurs" :key="index">
-            <div class="row1Projet" :style="{backgroundColor:'#00aaff'}">
+            <div class="row1Projet" :style="{backgroundColor:color}">
                 <div class="col1Projet">
 
 
@@ -60,9 +60,9 @@ export default {
         }
     },
     methods:{ 
-        getAllCollaborateurs() {
+        async getAllCollaborateurs() {
             //envoie à l'API
-            axios.get('/user/getAll')
+            await axios.get('/user/getAll')
                 .then(res => {
                     //console.log(res)
                     this.collaborateurs = res.data
@@ -82,11 +82,6 @@ export default {
     },
     created() {
         this.getAllCollaborateurs();
-    }, 
-    computed: { 
-        formattedDate(date) {
-            return date.toISOString().slice(0,10)
-        }
     }
 }
 </script>

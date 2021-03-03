@@ -1,95 +1,109 @@
 <template>
-  <div>
-    <p>MODIFICATION COLLABORATEUR</p>
-    <form class="review-form" @submit.prevent="updateCollaborateur">
+  <p>MODIFICATION COLLABORATEUR</p>
+  <form class="review-form" @submit.prevent="updateCollaborateur">
 
-      <p v-if="errors.length">
-        <b> Veuillez corriger les erreurs ci-dessous:</b>
-        <ul>
-          <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
-        </ul>
-      </p>
-      <p class="titre">
-        Modification du collaborateur
-      </p>
+    <p v-if="errors.length">
+      <b> Veuillez corriger les erreurs ci-dessous:</b>
+      <ul>
+        <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
+      </ul>
+    </p>
+    <p class="titre">
+      Modification du collaborateur
+    </p>
 
-      <p>
-        <label for="nomUtilisateur" >UserName:</label>
-        <input id="nomUtilisateur" v-model="nomUtilisateur" placeholder="UserName" :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="nomUtilisateur" >UserName:</label>
+      <input id="nomUtilisateur" v-model="nomUtilisateur" placeholder="UserName" :style="{width:'auto'}">
+    </p>
 
-      <!--<p>
-        <label for="userId" >Id de l'utilisateur:</label>
-        <input id="userId" v-model="userId" placeholder="userId" :style="{width:'auto'}">
-      </p>
+    <!--<p>
+      <label for="userId" >Id de l'utilisateur:</label>
+      <input id="userId" v-model="userId" placeholder="userId" :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="password" >Mot de passe:</label>
-        <input id="password" v-model="password" placeholder="Mot de passe" :style="{width:'auto'}">
-      </p>-->
+    <p>
+      <label for="password" >Mot de passe:</label>
+      <input id="password" v-model="password" placeholder="Mot de passe" :style="{width:'auto'}">
+    </p>-->
 
-      <p>
-        <label for="nom" >Nom:</label>
-        <input id="nom" v-model="nom" placeholder="Nom" :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="nom" >Nom:</label>
+      <input id="nom" v-model="nom" placeholder="Nom" :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="prenom" >Prénom:</label>
-        <input id="prenom" v-model="prenom" placeholder="Prénom" :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="prenom" >Prénom:</label>
+      <input id="prenom" v-model="prenom" placeholder="Prénom" :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="adresse" >Adresse:</label>
-        <input id="adresse" v-model="adresse" placeholder="Adresse" :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="adresse" >Adresse:</label>
+      <input id="adresse" v-model="adresse" placeholder="Adresse" :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="numeroDeTelephone" >Numéro de téléphone:</label>
-        <input id="numeroDeTelephone" v-model="numeroDeTelephone" placeholder="XX XX XX XX XX " :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="numeroDeTelephone" >Numéro de téléphone:</label>
+      <input id="numeroDeTelephone" v-model="numeroDeTelephone" placeholder="XX XX XX XX XX " :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="adresseMail" >Adresse e-mail:</label>
-        <input id="adresseMail" v-model="adresseMail" placeholder="xxxx@xxxx.xxx" :style="{width:'auto'}">
-      </p>
+    <p>
+      <label for="adresseMail" >Adresse e-mail:</label>
+      <input id="adresseMail" v-model="adresseMail" placeholder="xxxx@xxxx.xxx" :style="{width:'auto'}">
+    </p>
 
-      <p>
-        <label for="datepickerEntree">Date d'entrée:</label>
-        <b-form-datepicker id="datepickerEntree" placeholder="Choisissez une date" v-model="dateEntree" reset-button></b-form-datepicker>
-      </p>
-
-      <p>
-        <label for="datepickerSortie">Date de sortie:</label>
-        <b-form-datepicker id="datepickerSortie" placeholder="Choisissez une date" v-model="dateSortie" reset-button></b-form-datepicker>
-      </p>
-
-      <!--<label for="compteActive">Compte activé</label> -->
-      
-      <div class="checkboxes">
-        <label for="compteActive"> 
-          <span>Compte Activé : </span><input type="checkbox" id="compteActive" v-model="compteActive" >
-        </label>
-      </div>
-      <div class="checkboxes">
-        <label for="chefDeProjet"> 
-          <span>Chef de projet : </span><input type="checkbox" id="chefDeProjet" v-model="chefDeProjet">
-        </label>
-      </div>
-      <div class="checkboxes">
-        <label for="administrateur"> 
-          <span>Administrateur : </span><input type="checkbox"  v-model="administrateur">
-        </label>
-      </div> 
-
-      <p>
-        <input type="submit" value="Modifier" :style="{width:'auto'}">
-      </p>
+    <!--
+    <div>
+      <datepicker></datepicker>
+    </div>
+    -->
     
-    </form>
+    <p>
+      <label for="dateEntree">Date d'entrée:</label>
+      <input type="date" :style="{width:'auto'}"
+      vmodel="dateEntree" >
+      
+       <!-- Mettre ici comme value de base la date d'aujourd'hui-->
+    </p>
+      {{ dateEntree }}
+    <p>
 
-    <p id="succes" v-if="statusResOk"> Collaborateur modifié avec succès ! </p>
+    </p>
 
-  </div>
+    <p>
+      <label for="dateSortie">Date de sortie:</label>
+      <input type="date" id="dateSortie" name="dateSortie" :style="{width:'auto'}"  vmodel="dateSortie">
+      
+      <!--min="2021-01-01" max="2022-12-31" -->
+    </p>
+
+    <!--<label for="compteActive">Compte activé</label> -->
+    
+    <div class="checkboxes">
+      <label for="compteActive"> 
+        <span>Compte Activé : </span><input type="checkbox" id="compteActive" v-model="compteActive" >
+      </label>
+    </div>
+    <div class="checkboxes">
+      <label for="chefDeProjet"> 
+        <span>Chef de projet : </span><input type="checkbox" id="chefDeProjet" v-model="chefDeProjet">
+      </label>
+    </div>
+    <div class="checkboxes">
+      <label for="administrateur"> 
+        <span>Administrateur : </span><input type="checkbox"  v-model="administrateur">
+      </label>
+    </div> 
+
+    <p>
+      <input type="submit" value="Modifier" :style="{width:'auto'}">
+    </p>
+  
+  </form>
+
+  <p id="succes" v-if="statusResOk"> Collaborateur modifié avec succès ! </p>
+
+
 </template>
 
 <script>
@@ -129,9 +143,9 @@ export default {
         this.getCollaborateur()
     },
     methods:{
-        async getCollaborateur(){
+        getCollaborateur(){
             console.log("idCollaborateurToModify : " + this.idCollaborateurToModify )
-            await axios.get('user/getById/' + this.idCollaborateurToModify) 
+            axios.get('user/getById/' + this.idCollaborateurToModify) 
               .then(res => {
                   console.log(res)
                   this.user = res.data

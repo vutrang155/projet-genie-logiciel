@@ -54,12 +54,12 @@
       -->
       <p>
         <label for="datepickerEntree">Date d'entrée:</label>
-        <b-form-datepicker id="datepickerEntree" v-model="dateEntree"></b-form-datepicker>
+        <b-form-datepicker id="datepickerEntree" placeholder="Choisissez une date" v-model="dateEntree" reset-button></b-form-datepicker>
       </p>
 
       <p>
         <label for="datepickerSortie">Date de sortie:</label>
-        <b-form-datepicker id="datepickerSortie" placeholder="Choisissez une date" v-model="dateSortie"></b-form-datepicker>
+        <b-form-datepicker id="datepickerSortie" placeholder="Choisissez une date" v-model="dateSortie" reset-button></b-form-datepicker>
       </p>
 
       <!--<label for="compteActive">Compte activé</label> -->
@@ -122,7 +122,7 @@ export default {
     this.setDateToToday()
   },*/
   methods:{
-    addCollaborateur(){
+    async addCollaborateur(){
       this.errors = []
       this.statusResOk = false
       if(this.nomUtilisateur && this.password && this.nom && this.prenom) { //champs requis
@@ -145,7 +145,7 @@ export default {
         }
         console.log(userToCreate)
         //envoie à l'API
-        axios.post('/user/new', userToCreate)
+        await axios.post('/user/new', userToCreate)
         .then(res => {
           console.log(res)
           if (res.status === 200) {

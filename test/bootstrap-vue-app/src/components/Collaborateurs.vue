@@ -21,6 +21,7 @@ import addCollabo from './Collaborateurs/addCollabo.vue'
 import listCollaborateurs from './Collaborateurs/listCollaborateurs.vue'
 import modifierCollaborateur from './Collaborateurs/modifierCollaborateur.vue'
 //import { EventBus } from '../event-bus.js';
+
 export default {
 	name:'Collaborateurs',
   components:{

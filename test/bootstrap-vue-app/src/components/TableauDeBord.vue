@@ -21,7 +21,7 @@
     <div class="column" >
 
       <p>: Terminé</p>
-    </div>
+    </div>  
 
   </div>
 

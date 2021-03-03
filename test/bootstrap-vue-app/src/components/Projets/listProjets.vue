@@ -3,11 +3,11 @@
 <p> listProjets </p>
 
 
-	
+
 
 
 	<div v-for="(projet,index) in projets" :key="index">
-		<b-card-header  header-tag="header" class="p-1"  role="tab" :style="{width:'80%'}">	
+		<b-card-header  header-tag="header" class="p-1"  role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'projet-' + projet._id" variant="info">
 				{{getColor(projet.etat)}}
 			<div v-bind:class="projet.etat" :style="{backgroundColor:color}">
@@ -20,26 +20,26 @@
 			</div>
 			<div class="row2Projet">
 				<p class="col2Projet">
-					Responsable: 
+					Responsable:
 				</p>
 				<p class="col2Projet">
 					Client: {{projet.clientId.nom}}
 				</p>
 				<p class="col2Projet">
-					Contact: {{projet.contactId.prenom}} {{projet.contactId.nom}} 
+					Contact: {{projet.contactId.prenom}} {{projet.contactId.nom}}
 				</p>
 				<!--
 				<p>
 					<input type="submit" value="Modifier" :style="{width:'auto'}">
 				</p>-->
-				
 
-				
+
+
 			</div>
 			<!--<div id="myDIV">
 				This is my DIV element.
-			
-			
+
+
 			<ModifyProjet :id="projet.id" />
 			</div>-->
 
@@ -49,10 +49,12 @@
 		<b-collapse :id="'projet-' + projet._id" accordion="my-accordion" role="tabpanel">
         <b-card-body>
 					<button v-on:click="modifierProjet(projet._id)">Modifier</button>
-					
+					<button v-on:click="creerTache()">Créer tâche</button>
 
-					<listTaskByProjet :ProjetId="projet._id"  />
-					
+					<listTaskByProjet :ProjetId="projet._id" />
+					<addTask v-on:annulation-creation-tache="cacherCreerTache" v-if="showAddTask" :ProjetId="projet._id"/>
+					<!--<button v-on:click="cacherCreerTache()">Annuler création tâche</button>-->
+
 
         </b-card-body>
       </b-collapse>
@@ -88,12 +90,14 @@
 <script>
 import axios from 'axios';
 import listTaskByProjet from './listTaskByProjet.vue'
+import addTask from './addTask.vue'
 
 //import ModifyProjet from './ModifierProjet.vue';
 export default {
 	name:'listProjets',
 	components:{
-		listTaskByProjet
+		listTaskByProjet,
+		addTask
 	},
 	data(){
 		return{
@@ -102,9 +106,10 @@ export default {
 			client:null,
 			text:'test',
 			tasks:[],
+			showAddTask: false,
 			color:null
 		}
-		
+
 	},
 	created(){
 		this.getAllProjets()
@@ -126,12 +131,12 @@ export default {
                   }
 		},
 		modifierProjet(idProjet) {
-            //App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
-      this.$emit('modify-clicked-projet', idProjet)
-            /*if (event) {
-                alert(event.target.tagName)
-            }*/
-        },
+			//App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
+			this.$emit('modify-clicked-projet', idProjet)
+			/*if (event) {
+				alert(event.target.tagName)
+			}*/
+		},
 		methodThatForcesUpdate() {
       // ...
       this.$forceUpdate();
@@ -140,23 +145,31 @@ export default {
 			var x = document.getElementById("myDIV");
 			if (x.style.display === "none") {
 				x.style.display = "block";
-			} 
+			}
 			else {
 				x.style.display = "none";
 			}
 		},
 		getAllProjets() {
-      //envoie à l'API
-      axios.get('/projet/getAll')
-      .then(res => {
-        //console.log(res)
-        this.projets = res.data
-        for(let key in this.projets) {
-          console.log(this.projets[key])
-        }
-      })
-      .catch(error => console.log(error))
-    }/*,
+			//envoie à l'API
+			axios.get('/projet/getAll')
+			.then(res => {
+				//console.log(res)
+				this.projets = res.data
+				for(let key in this.projets) {
+					console.log(this.projets[key])
+				}
+			})
+			.catch(error => console.log(error))
+		},
+		creerTache() {
+			this.showAddTask = true
+		},
+		cacherCreerTache() {
+			this.showAddTask = false
+		}
+
+		/*,
 		getRespoFromId(id){
 			axios.get("/Client/getbyId/'id'")
 			.then(res => {
@@ -166,13 +179,13 @@ export default {
 		}*/
 	}
 
-		
 
-	
-	
+
+
+
 }
 </script>
-	
+
 
 <style>
 #myDIV {

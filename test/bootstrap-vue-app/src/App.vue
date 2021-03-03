@@ -51,6 +51,17 @@ import Notifications from './components/Notifications.vue'
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080/api/'
 
+//Pour afficher les dates sous la forme DD/MM/YYYY
+import Vue from 'vue'
+import moment from 'moment'
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD/MM/YYYY')
+  }
+});
+
+
+
 export default {
   name: 'App',
   components: {
@@ -69,6 +80,8 @@ export default {
 
   }
 }
+
+
 </script>
 
 <style>

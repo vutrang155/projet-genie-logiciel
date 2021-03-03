@@ -157,7 +157,6 @@ export default {
           dateDebutPrevisionnelle: this.dateDebutPrevisionnelle,
           description: this.description,
           chargeAssociee: this.chargeAssociee,
-          dateFinPrevisionnelle:"2012-01-01"
         }
         console.log(task)
 

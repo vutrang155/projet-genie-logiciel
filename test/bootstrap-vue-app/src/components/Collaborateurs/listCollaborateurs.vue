@@ -91,7 +91,7 @@ export default {
 	border: 1px solid #000000;
 	margin: 10px;
 	padding: 10px;
-	width: 80%;
+	width: 95%;
 	height:120px;
 }
 .row2Projet {

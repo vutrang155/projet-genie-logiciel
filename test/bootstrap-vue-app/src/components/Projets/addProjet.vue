@@ -8,7 +8,7 @@
       <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
     </ul>
   </p>
-    <p>
+    <p class="titre">
       Creation d'un nouveau Projet
     </p>
 

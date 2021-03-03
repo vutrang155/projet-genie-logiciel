@@ -14,8 +14,9 @@ const tache = mongoose.Schema({
         ref: 'Projet'
     },
     etat:{
-        type: Number,
-        required: true, // enum: ["TODO","FINISHED","WIP","ABANDONED"], default : 'TODO'
+        type: String,
+        enum: ["Afaire","Encours","Termine","Abandonne"],
+        required: true, // enum: ["Afaire","Encours","Termine","Abandonne"], default : 'TODO'
     },
     description: {
         type: String
@@ -37,6 +38,10 @@ const tache = mongoose.Schema({
     dateFinReelle:{
         type:Date,
     },
+    predecesseur:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tache'
+    }],
     chargeConsommee:{
         type:Number,
     },

@@ -4,8 +4,58 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Tache = require("../models/Tache");
 const Projet = require("../models/Projet");
-const Error = require('../controllers/errorController')
+const errCon = require('../controllers/errorController')
 
+var updateProjetDate = (pId) => {
+    // $ne to check null value
+    console.log("Here"+pId);
+    Tache.find({projetId:pId, dateDebutReelle: { $ne: null } }).sort({ dateDebutReelle: 0 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateDebutReelle : taches[0].dateDebutReelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+
+    Tache.find({projetId:pId, dateFinReelle: { $ne: null } }).sort({ dateFinReelle: -1 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateFinReelle : taches[0].dateFinReelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+    Tache.find({projetId:pId, dateDebutPrevisionnelle: { $ne: null } }).sort({ dateDebutPrevisionnelle: 0 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateDebutPrevisionnelle : taches[0].dateDebutPrevisionnelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+
+    Tache.find({projetId:pId, dateFinPrevisionnelle: { $ne: null } }).sort({ dateFinPrevisionnelle: -1 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateFinPrevisionnelle : taches[0].dateFinPrevisionnelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+};
 exports.create = async (req, res, next) => {
     /**let convertDate = function(strDate) {
         var dateParts = strDate.split("/");
@@ -26,8 +76,8 @@ exports.create = async (req, res, next) => {
         const chargeConsommee = req.body.chargeConsommee;
         const avancement = req.body.avancement;
 
-        await Error.checkUser(responsableId);
-        await Error.checkProjet(projetId);
+        await errCon.checkUser(responsableId);
+        await errCon.checkProjet(projetId);
 
         // if projectId not found
         console.log("Create Tache");
@@ -48,12 +98,16 @@ exports.create = async (req, res, next) => {
             tache.avancement = avancement;
 
             tache = await tache.save();
+
+            // UPDATE PROJECT DATE :
+            updateProjetDate(projetId)
+
             return res.send({ tache });
         }
         catch (err) {
             console.log(err)
             const response = {
-                message: "Impossible de créer la tache"
+                message: err.message
             };
             return res.status(500).send(response);
         }
@@ -66,7 +120,7 @@ exports.delete = async (req, res, next) => {
     try {
         const tacheId = req.params.tacheId;
 
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
 
         Tache.findByIdAndRemove(tacheId, (err, tache) => {
             // Error if detected :
@@ -79,6 +133,9 @@ exports.delete = async (req, res, next) => {
                 id: tache._id
             };
 
+            // UPDATE PROJECT DATE :
+            updateProjetDate(tache.projetId);
+
             return res.status(200).send(response);
         });
     } catch (err) { next(err); }
@@ -90,7 +147,13 @@ exports.update = async (req, res, next) => {
         const tacheId = req.body.tacheId;
         const modif = req.body.modif;
 
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
+
+        // Check if responsableId found
+        if (modif.responsableId) 
+            await errCon.checkUser(modif.responsableId);
+        if (modif.projetId)
+            await errCon.checkProjet(modif.projetId);
 
         Tache.findByIdAndUpdate(tacheId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
@@ -98,6 +161,11 @@ exports.update = async (req, res, next) => {
             (err, tache) => {
                 // If error
                 if (err) return res.status(500).send(err);
+
+                // UPDATE PROJECT DATE :
+                updateProjetDate(tache.projetId)
+
+
                 return res.send(tache);
             })
     } catch (err) { next(err); }
@@ -113,12 +181,13 @@ exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
     try {
         const tacheId = req.params.tacheId;
-        await Error.checkTache(tacheId);
+        await errCon.checkTache(tacheId);
 
         Tache.findById(tacheId).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);
         });
+        
     } catch (err) { next(err); }
 };
 exports.getByUserId = async (req, res, next) => {
@@ -145,7 +214,7 @@ exports.getByUser = async (req, res, next) => {
 
     try {
         const _userId = req.params.userId;
-        await Error.checkUser(_userId);
+        await errCon.checkUser(_userId);
         Tache.find({ responsableId: _userId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err)
             return res.status(200).send(tache);
@@ -157,7 +226,8 @@ exports.getByProjet = async (req, res, next) => {
     try {
         console.log("Get Task by Projet");
         const _projetId = req.params.projetId;
-        await Error.checkProjet(_projetId)
+        await errCon.checkProjet(_projetId)
+
         Tache.find({ projetId: _projetId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);
@@ -169,12 +239,12 @@ exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
     try {
         const responsableId = req.params.responsableId;
-        await Error.checkUser(responsableId);
-
+        await errCon.checkUser(responsableId);
+        console.log(responsableId)
         Tache.aggregate([
             {
                 '$lookup': {
-                    'from': "projects",
+                    'from': "projets",
                     'localField': "projetId",
                     'foreignField': "_id",
                     'as': "p"
@@ -184,7 +254,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
                 '$unwind': "$p"
             },
             {
-                '$match': { "p.responsableId": responsableId }
+                '$match': { "p.responsableId": mongoose.Types.ObjectId(responsableId) }
             },
             {
                 '$project': {
@@ -209,6 +279,7 @@ exports.getByResponsableProjet = async (req, res, next) => {
             }
         ]).exec((err, taches) => {
             // Error if detected :
+            console.log(taches)
             if (err) return res.status(500).send(err);
 
             // if not :

@@ -8,8 +8,10 @@
       <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
     </ul>
   </p>
-    <p>
+    <p class="titre">
+      <b>
       Création d'une nouvelle tâche
+      </b>
     </p>
 
     <p>
@@ -23,7 +25,7 @@
     </p>
 
     <p>
-      <label for="responsable">Responsable:</label>
+      <label for="responsable">Collaborateur responsable de la tâche:</label>
       <select v-model="responsable">
         <option>Jean-Claude</option>
         <option>Jean-Marc</option>
@@ -100,6 +102,7 @@ export default {
       state:null,
       startingDate:null,
       avancement:0,
+      Description:null,
 
       errors: []
     }
@@ -164,5 +167,8 @@ label {
    display: block;
    resize: none;
 
+ }
+ .titre{
+   font-size: x-large;
  }
 </style>

@@ -1,7 +1,7 @@
 <template>
 <div>
 	
-	<listTasks @task-added="addTask"/>
+	<listTasks/> <!-- @task-added="addTask"/>-->
 
 
 
@@ -10,36 +10,35 @@
     <div class="color-box" :style="{ backgroundColor:'#00aaff'}"></div>
     <div class="column" >
 
-      <p>:To Do</p>
+      <p>: A faire</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#eeff00'}"></div>
     <div class="column" >
 
-      <p>:On Going</p>
+      <p>: En cours</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#00ff04'}"></div>
     <div class="column" >
 
-      <p>:Done</p>
+      <p>: Terminé</p>
     </div>
 
   </div>
 
-  <SaisieAvancement/>
+  
   </div>
 </template>
 
 <script>
 import listTasks from './TableauDeBord/listTasks.vue'
-import SaisieAvancement from './TableauDeBord/SaisieAvancement.vue'
+
 
 
 
 export default {
 	name: 'TableauDeBord',
   components:{
-    listTasks,
-    SaisieAvancement
+    listTasks
   },
 	data(){
     return{

@@ -1,6 +1,6 @@
 <template>
 <div>
-	<form class="review-form" @submit.prevent="addProjet">
+	<form class="review-form" @submit.prevent="ModifierProjet">
 
   <p v-if="errors.length">
     <b> Please correct the following error(s):</b>
@@ -9,7 +9,7 @@
     </ul>
   </p>
     <p>
-      Creation d'un nouveau Projet
+      Modifier un Projet
     </p>
 
     <p>
@@ -20,10 +20,8 @@
     <p>
       <label for="responsable">Responsable:</label>
       <select v-model="responsable">
-        <option v-for="(responsable,index) in responsables" :key="index"
-        v-bind:value="responsable">
+        <option v-for="(responsable,index) in responsables" :key="index">
           {{ responsable.prenom }}  {{ responsable.nom}}
-          
         </option>
 
       </select>
@@ -32,26 +30,22 @@
     <p>
       <label for="client">Client:</label>
       <select v-model="client">
-        <option v-for="(client,index) in clients" :key="index"
-        v-bind:value="client">
+        <option v-for="(client,index) in clients" :key="index">
             {{ client.nom}}
         </option>
 
       </select>
     </p>
 
-    <p>
+        <p>
       <label for="contact">Contact:</label>
       <select v-model="contact">
-        <option v-for="(contact,index) in contacts" :key="index"
-        v-bind:value="contact">
+        <option v-for="(contact,index) in contacts" :key="index">
             {{ contact.prenom}} {{contact.nom}}
         </option>
 
       </select>
     </p>
-
-    
 
     <p>
       <label for="state">Etat:</label>
@@ -80,23 +74,37 @@
 
 
     <p>
-      <input type="submit" value="Créer" :style="{width:'auto'}">
+      <input type="submit" value="Enregistrer" :style="{width:'auto'}">
     </p>
 
   </form>  
+  <p id="succes" v-if="statusResOk"> Projet modifié avec succès ! </p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 export default {
-	name:'addProjet',
+	name:'modifierProjet',
+  props:{
+    idProjetToModify:{
+      type:String,
+      required:true
+    }
+  },
 	data() {
     return {
+      projet:null,
+
       nom:null,
       responsable:null,
+      responsableNom:null,
+      responsablePrenom:null,
       client:null,
+      clientNom:null,
       contact:null,
+      contactNom:null,
+      ContactPrenom:null,
       Etat:null,
       dateFinReelle:null,
 			dateDebutReelle:null,
@@ -107,15 +115,49 @@ export default {
       clients:[],
       contacts:[],
 
-      errors: []
+      errors: [],
+
+      statusResOk: false,
     }
   },
   created(){
+    this.getProjet(),
     this.getResponsables(),
     this.getClients(),
     this.getContacts()
+    
   },
   methods:{
+    getProjet(){
+            console.log("idProjetToModify : " + this.idProjetToModify )
+            axios.get('projet/getById/' + this.idProjetToModify) 
+              .then(res => {
+                  console.log(res)
+                  this.projet = res.data
+                  console.log("nom " + res.data.nom)
+                  //maj des champs avec les champs du collaborateur
+                  this.nom = this.projet.nom
+                  this.responsable = this.projet.responsableId
+                  this.responsablePrenom = this.responsable.prenom
+                  this.responsableNom = this.responsable.nom
+                  this.client = this.projet.clientId
+                  this.clientNom = this.client.nom
+                  this.contact = this.projet.contactId
+                  this.contactNom = this.contactId.nom
+                  this.contactPrenom = this.contactId.prenom
+                  this.Etat =this.projet.Etat
+                  
+
+                  
+              })
+              .catch(error => console.log(error))
+
+            //this.nom = this.user.nom
+            //this.userId = this.user.userId
+            /*this.nom = this.user.nom
+            this.prenom = this.user.prenom
+            this.adresse = this.user.adresse*/
+        },
     getResponsables() {
       let type = 2
       axios.get('/user/getByType/' + type)
@@ -151,31 +193,32 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    addProjet(){
-      console.log(this.responsable)
-      let projet = {
+    async ModifierProjet(){
+			this.errors = []
+			this.statusResOk = false
+      let projetToModify = { //à modifier
+        projetId:this.projetId,
+        modif:{
           nom:this.nom,
-          responsableId:this.responsable._id,
+          responsableId:this.responsable._id/*,
           clientId:this.client._id,
-          contactId:this.contact._id,
-          etat: "Afaire",
-          dateDebutPrevisionnelle:null,
-          dateFinPrevisionnelle:null,
-          dateDebutReelle:null,
-          dateFinReelle:null
+          contactId:this.contact._id*/
+          
+
         }
-        console.log(projet)
-      axios.post('/projet/create', projet)
+      }
+      axios.put('/projet/update', projetToModify) //à modifier
 			.then(res => {
         console.log(res)
-        const projet = res.data
-        this.responsable = projet.responsable
-        this.nom = projet.nom
-        this.etat = projet.etat
+        if (res.status === 200) {
+                this.statusResOk = true
+                console.log("statusResOk" + this.statusResOk)
+              }
 			})
 			.catch(error => console.log(error))
 
-
+      console.log("modify-done dans modifierProjet, statusResOk : " + this.statusResOk)
+      this.$emit('modify-done-projet', this.statusResOk)
     }
   }
 	

@@ -35,8 +35,9 @@
     <div v-if="creation"> <addContact v-bind:idclient=this.idclient> </addContact>  </div>
 
     <div v-if="showButton">
-        <button v-on:click="clickModif">Modifier </button> <br> <br>
-        <button v-on:click="clickCreate">Créer</button>
+        <button v-on:click="clickModif">Modifier Contact </button> <br> <br>
+        <button v-on:click="clickCreate">Créer Contact </button> <p>    </p>
+        <button v-on:click="clickSuppr">Supprimer Contact </button>
     </div>
 
     <div v-if="modif">  <modifContact v-bind:contactcible=this.contactmodif></modifContact>  </div> 
@@ -79,6 +80,9 @@ export default {
 	created(){
 		this.getContact()
 	},
+	updated(){
+		this.getContact()
+	},
 	methods: {
 
 		select(row){
@@ -103,6 +107,22 @@ export default {
 			this.creation = true,
 			this.tab = false,
 			this.errors = []
+		},
+		clickSuppr(){
+			if(this.contactmodif != null){
+				axios.delete('/contact/delete/'+this.contactmodif._id)
+				.then(res => {
+				console.log(res)
+				this.contacts = res.data			
+				})
+				.catch(error => console.log(error))
+			}
+			else{
+				console.log("Contact non selectionné")
+				this.errors = []
+				this.errors.push("Contact non selectionné")
+			}
+
 		},
 		clickModif(){
 			if(this.contactmodif != null){

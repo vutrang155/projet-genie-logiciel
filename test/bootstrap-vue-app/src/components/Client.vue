@@ -5,7 +5,7 @@
     <p> Clients </p>
 
     <div v-if="showButton">
-        <button v-on:click="clickCreate">Créer</button>  
+        <button v-on:click="clickCreate">Créer Client</button>  
         
     </div>
 
@@ -32,9 +32,9 @@
                 <tr v-for="(row,index) in clients" :key="index">
                     <td v-for="(col,index) in columns" :key="index" v-on:click="setaccess(row)"> {{row[col]}}  </td>  
                     <div> 
-                    <br> <button v-on:click="select(row)">Modifier</button> </div> <br>
+                    <br> <button v-on:click="select(row)">Modifier Client</button> </div> <br>
                     <div> 
-                    <br> <button v-on:click="suppr(row)">Supprimer</button> </div> <br>  
+                    <br> <button v-on:click="suppr(row)">Supprimer Client</button> </div> <br>  
                 </tr> 
             </tbody>
         </table>

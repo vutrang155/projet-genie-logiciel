@@ -99,7 +99,7 @@ import axios from 'axios';
 			this.getClients()
 		},
 
-		computed(){
+		updated(){
 			this.updateClients()
 		},
 

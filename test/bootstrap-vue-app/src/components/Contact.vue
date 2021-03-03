@@ -84,6 +84,7 @@ export default {
 		select(row){
 			this.contactmodif = row
 			console.log(this.contactmodif)
+			this.errors= []
 		},
 		getContact(){
 			axios.get('/contact/getbyClient/'+this.idclient._id)  

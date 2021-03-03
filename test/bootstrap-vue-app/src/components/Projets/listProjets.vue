@@ -19,7 +19,7 @@
 			</div>
 			<div class="row2Projet">
 				<p class="col2Projet">
-					Responsable: 
+					Responsable: {{projet.clientId.nom}}
 				</p>
 				<p class="col2Projet">
 					Client: {{projet.clientId.nom}}
@@ -199,7 +199,7 @@ export default {
 
 }
 .col2Projet{
-	width:31%;
+	width:33%;
 
 }
 .row {

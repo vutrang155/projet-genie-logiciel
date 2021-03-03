@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div> test list 1</div>
+
   
 	<div v-for="(task,index) in tasks" :key="index">
 		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	
@@ -14,13 +14,13 @@
 
 					</div>
           <div class="row2Projet">
-						<p class="col2Projet">
+						<p class="col2task">
 							Responsable: {{task.responsableId.prenom}} {{task.responsableId.nom}}
 						</p>
-						<p class="col2Projet">
+						<p class="col2task">
 							Avancement: {{task.avancement}}
 						</p>
-						<p class="col2Projet">
+						<p class="col2task">
 							Projet: {{task.projetId.nom}}
 						</p>
 				<!--
@@ -95,6 +95,11 @@ export default {
 <style>
 #listTasks{
   text-align: left;
+  
+}
+.col2task{
+  width: auto;
+  margin-right: 50px;
 }
  .ToDo{
    background-color: #00aaff;

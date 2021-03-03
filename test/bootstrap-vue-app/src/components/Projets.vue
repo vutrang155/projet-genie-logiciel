@@ -1,7 +1,7 @@
 <template>
 <div>
   
-	<p>test Projets</p>
+
 	<addProjet/>
 	<div v-if="showModifyProjet == true">
     <modifierProjet v-on:modify-done-Projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />

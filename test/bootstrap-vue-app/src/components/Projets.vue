@@ -4,9 +4,10 @@
 	<p>test Projets</p>
 	<addProjet/>
 	<div v-if="showModifyProjet == true">
-    <modifierProjet v-on:modify-done-Projet="modifyDone" :idProjetToModify="idProjetToModify" />
+    <modifierProjet v-on:modify-done-Projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
   </div>
-	<listProjets v-on:modify-clicked-projet="ModifyClicked"				/>
+  <p id="succes" v-if="showModificationSucces"> ¨Projet modifié avec succès ! </p>
+	<listProjets v-on:modify-clicked-projet="modifyClicked"				/>
 	<addTask/>
 </div>
 </template>
@@ -15,20 +16,24 @@
 import addProjet from './Projets/addProjet.vue'
 import addTask from './Projets/addTask.vue'
 import listProjets from './Projets/listProjets.vue'
+import modifierProjet from './Projets/modifierProjet.vue'
 
 export default {
   name:'Projets',
 	components:{
 		addProjet,
 		addTask,
-		listProjets
+		listProjets,
+		modifierProjet
 		
 	},
 	data(){
-		showModificationSucces,
-		idProjetToModify,
-		showModifyProjet,
-		showModify
+		return{
+		showModificationSucces:false,
+		idProjetToModify:null,
+		showModifyProjet:false,
+		showModify:false
+		}
 	},
 	methods:{
 		modifyClicked(idProjet) {

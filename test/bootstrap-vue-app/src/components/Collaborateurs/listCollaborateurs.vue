@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(collaborateur, index) in collaborateurs" :key="index">
-            <div class="row1Projet" :style="{backgroundColor:color}">
+            <div class="row1Projet" :style="{backgroundColor:'#00aaff'}">
                 <div class="col1Projet">
 
 

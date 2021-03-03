@@ -22,16 +22,16 @@
 					Responsable: 
 				</p>
 				<p class="col2Projet">
-					Client: 
+					Client: {{projet.clientId.nom}}
 				</p>
 				<p class="col2Projet">
-					Contact Id: 
+					Contact: {{projet.contactId.prenom}} {{projet.contactId.nom}} 
 				</p>
 				<!--
 				<p>
 					<input type="submit" value="Modifier" :style="{width:'auto'}">
 				</p>-->
-				<button v-on:click="Modify">Modifier</button>
+				
 
 				
 			</div>
@@ -47,6 +47,7 @@
 		</b-card-header >
 		<b-collapse :id="'projet-' + projet._id" accordion="my-accordion" role="tabpanel">
         <b-card-body>
+					<button v-on:click="modifierProjet(projet._id)">Modifier</button>
 					
 
 					<listTaskByProjet :ProjetId="projet._id"  />
@@ -96,6 +97,7 @@ export default {
 	},
 	data(){
 		return{
+			statusResOk: false,
 			projets:[],
 			client:null,
 			color:'#00aaff',

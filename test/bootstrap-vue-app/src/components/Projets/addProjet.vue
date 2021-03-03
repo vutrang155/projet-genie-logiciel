@@ -20,8 +20,10 @@
     <p>
       <label for="responsable">Responsable:</label>
       <select v-model="responsable">
-        <option v-for="(responsable,index) in responsables" :key="index">
+        <option v-for="(responsable,index) in responsables" :key="index"
+        v-bind:value="responsable">
           {{ responsable.prenom }}  {{ responsable.nom}}
+          
         </option>
 
       </select>
@@ -30,8 +32,20 @@
     <p>
       <label for="client">Client:</label>
       <select v-model="client">
-        <option v-for="(client,index) in clients" :key="index">
+        <option v-for="(client,index) in clients" :key="index"
+        v-bind:value="client">
             {{ client.nom}}
+        </option>
+
+      </select>
+    </p>
+
+    <p>
+      <label for="contact">Contact:</label>
+      <select v-model="contact">
+        <option v-for="(contact,index) in contacts" :key="index"
+        v-bind:value="contact">
+            {{ contact.prenom}} {{contact.nom}}
         </option>
 
       </select>
@@ -82,6 +96,7 @@ export default {
       nom:null,
       responsable:null,
       client:null,
+      contact:null,
       Etat:null,
       dateFinReelle:null,
 			dateDebutReelle:null,
@@ -90,13 +105,15 @@ export default {
 
       responsables:[],
       clients:[],
+      contacts:[],
 
       errors: []
     }
   },
   created(){
     this.getResponsables(),
-    this.getClients()
+    this.getClients(),
+    this.getContacts()
   },
   methods:{
     getResponsables() {
@@ -122,18 +139,32 @@ export default {
       })
       .catch(error => console.log(error))
     },
+    getContacts() {
+      //envoie à l'API
+      axios.get('/contact/getAll')
+      .then(res => {
+        //console.log(res)
+        this.contacts = res.data
+        for(let key in this.contacts) {
+          console.log(this.contacts[key])
+        }
+      })
+      .catch(error => console.log(error))
+    },
     addProjet(){
+      console.log(this.responsable)
       let projet = {
           nom:this.nom,
-          responsableId:this.responsable.userId,
-          clientId:this.client.id,
-          contactId:"603dfcabeb2b26254c881207",
-          etat: "1",
+          responsableId:this.responsable._id,
+          clientId:this.client._id,
+          contactId:this.contact._id,
+          etat: "Afaire",
           dateDebutPrevisionnelle:null,
           dateFinPrevisionnelle:null,
           dateDebutReelle:null,
           dateFinReelle:null
         }
+        console.log(projet)
       axios.post('/projet/create', projet)
 			.then(res => {
         console.log(res)

@@ -15,6 +15,7 @@ const tache = mongoose.Schema({
     },
     etat:{
         type: Number,
+        enum: [0,1,2,3],
         required: true, // enum: ["TODO","FINISHED","WIP","ABANDONED"], default : 'TODO'
     },
     description: {

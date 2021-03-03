@@ -10,7 +10,7 @@
 
 		<p>
 			<label for="name" >Nom Contact:</label>
-			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+			<input id="name" v-model="nom" placeholder=nom :style="{width:'auto'}">
 		</p>
 
 		<p>

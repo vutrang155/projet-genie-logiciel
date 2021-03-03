@@ -5,7 +5,14 @@
 
 	<form class = "addContact-form" @submit.prevent = "addContact" >
 
-<p> Infos Client <br> </p>
+
+		
+		<p v-if="errors.length">
+			<b> Please correct the following error(s):</b>
+			<ul>
+				<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+			</ul>
+		</p>
 
 
 		<p> Ajouter Contact </p>
@@ -31,7 +38,7 @@
 		</p>
 
 		<p>
-			<input type="submit" value="Enregister" :style="{width:'auto'}">
+			<input type="submit" value="Enregistrer" :style="{width:'auto'}">
 		</p>
 
 	</form>	
@@ -110,8 +117,8 @@ export default{
 				}
 				else{
 				this.errors = []
-				if(!this.nom) this.errors.push("Name required")
-				if(!this.prenom) this.errors.push("Firstname required")
+				if(!this.nom) this.errors.push("Nom requis")
+				if(!this.prenom) this.errors.push("Prénom requis")
 
 			}
 

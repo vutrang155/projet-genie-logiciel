@@ -4,7 +4,16 @@
 
     <p> Contacts </p>
 
-<p> Infos Client: <br> <br> Nom: {{this.idclient.nom}} <br> Domaine: {{this.idclient.domaine}} <br> Adresse: {{this.idclient.adresse}}    </p>
+	<p> Infos Client: <br> <br> Nom: {{this.idclient.nom}} <br> Domaine: {{this.idclient.domaine}} <br> Adresse: {{this.idclient.adresse}}    </p>
+
+
+	<p v-if="errors.length">
+				<b> Please correct the following error(s):</b>
+				<ul>
+					<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+				</ul>
+	</p>
+
     <div v-if="tab">
     
         <table class ="table">
@@ -62,7 +71,8 @@ export default {
 			modif: false,
 			creation: false,
 			tab: true,
-			columns:['nom','prenom','fonction','adresse']
+			columns:['nom','prenom','fonction','adresse'],
+			errors: []
 
 		}
 	},
@@ -90,13 +100,22 @@ export default {
 			this.modif = false,
 			this.showButton = false,
 			this.creation = true,
-			this.tab = false
+			this.tab = false,
+			this.errors = []
 		},
 		clickModif(){
-			this.modif = true,
-			this.creation = false,
-			this.showButton = false,
-			this.tab = false
+			if(this.contactmodif != null){
+				this.modif = true,
+				this.creation = false,
+				this.showButton = false,
+				this.tab = false,
+				this.errors = []
+			}
+			else {
+				console.log("Contact non selectionné")
+				this.errors = []
+				this.errors.push("Contact non selectionné")
+			}
 		}
 	}	
 }

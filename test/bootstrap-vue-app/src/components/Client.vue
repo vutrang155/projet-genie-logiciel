@@ -5,11 +5,12 @@
     <p> Clients </p>
 
     <div v-if="showButton">
-        <button v-on:click="clickCreate">Créer</button>
+        <button v-on:click="clickCreate">Créer</button>  
+        
     </div>
 
     
-    <div v-if="creation"> <addClient/>  </div>
+    <div v-if="creation"> <addClient/>  </div>  
 
     <div v-if="modif"> <modifClient v-bind:idd=this.clientcible> </modifClient> </div>
 
@@ -76,6 +77,7 @@ export default {
 			contactcible: null,
 			tab: true,
 			accescontact: false
+
 		}
 	},
 

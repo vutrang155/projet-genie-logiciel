@@ -11,7 +11,9 @@ const tache = mongoose.Schema({
     },
     projetId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Projet'
+        ref: 'Projet',
+        required: true,
+
     },
     etat:{
         type: String,
@@ -27,10 +29,10 @@ const tache = mongoose.Schema({
     },
     dateFinPrevisionnelle:{
         type:Date,
-        required: true,
     },
     chargeAssociee:{
         type:Number,
+        required: true,
     },
     dateDebutReelle:{
         type:Date,

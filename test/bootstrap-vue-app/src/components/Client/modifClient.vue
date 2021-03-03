@@ -3,43 +3,69 @@
 
 <div>
 
+	<div v-if="form">
 
-	<form class = "modifClient-form" @submit.prevent = "modifClient" >
+		<form class = "modifClient-form" @submit.prevent = "modifClient" >
 
-		<p v-if="errors.length">
-			<b> Please correct the following error(s):</b>
-			<ul>
-				<li v-for="(error,index) in errors" :key="index">{{error}}</li>
-			</ul>
-		</p>
+			<p v-if="errors.length">
+				<b> Please correct the following error(s):</b>
+				<ul>
+					<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+				</ul>
+			</p>
 
-		<p> Modification client </p>
+			<p> Modification client </p>
 
-		
+			
 
-		<p>
-			<label for="name" >Nom Client:</label> 
-			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
-		</p>
-
-
-		<p>
-			<label for="domaine" >Domaine d'Activité:</label>
-			<input id="domaine" v-model="domaine" placeholder="domaine" :style="{width:'auto'}">
-		</p>
-
-		<p>
-
-			<label for="adresse" >Adresse:</label>
-			<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="name" >Nom Client:</label> 
+				<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+			</p>
 
 
-		<p>
-			<input type="submit" value="Enregistrer" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="domaine" >Domaine d'Activité:</label>
+				<input id="domaine" v-model="domaine" placeholder="domaine" :style="{width:'auto'}">
+			</p>
 
-	</form>
+			<p>
+
+				<label for="adresse" >Adresse:</label>
+				<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
+			</p>
+
+
+			<p>
+				<input type="submit" value="Enregistrer" :style="{width:'auto'}">
+			</p>
+
+		</form>
+
+	</div>
+
+	
+	
+	<div v-if="tab">
+    
+        <table class ="table">
+            <thead>
+                <tr>
+                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
+                </tr>
+            </thead>
+            <tbody>
+                <br>
+                <tr v-for="(row,index) in clients" :key="index">
+                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
+                    
+                    
+                </tr> 
+            </tbody>
+        </table>
+    
+    </div>
+    
 
 </div>
 
@@ -65,10 +91,16 @@ import axios from 'axios';
 				cpt: 0,
 
 				errors: [],
-				clients: []
+				clients: [],
+				columns: ['nom','domaine','adresse'],
+				tab: false,
+				form: true
 			}
 		},
 		created(){
+			this.getClients()
+		},
+		updated(){
 			this.getClients()
 		},
 		methods:{
@@ -119,7 +151,9 @@ import axios from 'axios';
 						this.id = null,
 						this.nom = null,
 						this.domaine = null,
-						this.adresse = null
+						this.adresse = null,
+						this.tab = true,
+						this.form = false
 					}
 
 				}else{

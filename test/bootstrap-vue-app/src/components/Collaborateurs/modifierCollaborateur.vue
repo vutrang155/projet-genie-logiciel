@@ -129,9 +129,9 @@ export default {
         this.getCollaborateur()
     },
     methods:{
-        getCollaborateur(){
+        async getCollaborateur(){
             console.log("idCollaborateurToModify : " + this.idCollaborateurToModify )
-            axios.get('user/getById/' + this.idCollaborateurToModify) 
+            await axios.get('user/getById/' + this.idCollaborateurToModify) 
               .then(res => {
                   console.log(res)
                   this.user = res.data

@@ -48,9 +48,11 @@
 		<b-collapse :id="'projet-' + projet._id" accordion="my-accordion" role="tabpanel">
         <b-card-body>
 					<button v-on:click="modifierProjet(projet._id)">Modifier</button>
-					
+					<button v-on:click="creerTache()">Créer tâche</button>
 
-					<listTaskByProjet :ProjetId="projet._id"  />
+					<listTaskByProjet :ProjetId="projet._id" />
+					<addTask v-on:annulation-creation-tache="cacherCreerTache" v-if="showAddTask" :ProjetId="projet._id"/>
+					<!--<button v-on:click="cacherCreerTache()">Annuler création tâche</button>-->
 					
 
           <b-card-text>{{ projet._id }}</b-card-text>
@@ -88,12 +90,14 @@
 <script>
 import axios from 'axios';
 import listTaskByProjet from './listTaskByProjet.vue'
+import addTask from './addTask.vue'
 
 //import ModifyProjet from './ModifierProjet.vue';
 export default {
 	name:'listProjets',
 	components:{
-		listTaskByProjet
+		listTaskByProjet,
+		addTask
 	},
 	data(){
 		return{
@@ -102,7 +106,8 @@ export default {
 			client:null,
 			color:'#00aaff',
 			text:'test',
-			tasks:[]
+			tasks:[],
+			showAddTask: false
 		}
 		
 	},
@@ -112,12 +117,12 @@ export default {
 	},
 	methods:{
 		modifierProjet(idProjet) {
-            //App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
-      this.$emit('modify-clicked-projet', idProjet)
-            /*if (event) {
-                alert(event.target.tagName)
-            }*/
-        },
+			//App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
+			this.$emit('modify-clicked-projet', idProjet)
+			/*if (event) {
+				alert(event.target.tagName)
+			}*/
+		},
 		methodThatForcesUpdate() {
       // ...
       this.$forceUpdate();
@@ -132,17 +137,25 @@ export default {
 			}
 		},
 		getAllProjets() {
-      //envoie à l'API
-      axios.get('/projet/getAll')
-      .then(res => {
-        //console.log(res)
-        this.projets = res.data
-        for(let key in this.projets) {
-          console.log(this.projets[key])
-        }
-      })
-      .catch(error => console.log(error))
-    }/*,
+			//envoie à l'API
+			axios.get('/projet/getAll')
+			.then(res => {
+				//console.log(res)
+				this.projets = res.data
+				for(let key in this.projets) {
+					console.log(this.projets[key])
+				}
+			})
+			.catch(error => console.log(error))
+		},
+		creerTache() {
+			this.showAddTask = true
+		},
+		cacherCreerTache() {
+			this.showAddTask = false
+		}
+		
+		/*,
 		getRespoFromId(id){
 			axios.get("/Client/getbyId/'id'")
 			.then(res => {

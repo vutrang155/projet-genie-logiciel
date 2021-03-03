@@ -60,9 +60,9 @@ export default {
         }
     },
     methods:{ 
-        getAllCollaborateurs() {
+        async getAllCollaborateurs() {
             //envoie à l'API
-            axios.get('/user/getAll')
+            await axios.get('/user/getAll')
                 .then(res => {
                     //console.log(res)
                     this.collaborateurs = res.data

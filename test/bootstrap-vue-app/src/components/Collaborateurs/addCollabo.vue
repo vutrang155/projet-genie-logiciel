@@ -122,7 +122,7 @@ export default {
     this.setDateToToday()
   },*/
   methods:{
-    addCollaborateur(){
+    async addCollaborateur(){
       this.errors = []
       this.statusResOk = false
       if(this.nomUtilisateur && this.password && this.nom && this.prenom) { //champs requis
@@ -145,7 +145,7 @@ export default {
         }
         console.log(userToCreate)
         //envoie à l'API
-        axios.post('/user/new', userToCreate)
+        await axios.post('/user/new', userToCreate)
         .then(res => {
           console.log(res)
           if (res.status === 200) {

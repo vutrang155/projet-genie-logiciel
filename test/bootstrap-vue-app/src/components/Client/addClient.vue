@@ -7,7 +7,7 @@
 
  
 
-	<form class = "addClient-form" @submit = "addClient" >
+	<form class = "addClient-form" @submit.prevent = "addClient" >
 
 		<p v-if="errors.length">
 			<b> Please correct the following error(s):</b>
@@ -46,25 +46,7 @@
 </div>
 
 
-	<div v-if="tab">
-    
-        <table class ="table">
-            <thead>
-                <tr>
-                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
-                </tr>
-            </thead>
-            <tbody>
-                <br>
-                <tr v-for="(row,index) in clients" :key="index">
-                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
-                    
-                    
-                </tr> 
-            </tbody>
-        </table>
-    
-    </div>
+	
 
 
 </div>
@@ -87,7 +69,6 @@ import axios from 'axios';
 				domaine: null,
 				adresse: null,
 				showform: true,
-				tab: false,
 				columns: ['nom','domaine','adresse'],
 
 				errors: [],
@@ -96,10 +77,6 @@ import axios from 'axios';
 		},
 
 		created(){
-			this.getClients()
-		},
-
-		updated(){
 			this.getClients()
 		},
 
@@ -155,9 +132,8 @@ import axios from 'axios';
 						this.idc+=1,
 						this.nom = null,
 						this.domaine = null,
-						this.adresse = null,
-						this.showform = false,
-						this.tab = true
+						this.adresse = null
+						
 					}				
 				}
 				else{

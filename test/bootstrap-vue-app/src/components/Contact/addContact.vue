@@ -47,26 +47,7 @@
 
 	</div>
 
-	<div v-if="tab">
-
-		<table class ="table">
-            <thead>
-                <tr>
-                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
-                </tr>
-            </thead>
-            <tbody>
-                <br>
-                <tr v-for="(row,index) in contacts" :key="index">
-                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
-                    
-                    
-                </tr> 
-            </tbody>
-        </table>
-
-
-	</div>
+	
 
 </div>
 
@@ -89,7 +70,6 @@ export default{
 				fonction: null,
 				adresse: null,
 				showform: true,
-				tab: false,
 				columns:['nom','prenom','fonction','adresse'],
 				contacts: [],
 				
@@ -144,9 +124,7 @@ export default{
 				this.nom = null,
 				this.prenom = null,
 				this.fonction = null,
-				this.adresse = null,
-				this.showform = false,
-				this.tab = true
+				this.adresse = null
 
 				}
 				else{

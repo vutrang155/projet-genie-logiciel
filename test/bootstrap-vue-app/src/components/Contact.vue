@@ -14,6 +14,8 @@
 				</ul>
 	</p>
 
+	<div v-if="creation"> <addContact v-bind:idclient=this.idclient> </addContact>  </div>
+
     <div v-if="tab">
     
         <table class ="table">
@@ -32,15 +34,22 @@
     
     </div>
 
-    <div v-if="creation"> <addContact v-bind:idclient=this.idclient> </addContact>  </div>
+    
 
     <div v-if="showButton">
-        <button v-on:click="clickModif">Modifier Contact </button> <br> <br>
-        <button v-on:click="clickCreate">Créer Contact </button> <p>    </p>
-        <button v-on:click="clickSuppr">Supprimer Contact </button>
+        <button v-on:click="clickModif">Modifier Contact </button> <br> <br> </div>
+        
+    <div v-if="modif">  <modifContact v-on:modify-done="modifyDone" v-bind:contactcible=this.contactmodif></modifContact>  </div> 
+
+    <div v-if="showButton"> <button v-on:click="clickSuppr">Supprimer Contact </button>
     </div>
 
-    <div v-if="modif">  <modifContact v-bind:contactcible=this.contactmodif></modifContact>  </div> 
+    <div v-if="prec"> <br> <button v-on:click="precedent"> Retour Client </button> 
+    </div> 
+
+
+
+    
 
 
 </div>
@@ -70,10 +79,11 @@ export default {
 			contactmodif : null,
 			showButton: true,
 			modif: false,
-			creation: false,
+			creation: true,
 			tab: true,
 			columns:['nom','prenom','fonction','adresse'],
-			errors: []
+			errors: [],
+			prec : true
 
 		}
 	},
@@ -127,9 +137,6 @@ export default {
 		clickModif(){
 			if(this.contactmodif != null){
 				this.modif = true,
-				this.creation = false,
-				this.showButton = false,
-				this.tab = false,
 				this.errors = []
 			}
 			else {
@@ -137,7 +144,15 @@ export default {
 				this.errors = []
 				this.errors.push("Contact non selectionné")
 			}
-		}
+		},
+		precedent(){
+			this.$emit('modifyc-done', true)
+		},
+		
+		modifyDone(statusResOk){
+			if(statusResOk){
+				this.modif = false} 
+			}
 	}	
 }
 </script>

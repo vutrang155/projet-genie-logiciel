@@ -131,15 +131,14 @@ export default{
 				this.nom = null,
 				this.prenom = null,
 				this.fonction = null,
-				this.adresse = null,
-				this.showform = false,
-				this.tab = true
-
+				this.adresse = null
+				
 			}else{
 				this.errors = []
 				if(!this.nom) this.errors.push("Name required")
 				if(!this.prenom) this.errors.push("Firstname required")
 			}
+			this.$emit('modify-done', true)
 
 		}
 	}

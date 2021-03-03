@@ -4,17 +4,12 @@
 
     <p> Clients </p>
 
-    <div v-if="showButton">
-        <button v-on:click="clickCreate">Créer Client</button>  
-        
-    </div>
-
     
-    <div v-if="creation"> <addClient/>  </div>  
+     <div v-if="creation"> <addClient/>  </div>  
 
-    <div v-if="modif"> <modifClient v-bind:idd=this.clientcible> </modifClient> </div>
+    <div v-if="modif"> <modifClient v-on:modify-done="modifyDone" v-bind:idd=this.clientcible> </modifClient> </div>
 
-    <div v-if="accescontact"> <Contact v-bind:idclient=this.clientcible> </Contact> </div>
+    <div v-if="accescontact"> <Contact v-on:modifyc-done="modifyContactDone" v-bind:idclient=this.clientcible> </Contact> </div>
 
     <div v-else> <br>   
 
@@ -35,14 +30,15 @@
                     <br> <button v-on:click="select(row)">Modifier Client</button> </div> <br>
                     <div> 
                     <br> <button v-on:click="suppr(row)">Supprimer Client</button> </div> <br>  
+
+
                 </tr> 
             </tbody>
         </table>
     
     </div>    
 
-   
-
+  
     </div>
 
 
@@ -70,7 +66,7 @@ export default {
 	data(){
 		return {
 			
-			creation: false,
+			
 			modif: false,
 			showButton: true,
 			clients: [],
@@ -78,7 +74,8 @@ export default {
 			clientcible :null,
 			contactcible: null,
 			tab: true,
-			accescontact: false
+			accescontact: false,
+			creation: true
 
 		}
 	},
@@ -99,20 +96,18 @@ export default {
 			this.clientcible = row,
 			console.log(this.clientcible),
 			this.accescontact = true,
-			this.tab = false,
-			this.creation = false,
+			//this.tab = false,
+			
 			this.showButton = false,
-			this.modif = false	
+			this.modif = false,
+			this.creation = false	
 		},
 
 		select(row){
 			this.clientcible = row,
 			console.log(this.clientcible),
 			this.modif = true,
-			this.showButton = false,
-			this.creation = false,
-			this.tab = false
-			
+			this.showButton = false	
 		},
 
 		suppr(row){
@@ -120,8 +115,6 @@ export default {
 			.then(res => {
 			console.log(res)
 			this.clients = res.data
-			
-			
 			})
 			.catch(error => console.log(error))
 
@@ -140,21 +133,24 @@ export default {
 			})
 			
 		},
-		clickCreate(){
-			this.creation = true,
-			this.showButton = false,
-			this.modif = false,
-			this.tab = false
-			
-		},
+		
 		clickModif(){
-			this.modif = true,
-			this.showButton = false,
-			this.creation = false,
-			this.tab = false
-			
-			
+			this.modif = true
+		},
 
+		modifyDone(statusResOk){
+			if(statusResOk){
+				this.modif = false} 
+			},
+
+		modifyContactDone(statusResOk){
+			if(statusResOk){
+				this.modif = false,
+				this.showButton = true,
+				this.tab = true,
+				this.accescontact = false,
+				this.creation = true
+			}
 		}
 	}
 }

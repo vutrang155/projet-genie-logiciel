@@ -45,26 +45,6 @@
 	</div>
 
 	
-	
-	<div v-if="tab">
-    
-        <table class ="table">
-            <thead>
-                <tr>
-                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
-                </tr>
-            </thead>
-            <tbody>
-                <br>
-                <tr v-for="(row,index) in clients" :key="index">
-                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
-                    
-                    
-                </tr> 
-            </tbody>
-        </table>
-    
-    </div>
     
 
 </div>
@@ -93,16 +73,14 @@ import axios from 'axios';
 				errors: [],
 				clients: [],
 				columns: ['nom','domaine','adresse'],
-				tab: false,
+				
 				form: true
 			}
 		},
 		created(){
 			this.getClients()
 		},
-		updated(){
-			this.getClients()
-		},
+		
 		methods:{
 			getClients(){
 				axios.get('client/getAll')
@@ -151,15 +129,17 @@ import axios from 'axios';
 						this.id = null,
 						this.nom = null,
 						this.domaine = null,
-						this.adresse = null,
-						this.tab = true,
-						this.form = false
+						this.adresse = null
+						
+						
 					}
 
 				}else{
 					this.errors = []
 					if(!this.nom)this.errors.push("Nom requis")
 				}
+
+				this.$emit('modify-done', true)
 
 			}
 

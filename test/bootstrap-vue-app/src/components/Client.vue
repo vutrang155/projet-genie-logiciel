@@ -33,6 +33,8 @@
                     <td v-for="(col,index) in columns" :key="index" v-on:click="setaccess(row)"> {{row[col]}}  </td>  
                     <div> 
                     <br> <button v-on:click="select(row)">Modifier</button> </div> <br>
+                    <div> 
+                    <br> <button v-on:click="suppr(row)">Supprimer</button> </div> <br>  
                 </tr> 
             </tbody>
         </table>
@@ -83,6 +85,13 @@ export default {
 
 	created(){
 		this.getClients()
+		
+	},
+
+	updated(){
+
+		this.getClients()
+		
 	},
 	methods: {
 		setaccess(row){
@@ -92,8 +101,7 @@ export default {
 			this.tab = false,
 			this.creation = false,
 			this.showButton = false,
-			this.modif = false
-			
+			this.modif = false	
 		},
 
 		select(row){
@@ -104,6 +112,19 @@ export default {
 			this.creation = false,
 			this.tab = false
 			
+		},
+
+		suppr(row){
+			axios.delete('/client/delete/'+row._id)
+			.then(res => {
+			console.log(res)
+			this.clients = res.data
+			
+			
+			})
+			.catch(error => console.log(error))
+
+			
 
 		},
 
@@ -111,22 +132,26 @@ export default {
 			axios.get('/client/getAll')
 			.then(res => {
 			this.clients = res.data
+			
 			for (let key in this.clients){
 				console.log(this.clients[key])
 			}
 			})
+			
 		},
 		clickCreate(){
 			this.creation = true,
 			this.showButton = false,
 			this.modif = false,
 			this.tab = false
+			
 		},
 		clickModif(){
 			this.modif = true,
 			this.showButton = false,
 			this.creation = false,
 			this.tab = false
+			
 			
 
 		}

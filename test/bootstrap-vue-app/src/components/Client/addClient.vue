@@ -99,10 +99,6 @@ import axios from 'axios';
 			this.getClients()
 		},
 
-		updated(){
-			this.updateClients()
-		},
-
 		methods:{
 
 			// GET Client getAll
@@ -116,15 +112,7 @@ import axios from 'axios';
 
 				})
 			},
-			updateClients(){
-				axios.get('/client/getAll')
-				.then(res => {
-				this.clients = res.data
-				for (let key in this.clients){
-					console.log(this.clients[key])
-				}
-				})
-			},
+			
 
 			// POST Client create
 			addClient(){

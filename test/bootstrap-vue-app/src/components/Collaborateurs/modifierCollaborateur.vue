@@ -55,14 +55,12 @@
 
       <p>
         <label for="datepickerEntree">Date d'entrée:</label>
-        <b-form-datepicker id="datepickerEntree" v-model="dateEntree"></b-form-datepicker>
-        {{ dateEntree }}
+        <b-form-datepicker id="datepickerEntree" placeholder="Choisissez une date" v-model="dateEntree" reset-button></b-form-datepicker>
       </p>
 
       <p>
         <label for="datepickerSortie">Date de sortie:</label>
-        <b-form-datepicker id="datepickerSortie" placeholder="Choisissez une date" v-model="dateSortie"></b-form-datepicker>
-        {{ dateSortie }}
+        <b-form-datepicker id="datepickerSortie" placeholder="Choisissez une date" v-model="dateSortie" reset-button></b-form-datepicker>
       </p>
 
       <!--<label for="compteActive">Compte activé</label> -->

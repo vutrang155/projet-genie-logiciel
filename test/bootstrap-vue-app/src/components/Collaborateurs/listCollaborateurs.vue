@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-for="(collaborateur, index) in collaborateurs" :key="index">
-            <div class="row1Projet" :style="{backgroundColor:color}">
+            <div class="row1Collabo" :style="{backgroundColor:color}">
                 <div class="col1Projet">
 
 
@@ -87,12 +87,12 @@ export default {
 </script>
 
 <style>
-.row1Projet {
+.row1Collabo {
 	border: 1px solid #000000;
 	margin: 10px;
 	padding: 10px;
 	width: 80%;
-	height:80px;
+	height:120px;
 }
 .row2Projet {
   display: flex;

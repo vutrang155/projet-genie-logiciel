@@ -1,6 +1,5 @@
 <template>
 <div>
-  <div> test list 1</div>
   
 	<div v-for="(task,index) in tasks" :key="index">
 		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	

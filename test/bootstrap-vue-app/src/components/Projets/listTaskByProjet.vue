@@ -69,7 +69,7 @@ export default {
    background-color: #00aaff;
    width: 800px;
    padding: 20px;
-   margin: 40px;
+   margin: 10px;
    border: 1px solid #d8d8d8;
  }
 

@@ -126,7 +126,7 @@ export default {
 	margin: 10px;
 	padding: 10px;
 	width: 750px;
-	background-color: #edea47;
+	background-color:#068d21;
 	height:260px
 }
 .row2 {

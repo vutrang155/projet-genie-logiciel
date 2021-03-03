@@ -75,7 +75,6 @@ exports.create = async (req, res, next) => {
         const dateFinReelle = req.body.dateFinReelle;
         const chargeConsommee = req.body.chargeConsommee;
         const avancement = req.body.avancement;
-
         await errCon.checkUser(responsableId);
         await errCon.checkProjet(projetId);
 
@@ -96,7 +95,7 @@ exports.create = async (req, res, next) => {
             tache.dateFinReelle = dateFinReelle;
             tache.chargeConsommee = chargeConsommee;
             tache.avancement = avancement;
-
+            tache.predecesseur=req.body.predecesseur;
             tache = await tache.save();
 
             // UPDATE PROJECT DATE :

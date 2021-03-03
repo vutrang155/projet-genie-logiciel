@@ -87,7 +87,7 @@ export default {
 
 	updated(){
 
-		this.getClients()
+		//this.getClients()
 		
 		
 	},
@@ -105,7 +105,7 @@ export default {
 
 		select(row){
 			this.clientcible = row,
-			console.log(this.clientcible),
+			
 			this.modif = true,
 			this.showButton = false	
 		},
@@ -126,10 +126,9 @@ export default {
 			axios.get('/client/getAll')
 			.then(res => {
 			this.clients = res.data
+			console.log(1)
 			
-			for (let key in this.clients){
-				console.log(this.clients[key])
-			}
+			
 			})
 			
 		},

@@ -4,9 +4,9 @@
 
 	<addProjet/>
 	<div v-if="showModifyProjet == true">
-    <modifierProjet v-on:modify-done-projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
-  </div>
-  <p id="succes" v-if="showModificationSucces"> ¨Projet modifié avec succès ! </p>
+		<modifierProjet v-on:modify-done-projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
+	</div>
+	<p id="succes" v-if="showModificationSucces"> ¨Projet modifié avec succès ! </p>
 	<listProjets v-on:modify-clicked-projet="modifyClicked"				/>
 </div>
 </template>

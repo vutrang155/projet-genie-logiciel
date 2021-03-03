@@ -20,8 +20,10 @@
     <p>
       <label for="responsable">Responsable:</label>
       <select v-model="responsable">
-        <option v-for="(responsable,index) in responsables" :key="index">
-          {{ responsable.prenom }}  {{ responsable.nom}}
+        <option v-for="(responsable1,index) in responsables" 
+        :value="responsable"
+        :key="index">
+          {{ responsable1.prenom }}  {{ responsable1.nom}}
         </option>
 
       </select>
@@ -30,9 +32,16 @@
     <p>
       <label for="client">Client:</label>
       <select v-model="client">
-        <option v-for="(client,index) in clients" :key="index">
-            {{ client.nom}}
+
+        <option 
+        v-for="client1 in clients" :value="client" 
+        
+        v-bind:key="client1.nom"
+        >
+        
+            {{ client1.nom}}
         </option>
+
 
       </select>
     </p>
@@ -40,8 +49,9 @@
         <p>
       <label for="contact">Contact:</label>
       <select v-model="contact">
-        <option v-for="(contact,index) in contacts" :key="index">
-            {{ contact.prenom}} {{contact.nom}}
+        <option v-for="(contact1,index) in contacts" :value="contact"
+        :key="index">
+            {{ contact1.prenom}} {{contact1.nom}}
         </option>
 
       </select>
@@ -49,17 +59,19 @@
 
     <p>
       <label for="state">Etat:</label>
-      <select v-model="Etat">
-        <option>A faire</option>
-        <option>En cours</option>
-        <option>Terminé</option>
+      <select v-model="EtatTexte" >
+        <option v-for="(etat1,index) in etats" :value="EtatTexte"
+        :key="index" >
+          {{etat1}}
+          </option>
+
       </select>
     </p>
 
     <p>
       <label for="start">Date de début:</label>
-
-      <input type="date" id="start" name="task-start" :style="{width:'auto'}"
+      
+      <input disabled type="date" id="start" name="task-start" :style="{width:'auto'}"
        value="2021-02-22"
        min="2021-01-01" max="2022-12-31">
     </p>
@@ -67,7 +79,7 @@
     <p>
       <label for="end">Date de fin:</label>
 
-      <input type="date" id="end" name="task-end" :style="{width:'auto'}"
+      <input disabled type="date" id="end" name="task-end" :style="{width:'auto'}"
        value="2021-02-22"
        min="2021-01-01" max="2022-12-31">
     </p>
@@ -110,12 +122,15 @@ export default {
 			dateDebutReelle:null,
 			dateDebutPrevisionnelle:null,
 			dateFinPrevisionnelle:null,
+      EtatTexte:null,
 
       responsables:[],
       clients:[],
       contacts:[],
+      etats:["A faire","En cours","Terminé","Abandonné"],
 
       errors: [],
+      Etat1:null,
 
       statusResOk: false,
     }
@@ -146,6 +161,18 @@ export default {
                   this.contactNom = this.contactId.nom
                   this.contactPrenom = this.contactId.prenom
                   this.Etat =this.projet.Etat
+                  if(this.Etat == "Afaire"){
+                    this.EtatTexte ="A faire"
+                  }
+                  if(this.Etat == "Encours"){
+                    this.EtatTexte ="En cours"
+                  }
+                  if(this.Etat == "Termine"){
+                    this.EtatTexte ="Terminé"
+                  }
+                  if(this.Etat == "Abandonne"){
+                    this.EtatTexte ="Abandonné"
+                  }
                   
 
                   
@@ -158,9 +185,9 @@ export default {
             this.prenom = this.user.prenom
             this.adresse = this.user.adresse*/
         },
-    getResponsables() {
+    async getResponsables() {
       let type = 2
-      axios.get('/user/getByType/' + type)
+      await axios.get('/user/getByType/' + type)
       .then(res => {
         this.responsables = res.data
         for(let key in this.responsables) {
@@ -169,9 +196,9 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    getClients() {
+    async getClients() {
       //envoie à l'API
-      axios.get('/client/getAll')
+      await axios.get('/client/getAll')
       .then(res => {
         //console.log(res)
         this.clients = res.data
@@ -181,9 +208,9 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    getContacts() {
+    async getContacts() {
       //envoie à l'API
-      axios.get('/contact/getAll')
+      await axios.get('/contact/getAll')
       .then(res => {
         //console.log(res)
         this.contacts = res.data
@@ -196,18 +223,34 @@ export default {
     async ModifierProjet(){
 			this.errors = []
 			this.statusResOk = false
+      if(this.EtatTexte == "A faire"){
+                    this.Etat1 ="Afaire"
+                  }
+                  if(this.EtatTexte == "En cours"){
+                    this.Etat1 ="Encours"
+                  }
+                  if(this.EtatTexte == "Terminé"){
+                    this.Etat1 ="Termine"
+                  }
+                  if(this.EtatTexte == "Abandonné"){
+                    this.Etat1 ="Abandonne"
+                  }
       let projetToModify = { //à modifier
-        projetId:this.projetId,
+        projetId:this.idProjetToModify,
         modif:{
           nom:this.nom,
-          responsableId:this.responsable._id/*,
+          responsableId:this.responsable._id,
           clientId:this.client._id,
-          contactId:this.contact._id*/
+          contactId:this.contact._id,
+          
+
+          etat:this.Etat
           
 
         }
       }
-      axios.put('/projet/update', projetToModify) //à modifier
+      console.log(projetToModify)
+      await axios.put('/projet/update', projetToModify) //à modifier
 			.then(res => {
         console.log(res)
         if (res.status === 200) {

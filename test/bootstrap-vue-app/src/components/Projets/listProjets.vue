@@ -7,13 +7,14 @@
 
 
 	<div v-for="(projet,index) in projets" :key="index">
-		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	
+		<b-card-header  header-tag="header" class="p-1"  role="tab" :style="{width:'80%'}">	
 			<b-btn block v-b-toggle="'projet-' + projet._id" variant="info">
-				<div class="row1Projet" :style="{backgroundColor:color}">
+				{{getColor(projet.etat)}}
+			<div v-bind:class="projet.etat" :style="{backgroundColor:color}">
 			<div class="col1Projet">
 
 
-					{{projet.nom}} {{index}}
+					{{projet.nom}} {{projet.etat}}
 
 
 			</div>
@@ -53,7 +54,6 @@
 					<listTaskByProjet :ProjetId="projet._id"  />
 					
 
-          <b-card-text>{{ projet._id }}</b-card-text>
         </b-card-body>
       </b-collapse>
 	</div>
@@ -100,9 +100,9 @@ export default {
 			statusResOk: false,
 			projets:[],
 			client:null,
-			color:'#00aaff',
 			text:'test',
-			tasks:[]
+			tasks:[],
+			color:null
 		}
 		
 	},
@@ -111,6 +111,20 @@ export default {
 
 	},
 	methods:{
+		getColor(Etat){
+			if(Etat == "Afaire"){
+                    this.color ='#00aaff'
+                  }
+                  if(Etat == "Encours"){
+                    this.color ='#eeff00'
+                  }
+                  if(Etat == "Termine"){
+                    this.color ='#00ff04'
+                  }
+                  if(Etat == "Abandonne"){
+                    this.color = '#737874'
+                  }
+		},
 		modifierProjet(idProjet) {
             //App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
       this.$emit('modify-clicked-projet', idProjet)
@@ -175,8 +189,32 @@ export default {
 	width: 80%;
 	height:80px;
 }
-.row1Projet {
-
+.Afaire {
+	background-color: '#00aaff';
+	border: 1px solid #000000;
+	margin: 10px;
+	padding: 10px;
+	width: 95%;
+	height:80px;
+}
+.Encours {
+	background-color: '#eeff00';
+	border: 1px solid #000000;
+	margin: 10px;
+	padding: 10px;
+	width: 95%;
+	height:80px;
+}
+.Termine {
+	background-color:'#00ff04' ;
+	border: 1px solid #000000;
+	margin: 10px;
+	padding: 10px;
+	width: 95%;
+	height:80px;
+}
+.Abandonne {
+	background-color:'#737874' ;
 	border: 1px solid #000000;
 	margin: 10px;
 	padding: 10px;

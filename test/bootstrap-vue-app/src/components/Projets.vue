@@ -1,10 +1,10 @@
 <template>
 <div>
   
-	<p>test Projets</p>
+
 	<addProjet/>
 	<div v-if="showModifyProjet == true">
-    <modifierProjet v-on:modify-done-Projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
+    <modifierProjet v-on:modify-done-projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
   </div>
   <p id="succes" v-if="showModificationSucces"> ¨Projet modifié avec succès ! </p>
 	<listProjets v-on:modify-clicked-projet="modifyClicked"				/>
@@ -44,9 +44,11 @@ export default {
       console.log("showModifyProjet " + this.showModifyProjet)
     }, 
     modifyDoneProjet(statusResOk) {
-      if(statusResOk) this.showModificationSucces = true 
-      this.showModifyProjet = false
-      console.log("modify-done dans Projets, statusResOk : " + statusResOk)
+		this.showModifyProjet = false
+      if(statusResOk) 
+		this.showModificationSucces = true 
+      
+      console.log("modify-done dans Projets"+this.showModifyProjet+", statusResOk : " + statusResOk)
     }
 	}
 

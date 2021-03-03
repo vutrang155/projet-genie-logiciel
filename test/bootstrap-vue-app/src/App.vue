@@ -35,17 +35,8 @@
     <p>Notifications</p>
     <Notifications/>
   </div >
-  <div class="center" >
-  <img alt="Vue logo" src="./assets/logo.png">
-  <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-
-  </div>
-  <div>
-    <b-container>
-    <p>Hello, Bootstrap-Vue</p>
-    <b-btn variant="primary">Click</b-btn>
-    </b-container>
-  </div>
+  
+  
   </div>
 </template>
 

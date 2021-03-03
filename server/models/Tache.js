@@ -7,7 +7,9 @@ const tache = mongoose.Schema({
     },
     responsableId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true,
+
     },
     projetId:{
         type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +19,7 @@ const tache = mongoose.Schema({
     },
     etat:{
         type: String,
-        enum: ["Afaire","Encours","Termine","Abandonne"],
+        enum: ["Afaire","Encores","Termine","Abandonne"],
         required: true, // enum: ["Afaire","Encours","Termine","Abandonne"], default : 'TODO'
     },
     description: {
@@ -32,7 +34,6 @@ const tache = mongoose.Schema({
     },
     chargeAssociee:{
         type:Number,
-        required: true,
     },
     dateDebutReelle:{
         type:Date,

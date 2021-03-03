@@ -99,6 +99,10 @@ import axios from 'axios';
 			this.getClients()
 		},
 
+		updated(){
+			this.getClients()
+		},
+
 		methods:{
 
 			// GET Client getAll

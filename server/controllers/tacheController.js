@@ -20,10 +20,34 @@ var updateProjetDate = (pId) => {
             });
         }
     });
+
     Tache.find({projetId:pId, dateFinReelle: { $ne: null } }).sort({ dateFinReelle: -1 }).limit(1).exec((err, taches) => {
         // if all null : do nothing
         if (taches.length != 0) {
             Projet.findByIdAndUpdate(pId, {dateFinReelle : taches[0].dateFinReelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+    Tache.find({projetId:pId, dateDebutPrevisionnelle: { $ne: null } }).sort({ dateDebutPrevisionnelle: 0 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateDebutPrevisionnelle : taches[0].dateDebutPrevisionnelle},
+            // Ask mongoose to return the updated version of doc instead of pre-updated one
+            { new: true },
+            (err, projet) => {
+                console.log(projet);
+            });
+        }
+    });
+
+    Tache.find({projetId:pId, dateFinPrevisionnelle: { $ne: null } }).sort({ dateFinPrevisionnelle: -1 }).limit(1).exec((err, taches) => {
+        // if all null : do nothing
+        if (taches.length != 0) {
+            Projet.findByIdAndUpdate(pId, {dateFinPrevisionnelle : taches[0].dateFinPrevisionnelle},
             // Ask mongoose to return the updated version of doc instead of pre-updated one
             { new: true },
             (err, projet) => {
@@ -74,6 +98,10 @@ exports.create = async (req, res, next) => {
             tache.avancement = avancement;
 
             tache = await tache.save();
+
+            // UPDATE PROJECT DATE :
+            updateProjetDate(projetId)
+
             return res.send({ tache });
         }
         catch (err) {
@@ -105,6 +133,9 @@ exports.delete = async (req, res, next) => {
                 id: tache._id
             };
 
+            // UPDATE PROJECT DATE :
+            updateProjetDate(tache.projetId);
+
             return res.status(200).send(response);
         });
     } catch (err) { next(err); }
@@ -130,6 +161,11 @@ exports.update = async (req, res, next) => {
             (err, tache) => {
                 // If error
                 if (err) return res.status(500).send(err);
+
+                // UPDATE PROJECT DATE :
+                updateProjetDate(tache.projetId)
+
+
                 return res.send(tache);
             })
     } catch (err) { next(err); }
@@ -192,15 +228,6 @@ exports.getByProjet = async (req, res, next) => {
         const _projetId = req.params.projetId;
         await errCon.checkProjet(_projetId)
 
-        //---------------------------------------------
-        // TEST
-        //---------------------------------------------
-        
-        updateProjetDate(_projetId); 
-
-        //---------------------------------------------
-        //---------------------------------------------
-        //---------------------------------------------
         Tache.find({ projetId: _projetId }).populate('responsableId').populate('projetId').exec((err, tache) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(tache);

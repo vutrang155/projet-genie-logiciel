@@ -21,7 +21,7 @@
 							Avancement: {{task.avancement}}
 						</p>
 						<p class="col2Projet">
-							
+							Projet: {{task.projetId.nom}}
 						</p>
 				<!--
 				<p>
@@ -48,7 +48,7 @@
 					<SaisieAvancement :taskId="task._id"  />
 					
 
-          <b-card-text>{{ task._id }}</b-card-text>
+
         </b-card-body>
       </b-collapse>
 	</div>

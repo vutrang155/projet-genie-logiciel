@@ -32,8 +32,8 @@
   </div >
 
   <div v-show="selectedTab ==='Notifications'">
-    <p>Collabo</p>
-    <Collaborateurs/>
+    <p>Notifications</p>
+    <Notifications/>
   </div >
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
@@ -55,6 +55,7 @@ import TableauDeBord from './components/TableauDeBord.vue'
 import Projets from './components/Projets.vue'
 import Collaborateurs from './components/Collaborateurs.vue'
 import Client from './components/Client.vue'
+import Notifications from './components/Notifications.vue'
 
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:8080/api/'
@@ -66,7 +67,8 @@ export default {
     TableauDeBord,
     Projets,
     Collaborateurs,
-    Client
+    Client,
+    Notifications
   },
   data(){
     return{

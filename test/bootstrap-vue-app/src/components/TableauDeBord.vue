@@ -10,17 +10,17 @@
     <div class="color-box" :style="{ backgroundColor:'#00aaff'}"></div>
     <div class="column" >
 
-      <p>:To Do</p>
+      <p>: A faire</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#eeff00'}"></div>
     <div class="column" >
 
-      <p>:On Going</p>
+      <p>: En cours</p>
     </div>
     <div class="color-box"  :style="{ backgroundColor:'#00ff04'}"></div>
     <div class="column" >
 
-      <p>:Done</p>
+      <p>: Terminé</p>
     </div>
 
   </div>

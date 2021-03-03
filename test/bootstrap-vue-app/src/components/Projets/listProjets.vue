@@ -109,6 +109,13 @@ export default {
 
 	},
 	methods:{
+		modifierProjet(idProjet) {
+            //App.Vue.prototype.$eventHub.$emit('modify-clicked', idCollaborateur)
+      this.$emit('modify-clicked-projet', idProjet)
+            /*if (event) {
+                alert(event.target.tagName)
+            }*/
+        },
 		methodThatForcesUpdate() {
       // ...
       this.$forceUpdate();

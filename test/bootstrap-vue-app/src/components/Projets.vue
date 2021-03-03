@@ -3,7 +3,10 @@
   
 	<p>test Projets</p>
 	<addProjet/>
-	<listProjets/>
+	<div v-if="showModifyProjet == true">
+    <modifierProjet v-on:modify-done-Projet="modifyDone" :idProjetToModify="idProjetToModify" />
+  </div>
+	<listProjets v-on:modify-clicked-projet="ModifyClicked"				/>
 	<addTask/>
 </div>
 </template>
@@ -19,7 +22,29 @@ export default {
 		addProjet,
 		addTask,
 		listProjets
+		
+	},
+	data(){
+		showModificationSucces,
+		idProjetToModify,
+		showModifyProjet,
+		showModify
+	},
+	methods:{
+		modifyClicked(idProjet) {
+      this.showModificationSucces = false //pour enlever "Collaborateur modifié avec succès !" si le bouton modifier à été re-cliqué pour un autre collaborateur
+      this.idProjetToModify = idProjet
+      this.showModifyProjet = true //fais apparaître le formulaire de modification (component modifierCollaborateur)
+      console.log("idProjetToModify " + this.idProjetToModify)
+      console.log("showModifyProjet " + this.showModifyProjet)
+    }, 
+    modifyDoneProjet(statusResOk) {
+      if(statusResOk) this.showModificationSucces = true 
+      this.showModifyProjet = false
+      console.log("modify-done dans Projets, statusResOk : " + statusResOk)
+    }
 	}
+
 }
 </script>
 

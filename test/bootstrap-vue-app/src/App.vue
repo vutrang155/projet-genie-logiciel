@@ -7,13 +7,7 @@
           :key="index"
           @click="selectedTab=tab">
           {{tab}}</span>
-
-
-
-          
         <p class="userName">Jean PAUL</p>
-        
-
     </div>
   <div v-show="selectedTab ==='Tableau de bord'">
 
@@ -35,8 +29,8 @@
     <p>Notifications</p>
     <Notifications/>
   </div >
-  
-  
+
+
   </div>
 </template>
 
@@ -49,7 +43,8 @@ import Client from './components/Client.vue'
 import Notifications from './components/Notifications.vue'
 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:8080/api/'
+axios.defaults.baseURL = 'http://localhost:8080/api/';
+axios.defaults.headers.common['Authorization']='Bearer' +localStorage.getItem('token');
 
 //Pour afficher les dates sous la forme DD/MM/YYYY
 import Vue from 'vue'

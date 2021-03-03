@@ -1,8 +1,9 @@
 <template>
 <div>
-  
+
+
 	<div v-for="(task,index) in tasks" :key="index">
-		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">	
+		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
 				<div class="row1Projet" :style="{backgroundColor:color}">
 					<div class="col1Projet">
@@ -13,13 +14,13 @@
 
 					</div>
           <div class="row2Projet">
-						<p class="col2Projet">
+						<p class="col2task">
 							Responsable: {{task.responsableId.prenom}} {{task.responsableId.nom}}
 						</p>
-						<p class="col2Projet">
+						<p class="col2task">
 							Avancement: {{task.avancement}}
 						</p>
-						<p class="col2Projet">
+						<p class="col2task">
 							Projet: {{task.projetId.nom}}
 						</p>
 				<!--
@@ -28,12 +29,12 @@
 				</p>
 				<button v-on:click="Modify">Modifier</button>-->
 
-				
+
 					</div>
         <!--<div id="myDIV">
 				This is my DIV element.
-			
-			
+
+
         <ModifyProjet :id="projet.id" />
         </div>-->
 
@@ -42,10 +43,10 @@
 		</b-card-header >
 		<b-collapse :id="'task-' + task._id" accordion="my-accordion" role="tabpanel">
         <b-card-body>
-					
-          
+
+
 					<SaisieAvancement :taskId="task._id"  />
-					
+
 
 
         </b-card-body>
@@ -65,7 +66,7 @@ export default {
       tasks:[],
       color:'#00aaff'
     }
-    
+
   },
   components:{
     SaisieAvancement
@@ -87,13 +88,18 @@ export default {
       .catch(error => console.log(error))
     }
   }
-	
+
 }
 </script>
 
 <style>
 #listTasks{
   text-align: left;
+
+}
+.col2task{
+  width: auto;
+  margin-right: 50px;
 }
  .ToDo{
    background-color: #00aaff;

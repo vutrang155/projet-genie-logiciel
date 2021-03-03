@@ -1,13 +1,13 @@
 <template>
 
 
-
+<div>
 
 <div v-if="showform">
 
  
 
-	<form class = "addClient-form" @submit = "addClient" >
+	<form class = "addClient-form" @submit.prevent = "addClient" >
 
 		<p v-if="errors.length">
 			<b> Please correct the following error(s):</b>
@@ -46,27 +46,10 @@
 </div>
 
 
-<div v-if="tab">
-    
-        <table class ="table">
-            <thead>
-                <tr>
-                    <th v-for="(col,index) in columns" :key="index">  {{col}}  </th> 
-                </tr>
-            </thead>
-            <tbody>
-                <br>
-                <tr v-for="(row,index) in clients" :key="index">
-                    <td v-for="(col,index) in columns" :key="index"> {{row[col]}}  </td>  
-                    
-                    
-                </tr> 
-            </tbody>
-        </table>
-    
-    </div>
+	
 
 
+</div>
 		
 </template>
 
@@ -86,7 +69,6 @@ import axios from 'axios';
 				domaine: null,
 				adresse: null,
 				showform: true,
-				tab: false,
 				columns: ['nom','domaine','adresse'],
 
 				errors: [],
@@ -96,10 +78,6 @@ import axios from 'axios';
 
 		created(){
 			this.getClients()
-		},
-
-		computed(){
-			this.updateClients()
 		},
 
 		methods:{
@@ -115,15 +93,7 @@ import axios from 'axios';
 
 				})
 			},
-			updateClients(){
-				axios.get('/client/getAll')
-				.then(res => {
-				this.clients = res.data
-				for (let key in this.clients){
-					console.log(this.clients[key])
-				}
-				})
-			},
+			
 
 			// POST Client create
 			addClient(){
@@ -162,9 +132,8 @@ import axios from 'axios';
 						this.idc+=1,
 						this.nom = null,
 						this.domaine = null,
-						this.adresse = null,
-						this.showform = false,
-						this.tab = true
+						this.adresse = null
+						
 					}				
 				}
 				else{

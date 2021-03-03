@@ -1,42 +1,53 @@
 <template>
 
 
-	<form class = "modifClient-form" @submit.prevent = "modifClient" >
+<div>
 
-		<p v-if="errors.length">
-			<b> Please correct the following error(s):</b>
-			<ul>
-				<li v-for="(error,index) in errors" :key="index">{{error}}</li>
-			</ul>
-		</p>
+	<div v-if="form">
 
-		<p> Modification client </p>
+		<form class = "modifClient-form" @submit.prevent = "modifClient" >
 
-		
+			<p v-if="errors.length">
+				<b> Please correct the following error(s):</b>
+				<ul>
+					<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+				</ul>
+			</p>
 
-		<p>
-			<label for="name" >Nom Client:</label> 
-			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
-		</p>
+			<p> Modification client </p>
 
+			
 
-		<p>
-			<label for="domaine" >Domaine d'Activité:</label>
-			<input id="domaine" v-model="domaine" placeholder="domaine" :style="{width:'auto'}">
-		</p>
-
-		<p>
-
-			<label for="adresse" >Adresse:</label>
-			<textarea id="adresse" v-model="adresse"></textarea>
-		</p>
+			<p>
+				<label for="name" >Nom Client:</label> 
+				<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+			</p>
 
 
-		<p>
-			<input type="submit" value="Enregister" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="domaine" >Domaine d'Activité:</label>
+				<input id="domaine" v-model="domaine" placeholder="domaine" :style="{width:'auto'}">
+			</p>
 
-	</form>
+			<p>
+
+				<label for="adresse" >Adresse:</label>
+				<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
+			</p>
+
+
+			<p>
+				<input type="submit" value="Enregistrer" :style="{width:'auto'}">
+			</p>
+
+		</form>
+
+	</div>
+
+	
+    
+
+</div>
 
 </template>
 
@@ -60,12 +71,16 @@ import axios from 'axios';
 				cpt: 0,
 
 				errors: [],
-				clients: []
+				clients: [],
+				columns: ['nom','domaine','adresse'],
+				
+				form: true
 			}
 		},
 		created(){
 			this.getClients()
 		},
+		
 		methods:{
 			getClients(){
 				axios.get('client/getAll')
@@ -115,12 +130,16 @@ import axios from 'axios';
 						this.nom = null,
 						this.domaine = null,
 						this.adresse = null
+						
+						
 					}
 
 				}else{
 					this.errors = []
 					if(!this.nom)this.errors.push("Nom requis")
 				}
+
+				this.$emit('modify-done', true)
 
 			}
 

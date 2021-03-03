@@ -1,37 +1,55 @@
 <template>
 
-	<form class = "addContact-form" @submit.prevent = "addContact" >
 
-<p> Infos Client <br> </p>
+<div>
+
+	<div v-if="showform">
+
+		<form class = "addContact-form" @submit.prevent = "addContact" >
 
 
-		<p> Ajouter Contact </p>
+			
+			<p v-if="errors.length">
+				<b> Please correct the following error(s):</b>
+				<ul>
+					<li v-for="(error,index) in errors" :key="index">{{error}}</li>
+				</ul>
+			</p>
 
-		<p>
-			<label for="name" >Nom Contact:</label> 
-			<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
-		</p>
 
-		<p>
-			<label for="prenom" >Prénom Contact:</label> 
-			<input id="prenom" v-model="prenom" placeholder="prenom" :style="{width:'auto'}">
-		</p>
+			<p> Ajouter Contact </p>
 
-		<p>
-			<label for="fonction" >Fonction:</label> 
-			<input id="fonction" v-model="fonction" placeholder="fonction" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="name" >Nom Contact:</label> 
+				<input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+			</p>
 
-		<p>
-			<label for="adresse" >Adresse:</label>
-			<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="prenom" >Prénom Contact:</label> 
+				<input id="prenom" v-model="prenom" placeholder="prenom" :style="{width:'auto'}">
+			</p>
 
-		<p>
-			<input type="submit" value="Enregister" :style="{width:'auto'}">
-		</p>
+			<p>
+				<label for="fonction" >Fonction:</label> 
+				<input id="fonction" v-model="fonction" placeholder="fonction" :style="{width:'auto'}">
+			</p>
 
-	</form>	
+			<p>
+				<label for="adresse" >Adresse:</label>
+				<input id="adresse" v-model="adresse" placeholder="adresse" :style="{width:'auto'}">
+			</p>
+
+			<p>
+				<input type="submit" value="Enregistrer" :style="{width:'auto'}">
+			</p>
+
+		</form>	
+
+	</div>
+
+	
+
+</div>
 
 </template>
 
@@ -51,11 +69,17 @@ export default{
 				prenom: null,
 				fonction: null,
 				adresse: null,
+				showform: true,
+				columns:['nom','prenom','fonction','adresse'],
+				contacts: [],
 				
 				errors: []
 		}
 	},
 	created(){
+		this.getContact()
+	},
+	updated(){
 		this.getContact()
 	},
 	methods:{
@@ -105,8 +129,8 @@ export default{
 				}
 				else{
 				this.errors = []
-				if(!this.nom) this.errors.push("Name required")
-				if(!this.prenom) this.errors.push("Firstname required")
+				if(!this.nom) this.errors.push("Nom requis")
+				if(!this.prenom) this.errors.push("Prénom requis")
 
 			}
 

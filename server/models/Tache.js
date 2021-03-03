@@ -14,9 +14,9 @@ const tache = mongoose.Schema({
         ref: 'Projet'
     },
     etat:{
-        type: Number,
-        enum: [0,1,2,3],
-        required: true, // enum: ["TODO","FINISHED","WIP","ABANDONED"], default : 'TODO'
+        type: String,
+        enum: ["Afaire","Encours","Termine","Abandonne"],
+        required: true, // enum: ["Afaire","Encours","Termine","Abandonne"], default : 'TODO'
     },
     description: {
         type: String

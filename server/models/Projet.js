@@ -19,9 +19,9 @@ const projet = mongoose.Schema({
         ref: 'Contact'
     },
     etat:{
-        type: Number,
-        enum: [0,1,2,3],
-        default : 0
+        type: String,
+        enum: ["Afaire","Encours","Termine","Abandonne"],
+        required: true,
     },
     dateDebutPrevisionnelle:{
         type:Date,

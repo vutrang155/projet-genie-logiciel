@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require("../config/jwt");
 const User = require("../models/User");
-const Error = require('../controllers/errorController')
+const errCon = require('../controllers/errorController')
 
 exports.register = async (req, res, next) => {
     console.log("Register");
@@ -42,7 +42,7 @@ exports.login = async (req, res, next) => {
         const nomUtilisateur = req.body.nomUtilisateur;
         const password = req.body.password;
 
-        await Error.checkUserByNomUtilisateur(nomUtilisateur);
+        await errCon.checkUserByNomUtilisateur(nomUtilisateur);
         const user = await User.findOne({ nomUtilisateur: nomUtilisateur }).select("+password");
 
 
@@ -73,7 +73,7 @@ exports.delete = async (req, res, next) => {
 
     try {
         const userId = req.params.userId;
-        await Error.checkUser(userId);
+        await errCon.checkUser(userId);
         var foundId = await User.find({ _id: userId });
         User.findByIdAndRemove(foundId, (err, user) => {
             // Error if detected :
@@ -97,7 +97,7 @@ exports.update = async (req, res, next) => {
         console.log("Update User by id");
         const userId = req.body.userId;
         const modif = req.body.modif;
-        await Error.checkUser(req.body.userId)
+        await errCon.checkUser(req.body.userId)
         User.findByIdAndUpdate(userId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
             { new: true },
@@ -115,7 +115,7 @@ exports.getByNomUtilisateur = async (req, res, next) => {
     console.log("Get User by ID");
     const nomUtilisateur = req.params.nomUtilisateur;
     console.log(nomUtilisateur)
-    await Error.checkUserByNomUtilisateur(nomUtilisateur);
+    await errCon.checkUserByNomUtilisateur(nomUtilisateur);
     var foundId = await User.find({ nomUtilisateur: nomUtilisateur });
     console.log(foundId)
     User.findById(foundId, (err, user) => {
@@ -133,9 +133,8 @@ exports.getById = async (req, res, next) => {
     console.log("Get User by ID");
     try {
         const userId = req.params.id;
-        Error.checkUser(userId);
+        await errCon.checkUser(userId);
         var foundId = await User.find({ _id: userId });
-
         User.findById(foundId, (err, user) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(user);

@@ -4,14 +4,19 @@ const Tache = require("../models/Tache");
 const User = require("../models/User");
 const Client = require("../models/Client");
 const Contact = require("../models/Contact");
+const errCon = require('../controllers/errorController')
 
 exports.create = async (req, res, next) => {
     console.log("Create project");
     try {
         let projet = new Projet();
         projet.nom = req.body.nom;
+        await errCon.checkUser(req.body.responsableId);
         projet.responsableId = req.body.responsableId;
+        console.log(req.body.clientId)
+        await errCon.checkClient(req.body.clientId);
         projet.clientId = req.body.clientId;
+        await errCon.checkContact(req.body.contactId);
         projet.contactId = req.body.contactId;
         projet.etat = req.body.etat;
         projet.dateDebutPrevisionnelle = req.body.dateDebutPrevisionnelle;
@@ -25,7 +30,7 @@ exports.create = async (req, res, next) => {
     } catch (err) {
         console.log(err)
         const response = {
-            message: "Impossible de créer la projet"
+            message: err.message
         };
         return res.status(500).send(response);
     }
@@ -33,20 +38,11 @@ exports.create = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
     console.log("Delete Project by id");
     try {
+        await errCon.checkProjet(req.params.projetId);
         const projetId = req.params.projetId;
-
-        var foundId = await Projet.find({ _id: projetId });
-        if (projetId === undefined || foundId.length === 0) {
-            const response = {
-                message: "projetId not found"
-            };
-            return res.status(500).send(response);
-        }
-
         Projet.findByIdAndRemove(projetId, (err, projet) => {
             // Error if detected :
-            if (err) return res.status(500).send(err);
-
+            if (err) throw err;
             // if not :
             // if tache found
             const response = {
@@ -60,18 +56,18 @@ exports.delete = async (req, res, next) => {
 };
 exports.update = async (req, res, next) => {
     console.log("Update projet by id");
-
     try {
         const projetId = req.body.projetId;
         const modif = req.body.modif;
+        await errCon.checkProjet(projetId);
 
-        var foundId = await Projet.find({ _id: projetId });
-        if (projetId === undefined || foundId.length === 0) {
-            const response = {
-                message: "projetId not found"
-            };
-            return res.status(500).send(response);
-        }
+        // Check responsableId, clientId, contactId
+        if (modif.responsableId)
+            await errCon.checkUser(modif.responsableId);
+        if (modif.clientId)
+            await errCon.checkClient(modif.clientId);
+        if (modif.contactId)
+            await errCon.checkContact(modif.contactId);
 
         Projet.findByIdAndUpdate(projetId, modif,
             // Ask mongoose to return the updated version of doc instead of pre-updated one
@@ -79,6 +75,7 @@ exports.update = async (req, res, next) => {
             (err, projet) => {
                 // If error
                 if (err) return res.status(500).send(err);
+
                 return res.send(projet);
             })
     } catch (err) { next(err); }
@@ -94,14 +91,7 @@ exports.getById = async (req, res, next) => {
     console.log("Get projet by ID");
     try {
         const projetId = req.params.projetId;
-        var foundId = await Projet.find({ _id: projetId }).populate('clientId').populate('contactId').populate('responsableId');
-        if (projetId === undefined || foundId.length === 0) {
-            const response = {
-                message: "projetId not found"
-            };
-            return res.status(500).send(response);
-        }
-
+        await errCon.checkProjet(projetId);
         Projet.findById(projetId).populate('clientId').populate('contactId').populate('responsableId').exec((err, projet) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(projet);
@@ -112,13 +102,7 @@ exports.getByUser = async (req, res, next) => {
     console.log("Get Project by User");
     try {
         const _userId = req.params.userId;
-        var foundId = await User.find({ _id: _userId }).populate('clientId').populate('contactId').populate('responsableId');
-        if (_userId === undefined || foundId.length === 0) {
-            const response = {
-                message: "userId not found"
-            };
-            return res.status(500).send(response);
-        }
+        await errCon.checkUser(_userId)
         console.log(_userId);
 
         Projet.aggregate([
@@ -183,14 +167,8 @@ exports.getByResponsable = async (req, res, next) => {
     console.log("Get Project by Responsable");
     try {
         const responsableId = req.params.responsableId;
-        var foundId = await User.find({ _id: responsableId });
-        console.log(responsableId);
-        if (responsableId === undefined || foundId.length === 0) {
-            const response = {
-                message: "userId not found"
-            };
-            return res.status(500).send(response);
-        }
+        await errCon.checkUser(responsableId)
+
         Projet.find({ responsableId: responsableId }).populate('clientId').populate('contactId').populate('responsableId').exec((err, projet) => {
             if (err) return res.status(500).send(err);
             return res.status(200).send(projet);

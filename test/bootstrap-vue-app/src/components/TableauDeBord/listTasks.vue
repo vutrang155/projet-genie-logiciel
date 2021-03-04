@@ -53,7 +53,6 @@
         </b-card-body>
       </b-collapse>
 	</div>
-
 </div>
 </template>
 
@@ -63,12 +62,10 @@ import SaisieAvancement from './SaisieAvancement.vue'
 import axios from 'axios';
 export default {
   name: 'listTasks',
-
   data(){
     return{
       tasks:[],
-      color:'#00aaff',
-      user:null
+      color:'#00aaff'
     }
 
   },
@@ -77,13 +74,6 @@ export default {
   },
   created(){
     this.getAllTasks()
-    //this.getTasksByUser()
-  },
-  mounted() {
-    if (localStorage.user) {
-      this.user = localStorage.user;
-      
-    }
   },
   methods:{
     getColor(Etat){
@@ -103,18 +93,6 @@ export default {
     getAllTasks() {
       //envoie à l'API
       axios.get('/tache/getAll')
-      .then(res => {
-        //console.log(res)
-        this.tasks = res.data
-        for(let key in this.tasks) {
-          console.log(this.tasks[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
-    getTasksByUser() {
-      //envoie à l'API
-      axios.get('/tache/getByUser'+this.user._id)
       .then(res => {
         //console.log(res)
         this.tasks = res.data

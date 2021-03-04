@@ -10,26 +10,26 @@
 
 
           <div>
-            <b-container>
-    <p>Hello, Bootstrap-Vue</p>
-    <b-btn variant="primary">Click</b-btn>
-  </b-container>
+
           </div>
         <p class="userName">Jean PAUL</p>
-        <b-btn variant="primary">Click</b-btn>
 
     </div>
+
   <div v-show="selectedTab ==='Tableau de bord'">
 
     <TableauDeBord/>
   </div>
+
   <div v-show="selectedTab ==='Projets'">
 
     <Projets/>
   </div >
+
   <div v-show="selectedTab ==='Clients'">
     <Client/>
   </div >
+
   <div v-show="selectedTab ==='Collaborateurs'">
     <p>Collabo</p>
     <Collaborateurs/>
@@ -39,10 +39,11 @@
     <p>Collabo</p>
     <Collaborateurs/>
   </div >
+  
   <div class="center" >
   <img alt="Vue logo" src="./assets/logo.png">
   <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-
+  
   </div>
 </template>
 
@@ -70,7 +71,7 @@ export default {
       tabs: ["Tableau de bord","Projets","Clients","Collaborateurs","Notifications"],
       selectedTab: "Tableau de bord"
     }
-
+  
   }
 }
 </script>
@@ -81,7 +82,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-
+  
 }
 .center{
   text-align: center;

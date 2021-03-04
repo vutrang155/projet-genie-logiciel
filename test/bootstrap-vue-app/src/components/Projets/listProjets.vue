@@ -9,12 +9,12 @@
 	<div v-for="(projet,index) in projets" :key="index">
 		<b-card-header  header-tag="header" class="p-1"  role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'projet-' + projet._id" variant="info">
-				{{getColor(projet.etat)}}
+				<!--{{getColor(projet.etat)}}-->
 			<div v-bind:class="projet.etat" :style="{backgroundColor:color}">
 			<div class="col1Projet">
 
 
-					{{projet.nom}} {{projet.etat}}
+					{{projet.nom}} 
 
 
 			</div>

@@ -19,7 +19,7 @@ const tache = mongoose.Schema({
     },
     etat:{
         type: String,
-        enum: ["Afaire","Encores","Termine","Abandonne"],
+        enum: ["Afaire","Encours","Termine","Abandonne"],
         required: true, // enum: ["Afaire","Encours","Termine","Abandonne"], default : 'TODO'
     },
     description: {

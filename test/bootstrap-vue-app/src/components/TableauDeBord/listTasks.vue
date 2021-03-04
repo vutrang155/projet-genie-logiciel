@@ -3,7 +3,7 @@
 
 
 	<div v-for="(task,index) in tasks" :key="index">
-    {{getColor(task.etat)}}
+    {{getColor(task.etat)}} <!-- génère infinite loop warning  -->
 		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
 				<div class="row1Projet" :style="{backgroundColor:color}">
@@ -111,10 +111,10 @@ export default {
         }
       })
       .catch(error => console.log(error))
-    },
+    }/*,
     getTasksByUser() {
       //envoie à l'API
-      axios.get('/tache/getByUser'+this.user._id)
+      axios.get('/tache/getByUser/603fe5682f652a3bd05108f3'//+this.user._id)
       .then(res => {
         //console.log(res)
         this.tasks = res.data
@@ -123,7 +123,7 @@ export default {
         }
       })
       .catch(error => console.log(error))
-    }
+    }*/
   }
 
 }

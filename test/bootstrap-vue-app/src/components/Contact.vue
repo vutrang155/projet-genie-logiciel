@@ -91,7 +91,7 @@ export default {
 		this.getContact()
 	},
 	updated(){
-		this.getContact()
+		//this.getContact()
 	},
 	methods: {
 

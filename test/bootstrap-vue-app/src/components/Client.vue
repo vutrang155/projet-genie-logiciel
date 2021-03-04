@@ -84,13 +84,13 @@ export default {
 		this.getClients()
 		
 	},
-
+	/*
 	updated(){
 
 		this.getClients()
 		
 		
-	},
+	},*/
 	methods: {
 		setaccess(row){
 			this.clientcible = row,

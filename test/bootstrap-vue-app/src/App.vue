@@ -21,7 +21,7 @@
   </div>
   <div v-show="selectedTab ==='Projets'">
 
-    <!--<Projets/> -->
+    <Projets/>
   </div >
   <div v-show="selectedTab ==='Clients'">
     <Client/>
@@ -35,24 +35,14 @@
     <p>Notifications</p>
     <Notifications/>
   </div >
-  <div class="center" >
-  <img alt="Vue logo" src="./assets/logo.png">
-  <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-
-  </div>
-  <div>
-    <b-container>
-    <p>Hello, Bootstrap-Vue</p>
-    <b-btn variant="primary">Click</b-btn>
-    </b-container>
-  </div>
+  
   </div>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import TableauDeBord from './components/TableauDeBord.vue'
-// import Projets from './components/Projets.vue'
+import Projets from './components/Projets.vue'
 import Collaborateurs from './components/Collaborateurs.vue'
 import Client from './components/Client.vue'
 import Notifications from './components/Notifications.vue'
@@ -76,7 +66,7 @@ export default {
   components: {
     //HelloWorld,
     TableauDeBord,
- //   Projets,
+    Projets,
     Collaborateurs,
     Client,
     Notifications

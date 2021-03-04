@@ -79,9 +79,10 @@ export default{
 	created(){
 		this.getContact()
 	},
+	/*
 	updated(){
 		this.getContact()
-	},
+	},*/
 	methods:{
 		// GET CONTACT BY CLIENT ID
 		getContact(){

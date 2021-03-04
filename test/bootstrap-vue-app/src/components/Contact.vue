@@ -90,9 +90,10 @@ export default {
 	created(){
 		this.getContact()
 	},
+	/*
 	updated(){
 		this.getContact()
-	},
+	},*/
 	methods: {
 
 		select(row){

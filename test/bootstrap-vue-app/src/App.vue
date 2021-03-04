@@ -30,6 +30,7 @@
     <Notifications/>
   </div >
 
+  
 
   </div>
 </template>
@@ -65,12 +66,20 @@ export default {
     Projets,
     Collaborateurs,
     Client,
-    Notifications
+    Notifications,
+    
+  },
+   mounted() {
+    if (localStorage.user) {
+      this.user = localStorage.user;
+      
+    }
   },
   data(){
     return{
       tabs: ["Tableau de bord","Projets","Clients","Collaborateurs","Notifications"],
-      selectedTab: "Tableau de bord"
+      selectedTab: "Tableau de bord",
+      user:null
     }
 
   }

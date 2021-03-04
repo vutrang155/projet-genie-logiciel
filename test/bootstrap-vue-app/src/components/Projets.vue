@@ -6,7 +6,7 @@
 	<div v-if="showModifyProjet == true">
 		<modifierProjet v-on:modify-done-projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
 	</div>
-	<p id="succes" v-if="showModificationSucces"> ¨Projet modifié avec succès ! </p>
+	<p id="succes" v-if="showModificationSucces" :style="{color:'#2bed31'}"> Projet modifié avec succès ! </p>
 	<listProjets v-on:modify-clicked-projet="modifyClicked"				/>
 </div>
 </template>

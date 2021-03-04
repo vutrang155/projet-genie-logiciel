@@ -20,10 +20,10 @@
     <p>
       <label for="responsable">Responsable:</label>
       <select v-model="responsable">
-        <option v-for="(responsable1,index) in responsables" 
+        <option v-for="(responsable,index) in responsables" 
         :value="responsable"
         :key="index">
-          {{ responsable1.prenom }}  {{ responsable1.nom}}
+          {{ responsable.prenom }}  {{ responsable.nom}}
         </option>
 
       </select>
@@ -34,12 +34,12 @@
       <select v-model="client">
 
         <option 
-        v-for="client1 in clients" :value="client" 
+        v-for="(client,index) in clients" :key="index" 
         
-        v-bind:key="client1.nom"
+        v-bind:value="client" 
         >
         
-            {{ client1.nom}}
+            {{ client.nom}}
         </option>
 
 
@@ -49,9 +49,9 @@
         <p>
       <label for="contact">Contact:</label>
       <select v-model="contact">
-        <option v-for="(contact1,index) in contacts" :value="contact"
+        <option v-for="(contact,index) in contacts" v-bind:value="contact"
         :key="index">
-            {{ contact1.prenom}} {{contact1.nom}}
+            {{ contact.prenom}} {{contact.nom}}
         </option>
 
       </select>
@@ -60,10 +60,10 @@
     <p>
       <label for="state">Etat:</label>
       <select v-model="EtatTexte" >
-        <option v-for="(etat1,index) in etats" :value="EtatTexte"
-        :key="index" >
-          {{etat1}}
-          </option>
+        <option v-for="(etat,index) in etats" 
+        :key="index" v-bind:value="etat">
+          {{etat}}
+        </option>
 
       </select>
     </p>
@@ -117,7 +117,7 @@ export default {
       contact:null,
       contactNom:null,
       ContactPrenom:null,
-      Etat:null,
+      Etat:"Afaire",
       dateFinReelle:null,
 			dateDebutReelle:null,
 			dateDebutPrevisionnelle:null,
@@ -143,9 +143,9 @@ export default {
     
   },
   methods:{
-    getProjet(){
+    async getProjet(){
             console.log("idProjetToModify : " + this.idProjetToModify )
-            axios.get('projet/getById/' + this.idProjetToModify) 
+            await axios.get('projet/getById/' + this.idProjetToModify) 
               .then(res => {
                   console.log(res)
                   this.projet = res.data
@@ -158,21 +158,25 @@ export default {
                   this.client = this.projet.clientId
                   this.clientNom = this.client.nom
                   this.contact = this.projet.contactId
-                  this.contactNom = this.contactId.nom
-                  this.contactPrenom = this.contactId.prenom
-                  this.Etat =this.projet.Etat
+                  this.contactNom = this.contact.nom
+                  this.contactPrenom = this.contact.prenom
+                  this.Etat =this.projet.etat
                   if(this.Etat == "Afaire"){
                     this.EtatTexte ="A faire"
                   }
-                  if(this.Etat == "Encours"){
+                  else if(this.Etat == "Encours"){
                     this.EtatTexte ="En cours"
                   }
-                  if(this.Etat == "Termine"){
+                  else if(this.Etat == "Termine"){
                     this.EtatTexte ="Terminé"
                   }
-                  if(this.Etat == "Abandonne"){
+                  else if(this.Etat == "Abandonne"){
                     this.EtatTexte ="Abandonné"
                   }
+                  else{this.EtatTexte="A faire"}
+                  console.log(this.projet.etat)
+                  console.log(this.Etat)
+                  console.log(this.EtatTexte)
                   
 
                   
@@ -226,15 +230,20 @@ export default {
       if(this.EtatTexte == "A faire"){
                     this.Etat1 ="Afaire"
                   }
-                  if(this.EtatTexte == "En cours"){
+                  else if(this.EtatTexte == "En cours"){
                     this.Etat1 ="Encours"
                   }
-                  if(this.EtatTexte == "Terminé"){
+                  else if(this.EtatTexte == "Terminé"){
                     this.Etat1 ="Termine"
                   }
-                  if(this.EtatTexte == "Abandonné"){
+                  else if(this.EtatTexte == "Abandonné"){
                     this.Etat1 ="Abandonne"
                   }
+                  else{
+                    console.log("erreur etat")
+                  }
+                  console.log(this.EtatTexte)
+                  console.log(this.Etat1)
       let projetToModify = { //à modifier
         projetId:this.idProjetToModify,
         modif:{
@@ -244,7 +253,7 @@ export default {
           contactId:this.contact._id,
           
 
-          etat:this.Etat
+          etat:this.Etat1
           
 
         }

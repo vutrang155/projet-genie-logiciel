@@ -55,7 +55,7 @@
 
     <p>
       <label for="state">Etat:</label>
-      <select v-model="Etat">
+      <select v-model="EtatTexte">
         <option>A faire</option>
         <option>En cours</option>
         <option>Terminé</option>
@@ -102,6 +102,8 @@ export default {
 			dateDebutReelle:null,
 			dateDebutPrevisionnelle:null,
 			dateFinPrevisionnelle:null,
+      EtatTexte:null,
+      Etat1:null,
 
       responsables:[],
       clients:[],
@@ -153,12 +155,27 @@ export default {
     },
     addProjet(){
       console.log(this.responsable)
+       if(this.EtatTexte == "A faire"){
+                    this.Etat1 ="Afaire"
+                  }
+                  else if(this.EtatTexte == "En cours"){
+                    this.Etat1 ="Encours"
+                  }
+                  else if(this.EtatTexte == "Terminé"){
+                    this.Etat1 ="Termine"
+                  }
+                  else if(this.EtatTexte == "Abandonné"){
+                    this.Etat1 ="Abandonne"
+                  }
+                  else{
+                    console.log("erreur etat")
+                  }
       let projet = {
           nom:this.nom,
           responsableId:this.responsable._id,
           clientId:this.client._id,
           contactId:this.contact._id,
-          etat: "Afaire",
+          etat:this.Etat1,
           dateDebutPrevisionnelle:null,
           dateFinPrevisionnelle:null,
           dateDebutReelle:null,

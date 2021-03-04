@@ -4,7 +4,8 @@
 
 
 	<div  v-for="(task,index) in tasks" :key="index" >
-		<div class="ToDo" :style="{backgroundcolor:'#00ff04'}">
+		{{getColor(task.etat)}}
+		<div v-bind:class="task.etat" >
 		<p>{{task.nom}}</p>
 
 					<div class="rowlT">
@@ -46,6 +47,20 @@ export default {
 		this.getTasksByProjet()
 	},
 	methods:{
+		getColor(Etat){
+			if(Etat == "Afaire"){
+                    this.color ='#4cdcfc'
+                  }
+                  if(Etat == "Encours"){
+                    this.color ='#20d90f'
+                  }
+                  if(Etat == "Termine"){
+                    this.color ='#2f68f7'
+                  }
+                  if(Etat == "Abandonne"){
+                    this.color = '#868f85'
+                  }
+		},
 		getTasksByProjet() {
 			//envoie à l'API
       axios.get('/tache/getByProjet/'+this.ProjetId)
@@ -65,12 +80,32 @@ export default {
 
 <style>
 
- .ToDo{
-   background-color: #00aaff;
+ .Afaire{
+   background-color: #4cdcfc;
    width: 800px;
    padding: 20px;
    margin: 10px;
    border: 1px solid #d8d8d8;
  }
-
+  .Encours{
+   background-color: #20d90f;
+   width: 800px;
+   padding: 20px;
+   margin: 10px;
+   border: 1px solid #d8d8d8;
+ }
+  .Termine{
+   background-color: #2f68f7;
+   width: 800px;
+   padding: 20px;
+   margin: 10px;
+   border: 1px solid #d8d8d8;
+ }
+  .Abandonne{
+   background-color: #868f85;
+   width: 800px;
+   padding: 20px;
+   margin: 10px;
+   border: 1px solid #d8d8d8;
+ }
 </style>

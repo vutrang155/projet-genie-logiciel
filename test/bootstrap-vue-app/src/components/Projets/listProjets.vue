@@ -20,7 +20,7 @@
 			</div>
 			<div class="row2Projet">
 				<p class="col2Projet">
-					Responsable: {{projet.clientId.nom}}
+					Responsable: {{projet.responsableId.prenom}} {{projet.responsableId.nom}}
 				</p>
 				<p class="col2Projet">
 					Client: {{projet.clientId.nom}}
@@ -64,20 +64,25 @@
 
 
 	<div class="row">
-    <div class="color-box" :style="{ backgroundColor:'#00aaff'}"></div>
+    <div class="color-box" :style="{ backgroundColor:'#4cdcfc'}"></div>
     <div class="column" >
 
       <p>: A faire</p>
     </div>
-    <div class="color-box"  :style="{ backgroundColor:'#eeff00'}"></div>
+    <div class="color-box"  :style="{ backgroundColor:'#20d90f'}"></div>
     <div class="column" >
 
       <p>: En cours</p>
     </div>
-    <div class="color-box"  :style="{ backgroundColor:'#00ff04'}"></div>
+    <div class="color-box"  :style="{ backgroundColor:'#2f68f7'}"></div>
     <div class="column" >
 
       <p>: Terminé</p>
+    </div>
+	<div class="color-box"  :style="{ backgroundColor:'#868f85'}"></div>
+    <div class="column" >
+
+      <p>: Abandonné</p>
     </div>
 
   </div>
@@ -118,16 +123,16 @@ export default {
 	methods:{
 		getColor(Etat){
 			if(Etat == "Afaire"){
-                    this.color ='#00aaff'
+                    this.color ='#4cdcfc'
                   }
                   if(Etat == "Encours"){
-                    this.color ='#eeff00'
+                    this.color ='#20d90f'
                   }
                   if(Etat == "Termine"){
-                    this.color ='#00ff04'
+                    this.color ='#2f68f7'
                   }
                   if(Etat == "Abandonne"){
-                    this.color = '#737874'
+                    this.color = '#868f85'
                   }
 		},
 		modifierProjet(idProjet) {
@@ -219,7 +224,7 @@ export default {
 	height:80px;
 }
 .Termine {
-	background-color:'#00ff04' ;
+	background-color:'#868f85' ;
 	border: 1px solid #000000;
 	margin: 10px;
 	padding: 10px;

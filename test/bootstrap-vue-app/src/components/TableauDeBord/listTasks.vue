@@ -3,13 +3,14 @@
 
 
 	<div v-for="(task,index) in tasks" :key="index">
+    {{getColor(task.etat)}}
 		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
 				<div class="row1Projet" :style="{backgroundColor:color}">
 					<div class="col1Projet">
 
 
-						{{task.nom}} {{index}}
+						{{task.nom}} 
 
 
 					</div>
@@ -75,6 +76,20 @@ export default {
     this.getAllTasks()
   },
   methods:{
+    getColor(Etat){
+			if(Etat == "Afaire"){
+                    this.color ='#4cdcfc'
+                  }
+                  if(Etat == "Encours"){
+                    this.color ='#20d90f'
+                  }
+                  if(Etat == "Termine"){
+                    this.color ='#2f68f7'
+                  }
+                  if(Etat == "Abandonne"){
+                    this.color = '#737874'
+                  }
+		},
     getAllTasks() {
       //envoie à l'API
       axios.get('/tache/getAll')
@@ -109,14 +124,14 @@ export default {
    border: 1px solid #d8d8d8;
  }
  .OnGoing{
-   background-color: #eeff00;
+   background-color: #20d90f;
    width: 80%;
    padding: 20px;
    margin: 40px;
    border: 1px solid #d8d8d8;
  }
  .Done{
-   background-color: #00ff04;
+   background-color: #2f68f7;
    width: 80%;
    padding: 20px;
    margin: 40px;
@@ -127,7 +142,7 @@ export default {
 }
 .collT{
   width:auto;
-  margin-right: 30px;
+  margin-right: 50px;
 }
 
 </style>

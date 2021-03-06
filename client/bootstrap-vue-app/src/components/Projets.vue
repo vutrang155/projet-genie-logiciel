@@ -41,7 +41,7 @@ export default {
       console.log("idProjetToModify " + this.idProjetToModify)
       console.log("showModifyProjet " + this.showModifyProjet)
     }, 
-    modifyDoneProjet(statusResOk) { //
+    modifyDoneProjet(statusResOk) { //une fois la modification faite, met à jours les variables boolean pour afficher la liste des projets et cacher le form de modif
 		this.showModifyProjet = false
       if(statusResOk) 
 		this.showModificationSucces = true 

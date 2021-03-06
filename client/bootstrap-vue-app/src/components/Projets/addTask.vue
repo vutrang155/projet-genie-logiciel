@@ -5,7 +5,7 @@
   <p v-if="errors.length">
     <b> Veuillez corriger les erreurs ci-dessous:</b>
     <ul>
-      <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
+      <li v-for="(error,index) in errors" :key="index">{{ error }}</li> <!-- liste les erreurs -->
     </ul>
   </p>
     <p class="titre">
@@ -71,7 +71,7 @@
       <input type="submit" value="Créer tâche" :style="{width:'auto'}">
     </p>
 
-    <button v-on:click="annulerCreationTache()">Annuler création tâche</button>
+    <button v-on:click="annulerCreationTache()">Annuler création tâche</button> <!-- envoie dans la classe mère l'info de l'annulation pour cacher le formulaire -->
   </form>
 
   
@@ -105,7 +105,7 @@ export default {
     }
   },
   props:{
-		ProjetId:{
+		ProjetId:{ //récupère l'id du projet auquel la tache sera rattachée 
 			type:String,
 			required:true
 		}
@@ -116,7 +116,7 @@ export default {
     this.getTachesProjet()
   },
   methods:{
-    async addTask(){
+    async addTask(){ //ajout de la tache dans la BDD
       var predecesseursIDS = []
 
 

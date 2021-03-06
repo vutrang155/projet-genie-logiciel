@@ -3,7 +3,7 @@
 
 
 
-	<div  v-for="(task,index) in tasks" :key="index" >
+	<div  v-for="(task,index) in tasks" :key="index" > <!-- parcourt les taches-->
 		{{getColor(task.etat)}}
 		<div v-bind:class="task.etat" >
 		<p>{{task.nom}}</p>

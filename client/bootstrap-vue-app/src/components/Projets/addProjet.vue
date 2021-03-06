@@ -5,7 +5,7 @@
   <p v-if="errors.length">
     <b> Please correct the following error(s):</b>
     <ul>
-      <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
+      <li v-for="(error,index) in errors" :key="index">{{ error }}</li> <!-- affiche la liste des erreurs -->
     </ul>
   </p>
     <p class="titre">
@@ -118,7 +118,7 @@ export default {
     this.getContacts()
   },
   methods:{
-    getResponsables() {
+    getResponsables() { //load la liste des responsables de projet
       let type = 2
       axios.get('/user/getByType/' + type)
       .then(res => {
@@ -129,7 +129,7 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    getClients() {
+    getClients() { //récupère la liste des clients
       //envoie à l'API
       axios.get('/client/getAll')
       .then(res => {
@@ -141,7 +141,7 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    getContacts() {
+    getContacts() { //récupère la liste des contacts
       //envoie à l'API
       axios.get('/contact/getAll')
       .then(res => {
@@ -153,9 +153,9 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    addProjet(){
+    addProjet(){ //ajout du proejet dans la base de donnée
       console.log(this.responsable)
-       if(this.EtatTexte == "A faire"){
+       if(this.EtatTexte == "A faire"){ //transforme les variabiable état pour qu'elles soient correctement stockées dans la base de données
                     this.Etat1 ="Afaire"
                   }
                   else if(this.EtatTexte == "En cours"){
@@ -170,7 +170,7 @@ export default {
                   else{
                     console.log("erreur etat")
                   }
-      let projet = {
+      let projet = { //création d'un objet projet
           nom:this.nom,
           responsableId:this.responsable._id,
           clientId:this.client._id,
@@ -182,7 +182,7 @@ export default {
           dateFinReelle:null
         }
         console.log(projet)
-      axios.post('/projet/create', projet)
+      axios.post('/projet/create', projet) //envoie du projet dans la BDD
 			.then(res => {
         console.log(res)
         const projet = res.data

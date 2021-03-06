@@ -6,7 +6,7 @@
 
 
 
-	<div v-for="(projet,index) in projets" :key="index">
+	<div v-for="(projet,index) in projets" :key="index"> <!-- parcourt tout les projets -->
 		<b-card-header  header-tag="header" class="p-1"  role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'projet-' + projet._id" variant="info">
 				<!--{{getColor(projet.etat)}}-->
@@ -63,7 +63,7 @@
 
 
 
-
+	<!-- légende couleurs -->
 	<div class="row">
     <div class="color-box" :style="{ backgroundColor:'#4cdcfc'}"></div>
     <div class="column" >

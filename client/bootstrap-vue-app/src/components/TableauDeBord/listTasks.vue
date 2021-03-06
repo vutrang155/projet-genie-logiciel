@@ -4,8 +4,8 @@
 
 	<div v-for="(task,index) in tasks" :key="index">
 
-		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">
-			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
+		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}"> <!-- tete de l'accordéon-->
+			<b-btn block v-b-toggle="'task-' + task._id" variant="info"> <!-- bouton déclencheur de l'accordéon -->
         {{getColor(task.etat)}} <!-- génère infinite loop warning  -->
 				<div class="row1Projet" :style="{backgroundColor:color}">
 					<div class="col1Projet">
@@ -44,7 +44,7 @@
 			</b-btn>
 		</b-card-header >
 		<b-collapse :id="'task-' + task._id" accordion="my-accordion" role="tabpanel">
-        <b-card-body>
+        <b-card-body> <!-- intérieur de l'accordéon déroulé -->
 
 
 					<SaisieAvancement :taskId="task._id"  />

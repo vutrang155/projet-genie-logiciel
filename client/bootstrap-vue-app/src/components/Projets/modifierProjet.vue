@@ -143,7 +143,7 @@ export default {
     
   },
   methods:{
-    async getProjet(){
+    async getProjet(){ //récupère les données du projet
             console.log("idProjetToModify : " + this.idProjetToModify )
             await axios.get('projet/getById/' + this.idProjetToModify) 
               .then(res => {
@@ -189,7 +189,7 @@ export default {
             this.prenom = this.user.prenom
             this.adresse = this.user.adresse*/
         },
-    async getResponsables() {
+    async getResponsables() {//récupère les responsables de projets
       let type = 2
       await axios.get('/user/getByType/' + type)
       .then(res => {
@@ -200,7 +200,7 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    async getClients() {
+    async getClients() { //récupère les clients
       //envoie à l'API
       await axios.get('/client/getAll')
       .then(res => {
@@ -212,7 +212,7 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    async getContacts() {
+    async getContacts() { //récupère les contacts
       //envoie à l'API
       await axios.get('/contact/getAll')
       .then(res => {
@@ -224,7 +224,7 @@ export default {
       })
       .catch(error => console.log(error))
     },
-    async ModifierProjet(){
+    async ModifierProjet(){ //enregistrer les modifications projets
 			this.errors = []
 			this.statusResOk = false
       if(this.EtatTexte == "A faire"){

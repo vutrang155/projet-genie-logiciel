@@ -8,7 +8,7 @@
       <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
     </ul>
   </p>
-    <p>
+    <p class="titre">
       Modifier un Projet
     </p>
 
@@ -289,5 +289,11 @@ export default {
     height: 25px;
     margin-bottom: 20px;
  }
+
+ .titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
+}
 
 </style>

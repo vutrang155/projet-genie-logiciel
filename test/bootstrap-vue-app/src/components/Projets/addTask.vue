@@ -190,7 +190,7 @@ export default {
       else{
         this.errors=[]
         if(!this.nom) this.errors.push("Nom requis !")
-        if(!this.responsable._id) this.errors.push("Responsable requis !")
+        if(!this.responsable) this.errors.push("Responsable requis !")
         if(!this.etat) this.errors.push("Etat requis !")
         if(!this.dateDebutPrevisionnelle) this.errors.push("Date requise !")
       }
@@ -260,7 +260,9 @@ label {
    resize: none;
 
  }
- .titre{
-   font-size: x-large;
- }
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
+}
 </style>

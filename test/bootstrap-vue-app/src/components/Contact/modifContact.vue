@@ -6,7 +6,7 @@
 
 		<form class = "modifContact-form" @submit.prevent = "modifContact" >
 
-			<p> Modifier Contact </p>
+			<p class="titre"> Modifier Contact </p>
 
 
 
@@ -150,5 +150,9 @@ export default{
 
 
 <style>
-
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
+}
 </style>

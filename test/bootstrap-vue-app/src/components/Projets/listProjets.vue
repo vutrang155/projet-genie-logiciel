@@ -289,4 +289,9 @@ export default {
     height: 25px;
     margin-bottom: 20px;
  }
+
+#succes {
+  padding-left: 60px;
+  color: green;
+}
 </style>

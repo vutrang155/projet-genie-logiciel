@@ -14,7 +14,7 @@
 				</ul>
 			</p>
 
-			<p> Modification client </p>
+			<p class="titre"> Modification client </p>
 
 			
 
@@ -151,5 +151,9 @@ import axios from 'axios';
 
 
 <style>
-
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
+}
 </style>

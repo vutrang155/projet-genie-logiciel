@@ -17,7 +17,7 @@
 			</p>
 
 
-			<p> Ajouter Contact </p>
+			<p class="titre"> Ajouter Contact </p>
 
 			<p>
 				<label for="name" >Nom Contact:</label> 
@@ -147,5 +147,9 @@ export default{
 
 
 <style>
-
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
+}
 </style>

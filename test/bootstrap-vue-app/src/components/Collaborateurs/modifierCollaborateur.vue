@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>MODIFICATION COLLABORATEUR</p>
     <form class="review-form" @submit.prevent="updateCollaborateur">
 
       <p v-if="errors.length">
@@ -17,16 +16,6 @@
         <label for="nomUtilisateur" >UserName:</label>
         <input id="nomUtilisateur" v-model="nomUtilisateur" placeholder="UserName" :style="{width:'auto'}">
       </p>
-
-      <!--<p>
-        <label for="userId" >Id de l'utilisateur:</label>
-        <input id="userId" v-model="userId" placeholder="userId" :style="{width:'auto'}">
-      </p>
-
-      <p>
-        <label for="password" >Mot de passe:</label>
-        <input id="password" v-model="password" placeholder="Mot de passe" :style="{width:'auto'}">
-      </p>-->
 
       <p>
         <label for="nom" >Nom:</label>
@@ -207,5 +196,11 @@ export default {
 #succes {
   padding-left: 60px;
   color: red;
+}
+
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+	font-weight: bold;
 }
 </style>

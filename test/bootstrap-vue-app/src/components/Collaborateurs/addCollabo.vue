@@ -186,6 +186,7 @@ export default {
   .titre {
     text-decoration: underline;
     font-size: 20px;
+    font-weight: bold;
   }
 
   label {

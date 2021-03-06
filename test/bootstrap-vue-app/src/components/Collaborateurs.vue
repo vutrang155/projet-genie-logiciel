@@ -1,7 +1,5 @@
 <template>
   <div>
-    <p>Page Collaborateurs</p>
-    Je vais modifier le collaborateur avec l'id : {{ idCollaborateurToModify }}
     <div v-if="showModify == true">
       <modifierCollaborateur v-on:modify-done="modifyDone" :idCollaborateurToModify="idCollaborateurToModify" />
     </div>
@@ -63,6 +61,6 @@ export default {
 <style>
 #succes {
   padding-left: 60px;
-  color: red;
+  color: green;
 }
 </style>

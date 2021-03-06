@@ -16,7 +16,7 @@
 			</ul>
 		</p>
 
-		<p> Création d'un client </p> 
+		<p class=titre> Création d'un client </p> 
 
 		<p>
 			<label for="name" >Nom Client:</label>
@@ -148,5 +148,8 @@ import axios from 'axios';
 
 
 <style>
-
+.titre {
+	text-decoration: underline;
+	font-size: 20px;
+}
 </style>

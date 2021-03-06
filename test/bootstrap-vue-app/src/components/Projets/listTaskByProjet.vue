@@ -13,6 +13,9 @@
           <div class="collT"> Projet: {{task.projetId.nom}} </div>
           <div class="collT"> Responsable: {{task.responsableId.prenom}} </div>
           <div class="collT"> Avancement: {{task.avancement}} </div>
+          <div class="collT"> Date début prévisionnelle: {{task.dateDebutPrevisionnelle | formatDate}} </div>
+
+
 
         </div>
 		</div>

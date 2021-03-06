@@ -21,7 +21,6 @@
     <Client/>
   </div >
   <div v-show="selectedTab ==='Collaborateurs'">
-    <p>Collabo</p>
     <Collaborateurs/>
   </div >
 

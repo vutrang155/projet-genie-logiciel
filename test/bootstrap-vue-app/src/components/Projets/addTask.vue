@@ -19,18 +19,6 @@
       <input id="nom" v-model="nom" placeholder="Nom de la tâche" :style="{width:'auto'}">
     </p>
 
-    <!--
-    <p>
-      <label for="projet">Projet:</label>
-      <select v-model="projet">
-        <option v-for="(projet,index) in projets" :key="index"
-        v-bind:value="projet">
-            {{ projet.nom }}
-        </option>
-
-      </select>
-    </p>-->
-
     <p>
       <label for="responsable">Collaborateur responsable de la tâche:</label>
       <select v-model="responsable">
@@ -68,10 +56,9 @@
     </p>
     
     <p>
-      <label for="responsable">Prédécesseur(s):</label>
+      <label for="predecesseurs">Prédécesseur(s):</label>
       <select multiple v-model="predecesseurs">
-        <option v-for="(tache,index) in tachesProjet" :key="index"
-        v-bind:value="predecesseurs">
+        <option v-for="(tache, index) in tachesProjet" :key="index">
             {{ tache.nom }}
         </option>
 
@@ -105,7 +92,7 @@ export default {
       etat:null,
       dateDebutPrevisionnelle: null,
       description:null,
-      chargeAssociee: null, //charge: 1, pour initaliser la charge à 1
+      chargeAssociee: null, //chargeAssociee: 1, pour initaliser la charge à 1
     
       projets: [],
       collaborateurs: [],
@@ -130,10 +117,22 @@ export default {
   },
   methods:{
     async addTask(){
+      var predecesseursIDS = []
+
+
+      //pour matcher le nom de la tâche récupérée dans le multiple select des prédecesseurs avec l'id de cette tâche
+      this.tachesProjet.forEach((tache)=> {
+        this.predecesseurs.forEach((nomPredecesseur) => {
+          if(tache.nom === nomPredecesseur) {
+            predecesseursIDS.push(tache._id)
+          }
+        })
+      })
+
       this.errors = []
       this.statusResOk = false
-      //console.log("Nom projet : " + this.projet.nom)
-      console.log("Projet id " + this.ProjetId)
+
+      //test des champs required
       if(this.nom && this.responsable._id && this.ProjetId && this.etat && this.dateDebutPrevisionnelle){
 
         let etatAEnvoyer;
@@ -148,7 +147,6 @@ export default {
             etatAEnvoyer = "Termine"
             break
         }
-        console.log("Etat a envoyer : " + etatAEnvoyer)
         let task = {
           nom: this.nom,
           responsableId: this.responsable._id, 
@@ -157,10 +155,10 @@ export default {
           dateDebutPrevisionnelle: this.dateDebutPrevisionnelle,
           description: this.description,
           chargeAssociee: this.chargeAssociee,
+          predecesseur: predecesseursIDS
         }
         console.log(task)
 
-        //this.$emit("task-added", task)
 
         //on remet les champs à null
         this.nom = null
@@ -172,19 +170,22 @@ export default {
         this.chargeAssociee = null
 
         //envoie à l'API
-        console.log("taks.projetId avant envoie : " + task.projectId)
         await axios.post('/tache/create', task)
         .then(res => {
           console.log(res)
           if (res.status === 200) {
             this.statusResOk = true
-            console.log("statusResOk" + this.statusResOk)
+            console.log("statusResOk : " + this.statusResOk) 
           }
+          this.$emit('add-task', this.statusResOk)
         })
         .catch(error => {
           console.log(error)
           this.statusResOk = false
         })
+        
+        
+
       }
       else{
         this.errors=[]
@@ -198,11 +199,8 @@ export default {
     async getAllProjets() {
       await axios.get('/projet/getAll')
       .then(res => {
-        //console.log(res)
+
         this.projets = res.data
-        /*for(let key in this.projets) {
-          console.log(this.projets[key])
-        }*/
       })
       .catch(error => console.log(error))
     },
@@ -221,7 +219,9 @@ export default {
     async getTachesProjet() {
       await axios.get('/tache/getByProjet/' + this.ProjetId)
       .then(res => {
+        console.log("tâches projet : ")
         this.tachesProjet = res.data
+        console.log(this.tachesProjet)
         /*for(let key in this.projets) {
           console.log(this.projets[key])
         }*/

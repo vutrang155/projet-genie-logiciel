@@ -151,12 +151,6 @@ export default {
                   else if (this.user.role == 2) this.chefDeProjet = true
               })
               .catch(error => console.log(error))
-
-            //this.nom = this.user.nom
-            //this.userId = this.user.userId
-            /*this.nom = this.user.nom
-            this.prenom = this.user.prenom
-            this.adresse = this.user.adresse*/
         },
         async updateCollaborateur() {
           this.errors = []

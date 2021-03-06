@@ -52,7 +52,8 @@
 					<button v-on:click="creerTache()">Créer tâche</button>
 
 					<listTaskByProjet :ProjetId="projet._id" />
-					<addTask v-on:annulation-creation-tache="cacherCreerTache" v-if="showAddTask" :ProjetId="projet._id"/>
+					<addTask v-on:annulation-creation-tache="cacherCreerTache" v-on:add-task="addTask" v-if="showAddTask" :ProjetId="projet._id"/>
+					<p id="succes" v-if="showTaskCreationSucces"> Tâche créée avec succès ! </p>
 					<!--<button v-on:click="cacherCreerTache()">Annuler création tâche</button>-->
 
 
@@ -112,7 +113,8 @@ export default {
 			text:'test',
 			tasks:[],
 			showAddTask: false,
-			color:null
+			color:null,
+			showTaskCreationSucces: false
 		}
 
 	},
@@ -172,6 +174,11 @@ export default {
 		},
 		cacherCreerTache() {
 			this.showAddTask = false
+			this.showTaskCreationSucces = false
+		}, 
+		addTask(statusResOk) {
+			if(statusResOk) this.showTaskCreationSucces = true 
+			console.log("add-task dans listProjets, statusResOk : " + statusResOk)
 		}
 
 		/*,

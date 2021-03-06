@@ -3,9 +3,10 @@
 
 
 	<div v-for="(task,index) in tasks" :key="index">
-    {{getColor(task.etat)}} <!-- génère infinite loop warning  -->
+
 		<b-card-header header-tag="header" class="p-1" role="tab" :style="{width:'80%'}">
 			<b-btn block v-b-toggle="'task-' + task._id" variant="info">
+        {{getColor(task.etat)}} <!-- génère infinite loop warning  -->
 				<div class="row1Projet" :style="{backgroundColor:color}">
 					<div class="col1Projet">
 

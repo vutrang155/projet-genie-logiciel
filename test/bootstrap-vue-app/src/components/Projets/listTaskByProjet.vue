@@ -19,6 +19,10 @@
 
         </div>
 		</div>
+
+    <div v-if="showModifyTask == true">
+		<ModifyTache v-on:modify-done-tache="modifyDoneTache" :idTacheToModify="task._id" />
+	</div>
 	</div>
 	
 
@@ -33,7 +37,9 @@ export default {
 	name:'listTaskByProjet',
 	data(){
 		return{
-			tasks:[]
+			tasks:[],
+      idProjetToModify:null,
+		showModifyProjet:false,
 		}
 	}
 	,
@@ -50,6 +56,20 @@ export default {
 		this.getTasksByProjet()
 	},
 	methods:{
+    modifyClicked(idProjet) {
+      this.showModificationSucces = false //pour enlever "Collaborateur modifié avec succès !" si le bouton modifier à été re-cliqué pour un autre collaborateur
+      this.idProjetToModify = idProjet
+      this.showModifyProjet = true //fais apparaître le formulaire de modification (component modifierCollaborateur)
+      console.log("idProjetToModify " + this.idProjetToModify)
+      console.log("showModifyProjet " + this.showModifyProjet)
+    }, 
+    modifyDoneTache(statusResOk) {
+		this.showModifyProjet = false
+      if(statusResOk) 
+		this.showModificationSucces = true 
+      
+      console.log("modify-done dans Projets"+this.showModifyProjet+", statusResOk : " + statusResOk)
+    },
 		getColor(Etat){
 			if(Etat == "Afaire"){
                     this.color ='#4cdcfc'

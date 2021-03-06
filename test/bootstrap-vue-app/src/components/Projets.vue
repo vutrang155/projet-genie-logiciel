@@ -2,12 +2,13 @@
 <div>
   
 
-	<addProjet/>
+	<addProjet/> <!-- formulaire pour rajouter un projet -->
 	<div v-if="showModifyProjet == true">
 		<modifierProjet v-on:modify-done-projet="modifyDoneProjet" :idProjetToModify="idProjetToModify" />
+		<!-- affiche le formulaire de modification du projet lorsque le bouton est cliqué -->
 	</div>
 	<p id="succes" v-if="showModificationSucces" :style="{color:'#2bed31'}"> Projet modifié avec succès ! </p>
-	<listProjets v-on:modify-clicked-projet="modifyClicked"				/>
+	<listProjets v-on:modify-clicked-projet="modifyClicked"/>
 </div>
 </template>
 
@@ -34,13 +35,13 @@ export default {
 	},
 	methods:{
 		modifyClicked(idProjet) {
-      this.showModificationSucces = false //pour enlever "Collaborateur modifié avec succès !" si le bouton modifier à été re-cliqué pour un autre collaborateur
+      this.showModificationSucces = false //pour enlever "Projet modifié avec succès !" si le bouton modifier à été re-cliqué pour un autre collaborateur
       this.idProjetToModify = idProjet
-      this.showModifyProjet = true //fais apparaître le formulaire de modification (component modifierCollaborateur)
+      this.showModifyProjet = true //fais apparaître le formulaire de modification (component modifierProjet)
       console.log("idProjetToModify " + this.idProjetToModify)
       console.log("showModifyProjet " + this.showModifyProjet)
     }, 
-    modifyDoneProjet(statusResOk) {
+    modifyDoneProjet(statusResOk) { //
 		this.showModifyProjet = false
       if(statusResOk) 
 		this.showModificationSucces = true 

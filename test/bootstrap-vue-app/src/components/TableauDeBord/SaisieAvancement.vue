@@ -15,13 +15,15 @@
 
 				<input type="number" id="Avancement" name="Avancement" v-model="Avancement"
        min="0" max="100">
+				<p>%</p>
 
 			</div>
 			<div class="row2">
-				<label for="Charge">Charge Consomée:</label>
+				<label for="Charge">Charge Consomée en jours:</label>
 
 				<input type="number" id="Charge" name="Charge" v-model="Charge"
        min="0" >
+				<p> /{{ChargePrevue}}</p>
 
 			</div>
 		</div>
@@ -58,6 +60,7 @@ export default {
 			task:null,
 			errors:[],
 			submitted:null,
+			ChargePrevue:null
 		}
 		
 	},
@@ -73,6 +76,7 @@ export default {
         this.tasks = res.data
 				this.Avancement =res.data.avancement
 				this.Charge=res.data.chargeConsommee
+				this.ChargePrevue=res.data.chargeAssociee
         for(let key in this.tasks) {
           console.log(this.tasks[key])
         }

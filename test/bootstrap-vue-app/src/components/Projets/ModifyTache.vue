@@ -1,210 +1,250 @@
 <template>
 <div>
-	<form class="review-form" @submit.prevent="ModifyTache">
+	<form class="review-form" @submit.prevent="addTask">
 
   <p v-if="errors.length">
-    <b> Please correct the following error(s):</b>
+    <b> Veuillez corriger les erreurs ci-dessous:</b>
     <ul>
       <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
     </ul>
   </p>
     <p class="titre">
-      Modification d'un Projet
+      <b>
+      Création d'une nouvelle tâche
+      </b>
     </p>
 
     <p>
-      <label for="name" >Nom du Projet:</label>
-      <input id="name" v-model="nom" placeholder="nom" :style="{width:'auto'}">
+      <label for="nom" >Nom:</label>
+      <input id="nom" v-model="nom" placeholder="Nom de la tâche" :style="{width:'auto'}">
     </p>
 
+    <!--
     <p>
-      <label for="responsable">Responsable:</label>
+      <label for="projet">Projet:</label>
+      <select v-model="projet">
+        <option v-for="(projet,index) in projets" :key="index"
+        v-bind:value="projet">
+            {{ projet.nom }}
+        </option>
+
+      </select>
+    </p>-->
+
+    <p>
+      <label for="responsable">Collaborateur responsable de la tâche:</label>
       <select v-model="responsable">
-        <option v-for="(responsable,index) in responsables" :key="index"
+        <option v-for="(responsable,index) in collaborateurs" :key="index"
         v-bind:value="responsable">
-          {{ responsable.prenom }}  {{ responsable.nom}}
-          
+            {{ responsable.prenom }}  {{ responsable.nom}}
         </option>
 
       </select>
     </p>
-
-    <p>
-      <label for="client">Client:</label>
-      <select v-model="client">
-        <option v-for="(client,index) in clients" :key="index"
-        v-bind:value="client">
-            {{ client.nom}}
-        </option>
-
-      </select>
-    </p>
-
-    <p>
-      <label for="contact">Contact:</label>
-      <select v-model="contact">
-        <option v-for="(contact,index) in contacts" :key="index"
-        v-bind:value="contact">
-            {{ contact.prenom}} {{contact.nom}}
-        </option>
-
-      </select>
-    </p>
-
-    
 
     <p>
       <label for="state">Etat:</label>
-      <select v-model="EtatTexte">
-        <option>A faire</option>
-        <option>En cours</option>
-        <option>Terminé</option>
+      <select v-model="EtatTexte" >
+        <option v-for="(etat,index) in etats" 
+        :key="index" v-bind:value="etat">
+          {{etat}}
+        </option>
+
       </select>
     </p>
 
     <p>
-      <label for="start">Date de début:</label>
-
-      <input disabled type="date" id="start" name="task-start" :style="{width:'auto'}"
-       value="2021-02-22"
-       min="2021-01-01" max="2022-12-31">
+      <label for="datepickerDebut">Date de début:</label>
+      <b-form-datepicker id="datepickerDebut" placeholder="Choisissez une date" v-model="dateDebutPrevisionnelle" reset-button></b-form-datepicker>
+      {{ dateDebutPrevisionnelle }}
     </p>
 
     <p>
-      <label for="end">Date de fin:</label>
-
-      <input disabled type="date" id="end" name="task-end" :style="{width:'auto'}"
-       value="2021-02-22"
-       min="2021-01-01" max="2022-12-31">
+      <label for="description">Description:</label>
+      <textarea id="description" v-model="description"></textarea>
     </p>
+
+    <p>
+      <label for="chargeAssociee">Charge Associée (en journées):</label>
+			<input type="number" id="chargeAssociee" v-model="chargeAssociee" :style="{width:'auto'}" min="0" >
+    </p>
+    
+    <p>
+      <label for="responsable">Prédécesseur(s):</label>
+      <select multiple v-model="predecesseurs">
+        <option v-for="(tache,index) in tachesProjet" :key="index"
+        v-bind:value="predecesseurs">
+            {{ tache.nom }}
+        </option>
+
+      </select>
+    </p>
+
 
 
     <p>
-      <input type="submit" value="Créer" :style="{width:'auto'}">
+      <input type="submit" value="Créer tâche" :style="{width:'auto'}">
     </p>
 
-  </form>  
+    <button v-on:click="annulerCreationTache()">Annuler création tâche</button>
+  </form>
+
+  
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+
 export default {
-	name:'addProjet',
-	data() {
-    return {
-      nom:null,
-      responsable:null,
-      client:null,
-      contact:null,
-      Etat:null,
-      dateFinReelle:null,
-			dateDebutReelle:null,
-			dateDebutPrevisionnelle:null,
-			dateFinPrevisionnelle:null,
-      EtatTexte:null,
-      Etat1:null,
-
-      responsables:[],
-      clients:[],
-      contacts:[],
-
-      errors: []
-    }
-  },
-  created(){
-    this.getResponsables(),
-    this.getClients(),
-    this.getContacts()
-  },
-  props:{
-    idProjetToModify:{
+  name:'addTask',
+    props:{
+    idTacheToModify:{
       type:String,
       required:true
     }
   },
-  methods:{
+	data() {
+    return {
+      nom: null,
+      projet: null,
+      responsable:null,
+      etat:null,
+      dateDebutPrevisionnelle: null,
+      description:null,
+      chargeAssociee: null, //charge: 1, pour initaliser la charge à 1
+    
+      projets: [],
+      collaborateurs: [],
+      etats:["A faire","En cours","Terminé","Abandonné"],
 
-    getResponsables() {
-      let type = 2
-      axios.get('/user/getByType/' + type)
-      .then(res => {
-        this.responsables = res.data
-        for(let key in this.responsables) {
-          console.log(this.responsables[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
-    getClients() {
-      //envoie à l'API
-      axios.get('/client/getAll')
-      .then(res => {
-        //console.log(res)
-        this.clients = res.data
-        for(let key in this.clients) {
-          console.log(this.clients[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
-    getContacts() {
-      //envoie à l'API
-      axios.get('/contact/getAll')
-      .then(res => {
-        //console.log(res)
-        this.contacts = res.data
-        for(let key in this.contacts) {
-          console.log(this.contacts[key])
-        }
-      })
-      .catch(error => console.log(error))
-    },
-    ModifyTache(){
-      console.log(this.responsable)
-       if(this.EtatTexte == "A faire"){
-                    this.Etat1 ="Afaire"
-                  }
-                  else if(this.EtatTexte == "En cours"){
-                    this.Etat1 ="Encours"
-                  }
-                  else if(this.EtatTexte == "Terminé"){
-                    this.Etat1 ="Termine"
-                  }
-                  else if(this.EtatTexte == "Abandonné"){
-                    this.Etat1 ="Abandonne"
-                  }
-                  else{
-                    console.log("erreur etat")
-                  }
-      let projet = {
-          nom:this.nom,
-          responsableId:this.responsable._id,
-          clientId:this.client._id,
-          contactId:this.contact._id,
-          etat:this.Etat1,
-          dateDebutPrevisionnelle:null,
-          dateFinPrevisionnelle:null,
-          dateDebutReelle:null,
-          dateFinReelle:null
-        }
-        console.log(projet)
-      axios.post('/projet/create', projet)
-			.then(res => {
-        console.log(res)
-        const projet = res.data
-        this.responsable = projet.responsable
-        this.nom = projet.nom
-        this.etat = projet.etat
-			})
-			.catch(error => console.log(error))
+      tachesProjet: [],
+      predecesseurs: [],
 
-
+      errors: [],
+      statusResOk: false
     }
-  }
-	
+  },
+  props:{
+		ProjetId:{
+			type:String,
+			required:true
+		}
+	},
+  created() {
+    this.getAllProjets(),
+    this.getAllCollaborateurs(),
+    this.getTachesProjet()
+  },
+  methods:{
+    async addTask(){
+      this.errors = []
+      this.statusResOk = false
+      //console.log("Nom projet : " + this.projet.nom)
+      console.log("Projet id " + this.ProjetId)
+      if(this.nom && this.responsable._id && this.ProjetId && this.etat && this.dateDebutPrevisionnelle){
+
+        let etatAEnvoyer;
+        switch (this.etat) {
+          case 'A faire':
+            etatAEnvoyer = "Afaire"
+            break
+          case 'En cours':
+            etatAEnvoyer = "Encours"
+            break
+          case 'Terminée':
+            etatAEnvoyer = "Termine"
+            break
+        }
+        console.log("Etat a envoyer : " + etatAEnvoyer)
+        let task = {
+          nom: this.nom,
+          responsableId: this.responsable._id, 
+          projetId: this.ProjetId,
+          etat: etatAEnvoyer,
+          dateDebutPrevisionnelle: this.dateDebutPrevisionnelle,
+          description: this.description,
+          chargeAssociee: this.chargeAssociee,
+        }
+        console.log(task)
+
+        //this.$emit("task-added", task)
+
+        //on remet les champs à null
+        this.nom = null
+        this.projet = null
+        this.responsable = null
+        this.etat = null
+        this.dateDebutPrevisionnelle = null
+        this.description = null
+        this.chargeAssociee = null
+
+        //envoie à l'API
+        console.log("taks.projetId avant envoie : " + task.projectId)
+        await axios.post('/tache/create', task)
+        .then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            this.statusResOk = true
+            console.log("statusResOk" + this.statusResOk)
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          this.statusResOk = false
+        })
+      }
+      else{
+        this.errors=[]
+        if(!this.nom) this.errors.push("Nom requis !")
+        if(!this.responsable._id) this.errors.push("Responsable requis !")
+        if(!this.etat) this.errors.push("Etat requis !")
+        if(!this.dateDebutPrevisionnelle) this.errors.push("Date requise !")
+      }
+
+    }, 
+    async getAllProjets() {
+      await axios.get('/projet/getAll')
+      .then(res => {
+        //console.log(res)
+        this.projets = res.data
+        /*for(let key in this.projets) {
+          console.log(this.projets[key])
+        }*/
+      })
+      .catch(error => console.log(error))
+    },
+    async getAllCollaborateurs() {
+      //envoie à l'API
+      await axios.get('/user/getAll')
+      .then(res => {
+          //console.log(res)
+          this.collaborateurs = res.data
+          for(let key in this.collaborateurs) {
+              console.log(this.collaborateurs[key])
+          }
+      })
+      .catch(error => console.log(error))
+    },
+    async getTachesProjet() {
+      await axios.get('/tache/getByProjet/' + this.ProjetId)
+      .then(res => {
+        this.tachesProjet = res.data
+        /*for(let key in this.projets) {
+          console.log(this.projets[key])
+        }*/
+      })
+      .catch(error => console.log(error))
+    },
+    annulerCreationTache() {
+      this.$emit('annulation-creation-tache')
+    }
+    
+  } 
 }
 </script>
+	
 
 <style>
   .review-form {
@@ -213,10 +253,23 @@ export default {
     margin: 40px;
     border: 1px solid #d8d8d8;
  }
-  input {
-    width: 100%;
-    height: 25px;
-    margin-bottom: 20px;
- }
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
 
+input,
+label {
+    margin: .4rem 0;
+}
+ textarea {
+   width: 100%;
+   height: 160px;
+   display: block;
+   resize: none;
+
+ }
+ .titre{
+   font-size: x-large;
+ }
 </style>

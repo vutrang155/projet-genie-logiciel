@@ -6,9 +6,15 @@ const Tache = require("../models/Tache");
 const Projet = require("../models/Projet");
 const errCon = require('../controllers/errorController')
 
+/**
+ * Fonction permettant de mettre à jour les dates d'un projet lors qu'il y a des changements dans la base des 
+ * tâches. Les dates sont mise à jours en fonction la date de début la plus tôt et la date de fin la plus tard.
+ * @param pId id du projet
+ **/ 
+
 var updateProjetDate = (pId) => {
-    // $ne to check null value
-    console.log("Here"+pId);
+    // Mettre à jour la date de début réelle
+    // $ne pour sauter les valeurs nulles  
     Tache.find({projetId:pId, dateDebutReelle: { $ne: null } }).sort({ dateDebutReelle: 0 }).limit(1).exec((err, taches) => {
         // if all null : do nothing
         if (taches.length != 0) {
@@ -21,6 +27,7 @@ var updateProjetDate = (pId) => {
         }
     });
 
+    // Mettre à jour la date de fin réelle
     Tache.find({projetId:pId, dateFinReelle: { $ne: null } }).sort({ dateFinReelle: -1 }).limit(1).exec((err, taches) => {
         // if all null : do nothing
         if (taches.length != 0) {
@@ -32,6 +39,8 @@ var updateProjetDate = (pId) => {
             });
         }
     });
+
+    // Mettre à jour la date de début prévisionnelle
     Tache.find({projetId:pId, dateDebutPrevisionnelle: { $ne: null } }).sort({ dateDebutPrevisionnelle: 0 }).limit(1).exec((err, taches) => {
         // if all null : do nothing
         if (taches.length != 0) {
@@ -44,6 +53,7 @@ var updateProjetDate = (pId) => {
         }
     });
 
+    // Mettre à jour la date de fin prévisionnelle
     Tache.find({projetId:pId, dateFinPrevisionnelle: { $ne: null } }).sort({ dateFinPrevisionnelle: -1 }).limit(1).exec((err, taches) => {
         // if all null : do nothing
         if (taches.length != 0) {
@@ -56,6 +66,9 @@ var updateProjetDate = (pId) => {
         }
     });
 };
+
+// Créer une tâche. Renvoie une erreur lors des champs non-nulles ne se présentent pas dans body. Ou
+// l'utilisateur, le projet passés n'existe pas.
 exports.create = async (req, res, next) => {
     /**let convertDate = function(strDate) {
         var dateParts = strDate.split("/");
@@ -113,6 +126,8 @@ exports.create = async (req, res, next) => {
     } catch (err) { next(err); }
 
 };
+
+// Supprimer une tâche. Renvoie l'erreur si le tâche passé en paramètre n'existe pas
 exports.delete = async (req, res, next) => {
     console.log("Delete Task by id");
 
@@ -139,6 +154,8 @@ exports.delete = async (req, res, next) => {
         });
     } catch (err) { next(err); }
 };
+
+// Mettre à jour les tâches. Renvoie une erreur si le responsableId ou projetId n'existe pas
 exports.update = async (req, res, next) => {
     console.log("Update Task by id");
     try {
@@ -170,12 +187,15 @@ exports.update = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
+// Récupérer toutes les tâches
 exports.getAll = async (req, res, next) => {
     try {
         const ret = await Tache.find({}).populate('responsableId').populate('projetId');
         return res.send(ret);
     } catch (err) { next(err); }
 };
+
+// Récupérer le task par son ID
 exports.getById = async (req, res, next) => {
     console.log("Get Task by ID");
     try {
@@ -189,6 +209,8 @@ exports.getById = async (req, res, next) => {
         
     } catch (err) { next(err); }
 };
+
+// Récupérer les tâches par son nom d'utilisateur nomUtilisateur
 exports.getByUserId = async (req, res, next) => {
     console.log("Get Task by User");
     try {
@@ -208,6 +230,7 @@ exports.getByUserId = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
+// Récupérer les tâches par son userID
 exports.getByUser = async (req, res, next) => {
     console.log("Get Task by User");
 
@@ -221,6 +244,7 @@ exports.getByUser = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
+// Récupérer les tâches par leur projetId
 exports.getByProjet = async (req, res, next) => {
     try {
         console.log("Get Task by Projet");
@@ -234,12 +258,17 @@ exports.getByProjet = async (req, res, next) => {
     } catch (err) { next(err); }
 };
 
+// Récupérer les tâches par le responsable de projet
 exports.getByResponsableProjet = async (req, res, next) => {
     console.log("Get Task by Responsable de Projet");
     try {
         const responsableId = req.params.responsableId;
         await errCon.checkUser(responsableId);
         console.log(responsableId)
+        // Le Pipeline : 
+        // 1. Faire la jointure avec le projet (p)
+        // 2. Vérifier si p.responsableId est le responsableId qu'on cherche
+        // 3. dérouler toutes les clés étrangères (pour faciliter le front)
         Tache.aggregate([
             {
                 '$lookup': {

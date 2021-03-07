@@ -2,6 +2,7 @@ const Client = require("../models/Client");
 const Contact = require("../models/Contact");
 const errCon = require('../controllers/errorController')
 
+// Créer un client. Lancer une exception si le nom du client n'est pas unique 
 exports.create = async (req, res, next) => {
 	console.log('Create');
 	try {
@@ -20,6 +21,8 @@ exports.create = async (req, res, next) => {
 		return res.send({ client });
 	} catch (err) { next(err); }
 }
+
+// Récupérer le client par son Id
 exports.getbyId = async (req, res, next) => {
 
 	console.log('Get Client by ID');
@@ -32,6 +35,8 @@ exports.getbyId = async (req, res, next) => {
 		});
 	} catch (err) { next(err); }
 }
+
+// Récupérer tous les clients
 exports.getAll = async (req, res, next) => {
 
 	console.log("Client get All");
@@ -41,6 +46,8 @@ exports.getAll = async (req, res, next) => {
 
 	} catch (err) { next(err); }
 }
+
+// Supprimer le client par son Id
 exports.delete = async (req, res, next) => {
 	console.log("Delete Client by id");
 	try {
@@ -69,6 +76,8 @@ exports.delete = async (req, res, next) => {
 		});
 	} catch (err) { next(err); }
 };
+
+// Mettre à jour un client
 exports.update = async (req, res, next) => {
 
 	console.log("Update projet by id");

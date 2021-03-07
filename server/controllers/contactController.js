@@ -2,6 +2,7 @@ const Contact = require("../models/Contact");
 const Client = require("../models/Client");
 const errCon = require("../controllers/errorController");
 
+// Créer contact. Lancer une exception si le client existe
 exports.create = async (req, res, next) => {
 
 	console.log('Create contact');
@@ -27,6 +28,8 @@ exports.create = async (req, res, next) => {
 
 	} catch (err) { next(err); }
 }
+
+// Récupérer le contact par son ID. Lancer une exception s'il ne trouve pqs
 exports.getbyId = async (req, res, next) => {
 	console.log("Get Contact by ID");
 	try {
@@ -38,6 +41,8 @@ exports.getbyId = async (req, res, next) => {
 		});
 	} catch (err) { next(err); }
 }
+
+// Récupérer tous les contacts. 
 exports.getAll = async (req, res, next) => {
 	console.log("getAll");
 	try {
@@ -46,6 +51,8 @@ exports.getAll = async (req, res, next) => {
 	} catch (err) { next(err); }
 
 }
+
+// Récupérer les contacts par leur client
 exports.getbyClient = async (req, res, next) => {
 	console.log("Contact getbyClient");
 	try {
@@ -57,6 +64,8 @@ exports.getbyClient = async (req, res, next) => {
 		});
 	} catch (err) { next(err); }
 }
+
+// Supprimer un contact. Lancer une exception s'il ne le trouve pas
 exports.delete = async (req, res, next) => {
 	console.log("Delete Contact by id");
 	try {
@@ -76,6 +85,8 @@ exports.delete = async (req, res, next) => {
 	} catch (err) { next(err); }
 
 }
+
+// Mettre à jour le contact. Vérifier que le clientId modifié de ce contact existe
 exports.update = async (req, res, next) => {
 
 	console.log('Update Contact');
@@ -107,6 +118,5 @@ exports.update = async (req, res, next) => {
 				return res.send(contact);
 			})
 	} catch (err) { next(err); }
-
 }
 

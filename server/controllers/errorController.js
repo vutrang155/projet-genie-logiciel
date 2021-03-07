@@ -7,6 +7,10 @@ const Tache = require("../models/Tache");
 
 const ERROR_CODE = 500;
 
+/**
+ * Vérifier si l'utilisateur existe. Sinon lance une exception
+ * @param id userId
+ **/ 
 exports.checkUser = async(id)=>{
     var cond = mongoose.isValidObjectId(id);
     if (!cond) {
@@ -24,6 +28,11 @@ exports.checkUser = async(id)=>{
     }
     console.log("User existe")
 }
+
+/**
+ * Vérifier si l'utilisateur existe. Sinon lance une exception
+ * @param id le nomUtilisateur 
+ **/ 
 exports.checkUserByNomUtilisateur = async(id)=>{
     var foundId =await User.find({ nomUtilisateur:id  });
     if (foundId === undefined || foundId.length  === 0) {
@@ -33,6 +42,11 @@ exports.checkUserByNomUtilisateur = async(id)=>{
     }
     console.log("User existe")
 }
+
+/**
+ * Vérifier si la tâche existe. Sinon lance une exception
+ * @param id tacheId 
+ **/ 
 exports.checkTache = async(id)=> {
     var cond = mongoose.isValidObjectId(id);
     if (!cond) {
@@ -49,6 +63,10 @@ exports.checkTache = async(id)=> {
     console.log("Tache existe")
 }
 
+/**
+ * Vérifier si le projet existe. Sinon lance une exception
+ * @param id projetId 
+ **/ 
 exports.checkProjet = async(id)=> {
     var cond = mongoose.isValidObjectId(id);
     if (!cond) {
@@ -65,6 +83,10 @@ exports.checkProjet = async(id)=> {
     console.log("Projet existe")
 }
 
+/**
+ * Vérifier si le client existe. Sinon lance une exception
+ * @param id clientId 
+ **/ 
 exports.checkClient = async(id)=> {
     var cond = mongoose.isValidObjectId(id);
     if (!cond) {
@@ -82,6 +104,10 @@ exports.checkClient = async(id)=> {
     console.log("Client existe")
 }
 
+/**
+ * Vérifier si le client existe. Sinon lance une exception
+ * @param id le nom du client 
+ **/ 
 exports.checkClientNom = async(nom)=> {
     var foundId =await Client.find({ nom:id  });
     if (foundId === undefined || foundId.length  === 0) {
@@ -92,6 +118,10 @@ exports.checkClientNom = async(nom)=> {
     console.log("Client existe")
 }
 
+/**
+ * Vérifier si le contact existe. Sinon lance une exception
+ * @param id contactId 
+ **/ 
 exports.checkContact = async(id)=> {
     var cond = mongoose.isValidObjectId(id);
     if (!cond) {
